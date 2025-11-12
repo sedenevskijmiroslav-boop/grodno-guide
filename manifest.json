@@ -1,0 +1,10 @@
+{
+  "url": "https://ВАШ_НИКНЕЙМ.github.io/grodno-guide/",
+  "name": "Гид по Гродно",
+  "iconUrl": "https://via.placeholder.com/192x192/667eea/ffffff?text=G",
+  "description": "Туристический гид по достопримечательностям Гродно",
+  "short_name": "Гродно Гид",
+  "version": "1.0.0",
+  "platform": "all",
+  "orientation": "portrait"
+}
