@@ -11,7 +11,7 @@ const attractions = [
         workingHours: "10:00 - 18:00 (вт-вс)",
         price: "7 BYN - взрослый, 4 BYN - школьники/студенты",
         phone: "+375 (152) 72-18-51",
-        website: "http://museum-grodno.by"
+        website: "https://grodno-oldcastle.museum.by/?ysclid=mhvwu9r8eh490545795"
     },
     {
         id: 2,
@@ -76,7 +76,7 @@ const attractions = [
         workingHours: "10:00 - 20:00 (летом), 10:00 - 17:00 (зимой)",
         price: "10 BYN - взрослый, 5 BYN - детский",
         phone: "+375 (152) 75-38-54",
-        website: "http://zoo.grodno.by"
+        website: "https://www.grodnozoo.by/"
     },
     {
         id: 7,
