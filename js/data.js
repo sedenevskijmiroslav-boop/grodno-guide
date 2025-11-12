@@ -24,7 +24,8 @@ const attractions = [
         images: ["images/farny_church.jpg"],
         workingHours: "07:00 - 20:00 ежедневно",
         price: "бесплатно",
-        phone: "+375 (152) 74-28-23"
+        phone: "+375 (152) 74-28-23",
+        website: "https://katedra-grodno.by/"
     },
     {
         id: 3,
