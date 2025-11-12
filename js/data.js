@@ -38,7 +38,8 @@ const attractions = [
         images: ["images/new_castle.jpg"],
         workingHours: "10:00 - 18:00 (вт-вс)",
         price: "6 BYN - взрослый, 3 BYN - школьники/студенты",
-        phone: "+375 (152) 72-18-51"
+        phone: "+375 (152) 72-18-51",
+        website: "https://grodno-newcastle.museum.by/"
     },
     {
         id: 4,
@@ -51,7 +52,8 @@ const attractions = [
         images: ["images/kalozha_church.jpg"],
         workingHours: "09:00 - 18:00 ежедневно",
         price: "бесплатно",
-        phone: "+375 (152) 77-12-25"
+        phone: "+375 (152) 77-12-25",
+        website: "https://kalozha.by/"
     },
     {
         id: 5,
@@ -63,7 +65,8 @@ const attractions = [
         coords: { lat: 53.6785, lng: 23.8342 },
         images: ["images/soviet_square.jpg"],
         workingHours: "круглосуточно",
-        price: "бесплатно"
+        price: "бесплатно",
+        website: "https://ru.wikipedia.org/wiki/%D0%A1%D0%BE%D0%B2%D0%B5%D1%82%D1%81%D0%BA%D0%B0%D1%8F_%D0%BF%D0%BB%D0%BE%D1%89%D0%B0%D0%B4%D1%8C_(%D0%93%D1%80%D0%BE%D0%B4%D0%BD%D0%BE)"
     },
     {
         id: 6,
@@ -89,7 +92,8 @@ const attractions = [
         coords: { lat: 53.6818, lng: 23.8325 },
         images: ["images/ziliber_park.jpg"],
         workingHours: "круглосуточно",
-        price: "бесплатно"
+        price: "бесплатно",
+        website: "https://www.instagram.com/parkgrodno/?hl=ru"
     },
     {
         id: 8,
@@ -101,7 +105,8 @@ const attractions = [
         coords: { lat: 53.6812, lng: 23.8297 },
         images: ["images/lutheran_church.jpg"],
         workingHours: "по расписанию богослужений",
-        price: "бесплатно"
+        price: "бесплатно",
+        website: "https://luther.by/"
     }
 ];
 
