@@ -10,22 +10,25 @@
 <body>
     <div class="container mt-4">
         <h1 class="text-center mb-4">🏰 Добро пожаловать в Гродно!</h1>
-        <p class="text-center text-muted">Выберите раздел для начала探索 города</p>
+        <p class="text-center text-muted">Выберите раздел для начала города</p>
         
-        <div class="d-grid gap-2">
-            <button class="btn btn-primary btn-lg" onclick="showAttractions()">
-                📍 Достопримечательности
-            </button>
-            <button class="btn btn-success btn-lg" onclick="showMap()">
-                🗺️ Карта города
-            </button>
-            <button class="btn btn-info btn-lg" onclick="showRoutes()">
-                🚶 Готовые маршруты
-            </button>
-            <button class="btn btn-warning btn-lg" onclick="showFavorites()">
-                ⭐ Избранное
-            </button>
-        </div>
+       <div class="d-grid gap-2">
+    <button class="btn btn-primary btn-lg" onclick="showAttractions()">
+        📍 Достопримечательности
+    </button>
+    <button class="btn btn-success btn-lg" onclick="showMap()">
+        🗺️ Интерактивная карта
+    </button>
+    <button class="btn btn-info btn-lg" onclick="showRoutes()">
+        🚶 Готовые маршруты
+    </button>
+    <button class="btn btn-warning btn-lg" onclick="showFavorites()">
+        ⭐ Избранное
+    </button>
+    <button class="btn btn-outline-dark btn-lg" onclick="showAbout()">
+        ℹ️ О приложении
+    </button>
+</div>
         
         <div id="content" class="mt-4">
             <!-- Здесь будет меняться контент -->
