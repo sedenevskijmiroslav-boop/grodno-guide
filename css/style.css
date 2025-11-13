@@ -244,3 +244,48 @@ h1, h2, h3 {
     margin-bottom: 20px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
+
+/* Стили для интерактивной карты */
+.leaflet-popup-content {
+    margin: 8px 12px;
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.leaflet-popup-tip {
+    box-shadow: none;
+}
+
+/* Адаптивность карты для мобильных */
+@media (max-width: 768px) {
+    #map {
+        height: 400px;
+    }
+    
+    .map-controls {
+        justify-content: center;
+    }
+    
+    .map-btn {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Улучшения для маркеров */
+.custom-marker {
+    background: transparent !important;
+    border: none !important;
+}
+
+/* Анимация появления маркеров */
+.leaflet-marker-icon {
+    transition: transform 0.3s ease;
+}
+
+.leaflet-marker-icon:hover {
+    transform: scale(1.1);
+}
