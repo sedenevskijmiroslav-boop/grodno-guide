@@ -87,21 +87,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function showAttractions() {
     showCategories();
-    const content = document.getElementById('content');
-    let html = '<h2>🏛️ Достопримечательности</h2><div class="list-group">';
-    
-    attractions.forEach(item => {
-        html += `
-            <div class="list-group-item list-group-item-action" onclick="showAttractionDetail(${item.id})">
-                <h5>${item.name} ${isFavorite(item.id) ? '⭐' : ''}</h5>
-                <p class="mb-1">${item.description}</p>
-                <small>📍 ${item.address}</small>
-            </div>
-        `;
-    });
-    
-    html += '</div>';
-    content.innerHTML = html;
 }
 
 function showAttractionDetail(id) {
