@@ -289,3 +289,23 @@ h1, h2, h3 {
 .leaflet-marker-icon:hover {
     transform: scale(1.1);
 }
+
+/* Исправления для карты */
+#map {
+    background: #f8f9fa;
+    min-height: 400px;
+}
+
+.leaflet-container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.leaflet-popup-content {
+    margin: 13px 19px;
+    line-height: 1.4;
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
