@@ -1,6 +1,54 @@
 // Инициализация Telegram Web App
 const tg = window.Telegram.WebApp;
 
+// Система избранного
+let favorites = JSON.parse(localStorage.getItem('grodnoFavorites')) || [];
+
+// Сохранение избранного в localStorage
+function saveFavorites() {
+    localStorage.setItem('grodnoFavorites', JSON.stringify(favorites));
+}
+
+// Добавление в избранное
+function addToFavorites(attractionId) {
+    if (!favorites.includes(attractionId)) {
+        favorites.push(attractionId);
+        saveFavorites();
+        
+        tg.showPopup({
+            title: '✅ Добавлено в избранное',
+            message: 'Место сохранено в вашем списке избранного',
+            buttons: [{ type: 'ok' }]
+        });
+        
+        // Если сейчас открыта страница избранного - обновляем ее
+        if (document.getElementById('content').innerHTML.includes('⭐ Избранное')) {
+            showFavorites();
+        }
+    } else {
+        tg.showAlert('Это место уже в избранном!');
+    }
+}
+
+// Удаление из избранного
+function removeFromFavorites(attractionId) {
+    favorites = favorites.filter(id => id !== attractionId);
+    saveFavorites();
+    
+    tg.showPopup({
+        title: '❌ Удалено из избранного',
+        message: 'Место удалено из вашего списка',
+        buttons: [{ type: 'ok' }]
+    });
+    
+    // Обновляем страницу избранного
+    showFavorites();
+}
+
+// Проверка, есть ли место в избранном
+function isFavorite(attractionId) {
+    return favorites.includes(attractionId);
+}
 // Когда страница загрузилась
 document.addEventListener('DOMContentLoaded', function() {
     tg.expand(); // Растянуть на весь экран
@@ -51,6 +99,15 @@ function showAttractionDetail(id) {
         contactsHtml += `<p><strong>🌐 Сайт:</strong> <a href="${item.website}" target="_blank">${item.website}</a></p>`;
     }
     
+    // Определяем кнопку избранного
+    const favoriteButton = isFavorite(item.id) 
+        ? `<button class="btn btn-warning" onclick="removeFromFavorites(${item.id})">
+               ❌ Удалить из избранного
+           </button>`
+        : `<button class="btn btn-outline-warning" onclick="addToFavorites(${item.id})">
+               ⭐ Добавить в избранное
+           </button>`;
+    
     content.innerHTML = `
         <button class="back-btn" onclick="showAttractions()">← Назад к списку</button>
         <div class="card fade-in">
@@ -74,9 +131,7 @@ function showAttractionDetail(id) {
                     <button class="btn btn-success btn-lg" onclick="openInMaps(${item.coords.lat}, ${item.coords.lng})">
                         🗺️ Построить маршрут
                     </button>
-                    <button class="btn btn-outline-warning" onclick="addToFavorites(${item.id})">
-                        ⭐ Добавить в избранное
-                    </button>
+                    ${favoriteButton}
                 </div>
             </div>
         </div>
@@ -210,32 +265,36 @@ function addMarkersToMap(filter = 'all') {
         ).addTo(map);
         
         // Добавляем всплывающее окно
-        marker.bindPopup(`
-            <div style="min-width: 250px; font-family: Arial, sans-serif;">
-                <h4 style="margin: 0 0 8px 0; color: #2c3e50; border-bottom: 2px solid #667eea; padding-bottom: 5px;">
-                    ${attraction.name}
-                </h4>
-                <p style="margin: 0 0 8px 0; color: #666; font-size: 14px;">
-                    ${attraction.description}
-                </p>
-                <p style="margin: 0 0 6px 0; font-size: 13px;">
-                    <strong>📍 Адрес:</strong> ${attraction.address}
-                </p>
-                <p style="margin: 0 0 10px 0; font-size: 13px;">
-                    <strong>🕒 Часы:</strong> ${attraction.workingHours}
-                </p>
-                <div style="display: flex; gap: 8px;">
-                    <button onclick="openMapInMaps(${attraction.coords.lat}, ${attraction.coords.lng})" 
-                            style="background: #28a745; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; flex: 1;">
-                        🗺️ Маршрут
-                    </button>
-                    <button onclick="showAttractionFromMap(${attraction.id})" 
-                            style="background: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; flex: 1;">
-                        ℹ️ Подробнее
-                    </button>
-                </div>
-            </div>
-        `);
+       // В функции addMarkersToMap, в bindPopup обновите кнопки:
+marker.bindPopup(`
+    <div style="min-width: 250px; font-family: Arial, sans-serif;">
+        <h4 style="margin: 0 0 8px 0; color: #2c3e50; border-bottom: 2px solid #667eea; padding-bottom: 5px;">
+            ${attraction.name}
+        </h4>
+        <p style="margin: 0 0 8px 0; color: #666; font-size: 14px;">
+            ${attraction.description}
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 13px;">
+            <strong>📍 Адрес:</strong> ${attraction.address}
+        </p>
+        <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+            <button onclick="openMapInMaps(${attraction.coords.lat}, ${attraction.coords.lng})" 
+                    style="background: #28a745; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; flex: 1;">
+                🗺️ Маршрут
+            </button>
+            <button onclick="showAttractionFromMap(${attraction.id})" 
+                    style="background: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; flex: 1;">
+                ℹ️ Подробнее
+            </button>
+        </div>
+        <div style="display: flex; gap: 8px;">
+            <button onclick="${isFavorite(attraction.id) ? `removeFromFavorites(${attraction.id})` : `addToFavorites(${attraction.id})`}" 
+                    style="background: ${isFavorite(attraction.id) ? '#dc3545' : '#ffc107'}; color: ${isFavorite(attraction.id) ? 'white' : 'black'}; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; flex: 1;">
+                ${isFavorite(attraction.id) ? '❌ Удалить' : '⭐ В избранное'}
+            </button>
+        </div>
+    </div>
+`);
         
         markers.push(marker);
     });
@@ -300,13 +359,113 @@ function showRoutes() {
 // Показываем избранное
 function showFavorites() {
     const content = document.getElementById('content');
-    content.innerHTML = `
-        <h2>⭐ Избранное</h2>
-        <div class="alert alert-warning">
-            Функция "Избранное" будет реализована в следующей версии.
-            Здесь будут сохраняться выбранные вами места.
+    
+    if (favorites.length === 0) {
+        content.innerHTML = `
+            <div class="fade-in">
+                <h2>⭐ Избранное</h2>
+                <div class="card text-center">
+                    <div class="card-body py-5">
+                        <div style="font-size: 48px; margin-bottom: 20px;">⭐</div>
+                        <h4>Пока пусто</h4>
+                        <p class="text-muted">Добавляйте места в избранное, нажимая на звездочку в карточке достопримечательности</p>
+                        <button class="btn btn-primary" onclick="showAttractions()">
+                            📍 Посмотреть достопримечательности
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        return;
+    }
+    
+    let html = `
+        <div class="fade-in">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2>⭐ Избранное</h2>
+                <span class="badge bg-warning">${favorites.length} мест</span>
+            </div>
+            
+            <div class="alert alert-info">
+                <strong>💡 Совет:</strong> Нажмите на место для просмотра details или ❌ для удаления из избранного
+            </div>
+            
+            <div class="list-group">
+    `;
+    
+    // Получаем избранные достопримечательности
+    const favoriteAttractions = attractions.filter(attr => favorites.includes(attr.id));
+    
+    favoriteAttractions.forEach(item => {
+        const categoryNames = {
+            'architecture': '🏛️ Архитектура',
+            'religion': '⛪ Религия',
+            'sights': '📸 Достопримечательности', 
+            'parks': '🌳 Парки',
+            'entertainment': '🎪 Развлечения'
+        };
+        
+        html += `
+            <div class="list-group-item list-group-item-action">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="flex-grow-1" onclick="showAttractionDetail(${item.id})" style="cursor: pointer;">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">${item.name}</h5>
+                            <span class="badge category-${item.category}">${categoryNames[item.category]}</span>
+                        </div>
+                        <p class="mb-1">${item.description}</p>
+                        <small>📍 ${item.address}</small>
+                    </div>
+                    <button class="btn btn-outline-danger btn-sm ms-3" onclick="removeFromFavorites(${item.id})" title="Удалить из избранного">
+                        ❌
+                    </button>
+                </div>
+            </div>
+        `;
+    });
+    
+    html += `
+            </div>
+            
+            <div class="mt-3">
+                <button class="btn btn-outline-secondary" onclick="clearAllFavorites()">
+                    🗑️ Очистить все избранное
+                </button>
+            </div>
         </div>
     `;
+    
+    content.innerHTML = html;
+}
+
+// Функция очистки всего избранного
+function clearAllFavorites() {
+    tg.showPopup({
+        title: 'Очистка избранного',
+        message: `Вы уверены, что хотите удалить все ${favorites.length} мест из избранного?`,
+        buttons: [
+            { 
+                type: 'ok', 
+                text: 'Да, очистить',
+                id: 'clear'
+            },
+            { 
+                type: 'cancel', 
+                text: 'Отмена',
+                id: 'cancel'
+            }
+        ]
+    });
+    
+    // Обработчик результата попапа
+    tg.onEvent('popupClosed', (event) => {
+        if (event.button_id === 'clear') {
+            favorites = [];
+            saveFavorites();
+            tg.showAlert('Все места удалены из избранного!');
+            showFavorites();
+        }
+    });
 }
 
 // Открыть в картах
@@ -373,16 +532,18 @@ function filterAttractions(category) {
             'entertainment': '🎪 Развлечения'
         };
         
-        html += `
-            <div class="list-group-item list-group-item-action fade-in" onclick="showAttractionDetail(${item.id})">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">${item.name}</h5>
-                    <span class="badge category-${item.category}">${categoryNames[item.category]}</span>
-                </div>
+       html += `
+    <div class="list-group-item list-group-item-action fade-in" onclick="showAttractionDetail(${item.id})">
+        <div class="d-flex w-100 justify-content-between">
+            <div>
+                <h5 class="mb-1">${item.name} ${isFavorite(item.id) ? '⭐' : ''}</h5>
                 <p class="mb-1">${item.description}</p>
                 <small>📍 ${item.address}</small>
             </div>
-        `;
+            <span class="badge category-${item.category}">${categoryNames[item.category]}</span>
+        </div>
+    </div>
+`;
     });
     
     html += '</div>';
