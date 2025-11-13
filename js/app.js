@@ -1,57 +1,88 @@
 const tg = window.Telegram.WebApp;
 
 // ==================== СИСТЕМА ИЗБРАННОГО ====================
-let favorites = JSON.parse(localStorage.getItem('grodnoFavorites')) || [];
+let favorites = [];
 
-function saveFavorites() {
-    localStorage.setItem('grodnoFavorites', JSON.stringify(favorites));
+// Загружаем избранное при запуске
+function loadFavorites() {
+    try {
+        const saved = localStorage.getItem('grodnoFavorites');
+        return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+        return [];
+    }
 }
 
+// Сохраняем избранное
+function saveFavorites() {
+    try {
+        localStorage.setItem('grodnoFavorites', JSON.stringify(favorites));
+    } catch (e) {
+        console.log('Ошибка сохранения');
+    }
+}
+
+// Проверяем есть ли в избранном
+function isFavorite(attractionId) {
+    return favorites.includes(attractionId);
+}
+
+// Добавляем в избранное
 function addToFavorites(attractionId) {
+    console.log('Добавляем:', attractionId);
+    
     if (!favorites.includes(attractionId)) {
         favorites.push(attractionId);
         saveFavorites();
         tg.showAlert('✅ Добавлено в избранное!');
         
-        // Обновляем страницу если открыто избранное
-        if (document.getElementById('content').innerHTML.includes('⭐ Избранное')) {
-            showFavorites();
-        }
+        // Обновляем если открыто избранное
+        setTimeout(() => {
+            if (document.getElementById('content').innerHTML.includes('⭐ Избранное')) {
+                showFavorites();
+            }
+        }, 100);
     } else {
-        tg.showAlert('⚠️ Это место уже в избранном!');
+        tg.showAlert('⚠️ Уже в избранном!');
     }
 }
 
+// Удаляем из избранного
 function removeFromFavorites(attractionId) {
+    console.log('Удаляем:', attractionId);
+    
     favorites = favorites.filter(id => id !== attractionId);
     saveFavorites();
     tg.showAlert('❌ Удалено из избранного');
     
-    // Обновляем страницу избранного
-    if (document.getElementById('content').innerHTML.includes('⭐ Избранное')) {
+    // Обновляем страницу
+    setTimeout(() => {
         showFavorites();
-    }
+    }, 100);
 }
 
-function isFavorite(attractionId) {
-    return favorites.includes(attractionId);
-}
-
+// Очищаем все избранное
 function clearAllFavorites() {
     if (favorites.length === 0) {
-        tg.showAlert('📭 Избранное уже пустое');
+        tg.showAlert('📭 Избранное пустое');
         return;
     }
     
     favorites = [];
     saveFavorites();
-    tg.showAlert('🗑️ Все места удалены из избранного');
+    tg.showAlert('🗑️ Все очищено!');
     showFavorites();
 }
+
+// ==================== ОСНОВНЫЕ ФУНКЦИИ ====================
+
 document.addEventListener('DOMContentLoaded', function() {
     tg.expand();
     tg.ready();
-    console.log('Приложение запущено!');
+    
+    // Загружаем избранное при старте
+    favorites = loadFavorites();
+    console.log('Загружено избранных:', favorites.length);
 });
 
 function showAttractions() {
@@ -61,9 +92,9 @@ function showAttractions() {
     attractions.forEach(item => {
         html += `
             <div class="list-group-item list-group-item-action" onclick="showAttractionDetail(${item.id})">
-                <h5>${item.name}</h5>
+                <h5>${item.name} ${isFavorite(item.id) ? '⭐' : ''}</h5>
                 <p class="mb-1">${item.description}</p>
-                <small>${item.address}</small>
+                <small>📍 ${item.address}</small>
             </div>
         `;
     });
@@ -76,14 +107,12 @@ function showAttractionDetail(id) {
     const item = attractions.find(attr => attr.id === id);
     const content = document.getElementById('content');
     
-    // Определяем кнопку избранного
-    const favoriteButton = isFavorite(item.id) 
-        ? `<button class="btn btn-warning" onclick="removeFromFavorites(${item.id})">
-               ❌ Удалить из избранного
-           </button>`
-        : `<button class="btn btn-outline-warning" onclick="addToFavorites(${item.id})">
-               ⭐ Добавить в избранное
-           </button>`;
+    if (!item) return;
+    
+    const isFav = isFavorite(item.id);
+    const favoriteButton = isFav 
+        ? `<button class="btn btn-warning" onclick="removeFromFavorites(${item.id})">❌ Удалить из избранного</button>`
+        : `<button class="btn btn-outline-warning" onclick="addToFavorites(${item.id})">⭐ Добавить в избранное</button>`;
     
     content.innerHTML = `
         <button class="btn btn-secondary mb-3" onclick="showAttractions()">← Назад к списку</button>
@@ -112,7 +141,6 @@ function showMap() {
         <h2>🗺️ Карта Гродно</h2>
         <div class="alert alert-info">
             <p>Здесь будет интерактивная карта с отметками достопримечательностей.</p>
-            <p>Для реализации используйте Leaflet.js или Google Maps API.</p>
         </div>
         <div class="list-group">
             ${attractions.map(item => `
@@ -174,7 +202,7 @@ function showFavorites() {
     let html = `
         <h2>⭐ Избранное</h2>
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <span class="text-muted">${favorites.length} мест в избранном</span>
+            <span class="text-muted">${favorites.length} ${favorites.length === 1 ? 'место' : 'мест'} в избранном</span>
             <button class="btn btn-outline-danger btn-sm" onclick="clearAllFavorites()">
                 🗑️ Очистить все
             </button>
@@ -182,7 +210,7 @@ function showFavorites() {
         <div class="list-group">
     `;
     
-    // Получаем избранные достопримечательности
+    // Получаем избранные места
     const favoriteAttractions = attractions.filter(attr => favorites.includes(attr.id));
     
     favoriteAttractions.forEach(item => {
@@ -190,13 +218,12 @@ function showFavorites() {
             <div class="list-group-item list-group-item-action">
                 <div class="d-flex justify-content-between align-items-start">
                     <div class="flex-grow-1" onclick="showAttractionDetail(${item.id})" style="cursor: pointer;">
-                        <h5 class="mb-1">${item.name} ${isFavorite(item.id) ? '⭐' : ''}</h5>
+                        <h5 class="mb-1">${item.name} ⭐</h5>
                         <p class="mb-1">${item.description}</p>
                         <small>📍 ${item.address}</small>
                     </div>
-                    <button class="btn btn-outline-danger btn-sm ms-3" 
-                            onclick="removeFromFavorites(${item.id})" 
-                            title="Удалить из избранного">
+                    <button class="btn btn-outline-danger btn-sm ms-2" 
+                            onclick="event.stopPropagation(); removeFromFavorites(${item.id})">
                         ❌
                     </button>
                 </div>
@@ -211,10 +238,6 @@ function showFavorites() {
 function openInMaps(lat, lng) {
     const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=walking`;
     tg.openLink(url);
-}
-
-function addToFavorites(id) {
-    tg.showAlert('Место добавлено в избранное!');
 }
 
 function startRoute(id) {
