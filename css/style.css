@@ -8,17 +8,16 @@ body {
     background: white;
     border-radius: 20px;
     padding: 20px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
 .btn {
     border-radius: 12px;
-    padding: 15px;
+    padding: 12px;
     font-weight: 600;
     transition: all 0.3s ease;
-    margin-bottom: 8px;
 }
 
 .btn:hover {
@@ -27,12 +26,11 @@ body {
 }
 
 .list-group-item {
-    border-radius: 12px !important;
-    margin-bottom: 12px;
+    border-radius: 10px !important;
+    margin-bottom: 10px;
     border: none;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     transition: all 0.3s ease;
-    cursor: pointer;
 }
 
 .list-group-item:hover {
@@ -42,84 +40,11 @@ body {
 
 .card {
     border: none;
-    border-radius: 16px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
-}
-
-.card-body {
-    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
 h1, h2, h3 {
     color: #2c3e50;
     font-weight: 700;
-}
-
-.badge {
-    font-size: 0.8em;
-    padding: 6px 12px;
-    border-radius: 20px;
-}
-
-/* Категории */
-.category-architecture { background-color: #e3f2fd; color: #1565c0; }
-.category-religion { background-color: #f3e5f5; color: #7b1fa2; }
-.category-sights { background-color: #e8f5e8; color: #2e7d32; }
-.category-parks { background-color: #f0f4c3; color: #827717; }
-.category-entertainment { background-color: #ffe0b2; color: #ef6c00; }
-
-/* Анимации */
-.fade-in {
-    animation: fadeIn 0.5s ease-in;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Кнопка назад */
-.back-btn {
-    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 10px 20px;
-    margin-bottom: 20px;
-}
-
-/* Информационные карточки */
-.info-card {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border-radius: 15px;
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-.route-card {
-    border-left: 5px solid #667eea;
-}
-
-/* Фильтры */
-.filter-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 20px;
-}
-
-.filter-btn {
-    padding: 8px 16px;
-    border-radius: 20px;
-    border: 2px solid #667eea;
-    background: white;
-    color: #667eea;
-    transition: all 0.3s ease;
-}
-
-.filter-btn.active {
-    background: #667eea;
-    color: white;
 }
