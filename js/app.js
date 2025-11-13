@@ -74,6 +74,131 @@ function clearAllFavorites() {
     showFavorites();
 }
 
+// ==================== ФИЛЬТРАЦИЯ ПО КАТЕГОРИЯМ ====================
+
+function showCategories() {
+    const content = document.getElementById('content');
+    content.innerHTML = `
+        <div class="fade-in">
+            <h2>🎯 Категории достопримечательностей</h2>
+            <p class="text-muted mb-3">Выберите категорию для просмотра мест</p>
+            
+            <div class="row">
+                <div class="col-6 mb-3">
+                    <div class="category-card" onclick="filterAttractions('all')">
+                        <div class="category-icon">🏛️</div>
+                        <div class="category-name">Все места</div>
+                        <div class="category-count">${attractions.length}</div>
+                    </div>
+                </div>
+                <div class="col-6 mb-3">
+                    <div class="category-card" onclick="filterAttractions('architecture')">
+                        <div class="category-icon">🏛️</div>
+                        <div class="category-name">Архитектура</div>
+                        <div class="category-count">${attractions.filter(a => a.category === 'architecture').length}</div>
+                    </div>
+                </div>
+                <div class="col-6 mb-3">
+                    <div class="category-card" onclick="filterAttractions('religion')">
+                        <div class="category-icon">⛪</div>
+                        <div class="category-name">Религия</div>
+                        <div class="category-count">${attractions.filter(a => a.category === 'religion').length}</div>
+                    </div>
+                </div>
+                <div class="col-6 mb-3">
+                    <div class="category-card" onclick="filterAttractions('sights')">
+                        <div class="category-icon">📸</div>
+                        <div class="category-name">Достопримечательности</div>
+                        <div class="category-count">${attractions.filter(a => a.category === 'sights').length}</div>
+                    </div>
+                </div>
+                <div class="col-6 mb-3">
+                    <div class="category-card" onclick="filterAttractions('parks')">
+                        <div class="category-icon">🌳</div>
+                        <div class="category-name">Парки</div>
+                        <div class="category-count">${attractions.filter(a => a.category === 'parks').length}</div>
+                    </div>
+                </div>
+                <div class="col-6 mb-3">
+                    <div class="category-card" onclick="filterAttractions('entertainment')">
+                        <div class="category-icon">🎪</div>
+                        <div class="category-name">Развлечения</div>
+                        <div class="category-count">${attractions.filter(a => a.category === 'entertainment').length}</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="attractions-list" class="mt-4"></div>
+        </div>
+    `;
+    
+    // Показываем все места по умолчанию
+    filterAttractions('all');
+}
+
+function filterAttractions(category) {
+    const filtered = category === 'all' 
+        ? attractions 
+        : attractions.filter(item => item.category === category);
+    
+    const listDiv = document.getElementById('attractions-list');
+    
+    // Обновляем активные карточки
+    document.querySelectorAll('.category-card').forEach(card => {
+        card.classList.remove('active');
+    });
+    
+    // Находим и активируем нужную карточку
+    const categoryCards = document.querySelectorAll('.category-card');
+    const categoryIndex = ['all', 'architecture', 'religion', 'sights', 'parks', 'entertainment'].indexOf(category);
+    if (categoryCards[categoryIndex]) {
+        categoryCards[categoryIndex].classList.add('active');
+    }
+    
+    if (filtered.length === 0) {
+        listDiv.innerHTML = `
+            <div class="alert alert-info text-center">
+                <h5>😔 Ничего не найдено</h5>
+                <p class="mb-0">В этой категории пока нет достопримечательностей</p>
+            </div>
+        `;
+        return;
+    }
+    
+    const categoryNames = {
+        'architecture': '🏛️ Архитектура',
+        'religion': '⛪ Религия', 
+        'sights': '📸 Достопримечательности',
+        'parks': '🌳 Парки',
+        'entertainment': '🎪 Развлечения'
+    };
+    
+    let html = `
+        <h4>${category === 'all' ? 'Все достопримечательности' : categoryNames[category]} 
+            <span class="badge bg-primary">${filtered.length}</span>
+        </h4>
+        <div class="list-group">
+    `;
+    
+    filtered.forEach(item => {
+        html += `
+            <div class="list-group-item list-group-item-action" onclick="showAttractionDetail(${item.id})">
+                <div class="d-flex w-100 justify-content-between">
+                    <div>
+                        <h5 class="mb-1">${item.name} ${isFavorite(item.id) ? '⭐' : ''}</h5>
+                        <p class="mb-1">${item.description}</p>
+                        <small>📍 ${item.address}</small>
+                    </div>
+                    <span class="badge category-${item.category}">${categoryNames[item.category]}</span>
+                </div>
+            </div>
+        `;
+    });
+    
+    html += '</div>';
+    listDiv.innerHTML = html;
+}
+
 // ==================== ОСНОВНЫЕ ФУНКЦИИ ====================
 
 document.addEventListener('DOMContentLoaded', function() {
