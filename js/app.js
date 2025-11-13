@@ -86,6 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function showAttractions() {
+    showCategories();
     const content = document.getElementById('content');
     let html = '<h2>🏛️ Достопримечательности</h2><div class="list-group">';
     
@@ -133,6 +134,64 @@ function showAttractionDetail(id) {
             </div>
         </div>
     `;
+}
+
+// ==================== ФИЛЬТРАЦИЯ ПО КАТЕГОРИЯМ ====================
+
+function showCategories() {
+    const content = document.getElementById('content');
+    content.innerHTML = `
+        <h2>🎯 Категории достопримечательностей</h2>
+        <div class="filter-buttons mb-3">
+            <button class="filter-btn active" onclick="filterAttractions('all')">Все</button>
+            <button class="filter-btn" onclick="filterAttractions('architecture')">🏛️ Архитектура</button>
+            <button class="filter-btn" onclick="filterAttractions('religion')">⛪ Религия</button>
+            <button class="filter-btn" onclick="filterAttractions('sights')">📸 Достопримечательности</button>
+            <button class="filter-btn" onclick="filterAttractions('parks')">🌳 Парки</button>
+            <button class="filter-btn" onclick="filterAttractions('entertainment')">🎪 Развлечения</button>
+        </div>
+        <div id="attractions-list"></div>
+    `;
+    filterAttractions('all');
+}
+
+function filterAttractions(category) {
+    const filtered = category === 'all' 
+        ? attractions 
+        : attractions.filter(item => item.category === category);
+    
+    const listDiv = document.getElementById('attractions-list');
+    
+    // Обновляем активные кнопки
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    let html = '<div class="list-group">';
+    filtered.forEach(item => {
+        const categoryNames = {
+            'architecture': '🏛️ Архитектура',
+            'religion': '⛪ Религия', 
+            'sights': '📸 Достопримечательности',
+            'parks': '🌳 Парки',
+            'entertainment': '🎪 Развлечения'
+        };
+        
+        html += `
+            <div class="list-group-item list-group-item-action" onclick="showAttractionDetail(${item.id})">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">${item.name} ${isFavorite(item.id) ? '⭐' : ''}</h5>
+                    <span class="badge category-${item.category}">${categoryNames[item.category]}</span>
+                </div>
+                <p class="mb-1">${item.description}</p>
+                <small>📍 ${item.address}</small>
+            </div>
+        `;
+    });
+    
+    html += '</div>';
+    listDiv.innerHTML = html;
 }
 
 function showMap() {

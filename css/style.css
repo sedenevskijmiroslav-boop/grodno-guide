@@ -48,3 +48,72 @@ h1, h2, h3 {
     color: #2c3e50;
     font-weight: 700;
 }
+
+/* Фильтры */
+.filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.filter-btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 2px solid #667eea;
+    background: white;
+    color: #667eea;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.filter-btn.active {
+    background: #667eea;
+    color: white;
+}
+
+.filter-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Бейджи категорий */
+.badge {
+    font-size: 0.8em;
+    padding: 6px 12px;
+    border-radius: 20px;
+}
+
+.category-architecture { background-color: #e3f2fd; color: #1565c0; }
+.category-religion { background-color: #f3e5f5; color: #7b1fa2; }
+.category-sights { background-color: #e8f5e8; color: #2e7d32; }
+.category-parks { background-color: #f0f4c3; color: #827717; }
+.category-entertainment { background-color: #ffe0b2; color: #ef6c00; }
+
+/* Анимации */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Кнопка назад */
+.back-btn {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+}
+
+/* Информационные карточки */
+.info-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
