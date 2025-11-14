@@ -11,7 +11,7 @@ const attractions = [
         workingHours: "10:00 - 18:00 (вт-вс)",
         price: "7 BYN - взрослый, 4 BYN - школьники/студенты",
         phone: "+375 (152) 72-18-51",
-        website: "http://museum-grodno.by"
+        website: "https://grodno-oldcastle.museum.by/?ysclid=mhyl515htz776173147"
     },
     {
         id: 2,
@@ -20,11 +20,12 @@ const attractions = [
         description: "Величественный католический собор в стиле барокко",
         fullDescription: "Фарный костел — один из трёх храмов Беларуси, носящих почётный титул малой базилики. Построен в 1678-1705 годах. Главный алтарь высотой 21 метр считается самым высоким в Европе. В храме находится чудотворная икона Матери Божьей Конгрегатской.",
         address: "пл. Советская, 4",
-        coords: { lat: 53.6789, lng: 23.8347 },
+        coords: { lat: 53.678311, lng: 23.831991 },
         images: ["images/farny_church.jpg"],
         workingHours: "07:00 - 20:00 ежедневно",
         price: "бесплатно",
-        phone: "+375 (152) 74-28-23"
+        phone: "+375 (152) 74-28-23",
+        website: "https://katedra-grodno.by/"
     },
     {
         id: 3,
@@ -37,7 +38,8 @@ const attractions = [
         images: ["images/new_castle.jpg"],
         workingHours: "10:00 - 18:00 (вт-вс)",
         price: "6 BYN - взрослый, 3 BYN - школьники/студенты",
-        phone: "+375 (152) 72-18-51"
+        phone: "+375 (152) 72-18-51",
+        website: "https://grodno-newcastle.museum.by/?ysclid=mhyl7i4a9g103206303"
     },
     {
         id: 4,
@@ -46,11 +48,12 @@ const attractions = [
         description: "Уникальный памятник древнерусского зодчества XII века",
         fullDescription: "Одна из древнейших церквей на территории Беларуси, построена в 1180-х годах. Уникальность храма — в голосниках (глиняных сосудах) в стенах, улучшающих акустику. Церковь расположена на высоком берегу Немана.",
         address: "ул. Каложская, 6",
-        coords: { lat: 53.6847, lng: 23.8269 },
+        coords: { lat: 53.678382, lng: 23.818634 },
         images: ["images/kalozha_church.jpg"],
         workingHours: "09:00 - 18:00 ежедневно",
         price: "бесплатно",
-        phone: "+375 (152) 77-12-25"
+        phone: "+375 (152) 77-12-25",
+        website: "https://kalozha.by/"
     },
     {
         id: 5,
@@ -59,10 +62,11 @@ const attractions = [
         description: "Главная площадь исторического центра",
         fullDescription: "Центральная площадь Гродно, бывшая Рыночная. Сохранила историческую планировку с XVI века. Здесь находятся ратуша, старинная застройка, кафе и сувенирные лавки. По выходным работает фермерский рынок.",
         address: "пл. Советская",
-        coords: { lat: 53.6785, lng: 23.8342 },
+        coords: { lat: 53.677653, lng: 23.829463 },
         images: ["images/soviet_square.jpg"],
         workingHours: "круглосуточно",
-        price: "бесплатно"
+        price: "бесплатно",
+        website: "https://ru.ruwiki.ru/wiki/%D0%A1%D0%BE%D0%B2%D0%B5%D1%82%D1%81%D0%BA%D0%B0%D1%8F_%D0%BF%D0%BB%D0%BE%D1%89%D0%B0%D0%B4%D1%8C_(%D0%93%D1%80%D0%BE%D0%B4%D0%BD%D0%BE)"
     },
     {
         id: 6,
@@ -71,12 +75,12 @@ const attractions = [
         description: "Старейший зоопарк в Беларуси",
         fullDescription: "Основан в 1927 году Яном Кохановским. Здесь содержится около 3000 животных 317 видов. Есть террариум, аквариум, контактная зона. Проводятся экскурсии и образовательные программы.",
         address: "ул. Тимирязева, 11",
-        coords: { lat: 53.6942, lng: 23.8358 },
+        coords: { lat: 53.688907, lng: 23.848354 },
         images: ["images/zoo.jpg"],
         workingHours: "10:00 - 20:00 (летом), 10:00 - 17:00 (зимой)",
         price: "10 BYN - взрослый, 5 BYN - детский",
         phone: "+375 (152) 75-38-54",
-        website: "http://zoo.grodno.by"
+        website: "https://www.grodnozoo.by/"
     },
     {
         id: 7,
@@ -85,10 +89,11 @@ const attractions = [
         description: "Центральный парк культуры и отдыха",
         fullDescription: "Парк основан в XVII веке французским ботаником Жаном Эммануэлем Жилибером. Здесь располагался ботанический сад с 2000 видов растений. Сейчас это любимое место отдыха горожан с фонтанами, аттракционами и летними кафе.",
         address: "ул. Урицкого, 2",
-        coords: { lat: 53.6818, lng: 23.8325 },
+        coords: { lat: 53.684877, lng: 23.836938 },
         images: ["images/ziliber_park.jpg"],
         workingHours: "круглосуточно",
-        price: "бесплатно"
+        price: "бесплатно",
+        website: "https://www.instagram.com/parkgrodno/?hl=ru"
     },
     {
         id: 8,
@@ -97,10 +102,11 @@ const attractions = [
         description: "Евангелическо-лютеранская церковь Св. Иоанна",
         fullDescription: "Построена в 1793-1843 годах для немецкой общины Гродно. Неоготическое здание с высокой башней. Сейчас здесь проходят богослужения и концерты органной музыки.",
         address: "ул. Академическая, 7",
-        coords: { lat: 53.6812, lng: 23.8297 },
+        coords: { lat: 53.687271, lng: 23.840616 },
         images: ["images/lutheran_church.jpg"],
         workingHours: "по расписанию богослужений",
-        price: "бесплатно"
+        price: "бесплатно",
+        website: "https://luther.by/"
     },
     {
         id: 9,
@@ -109,10 +115,11 @@ const attractions = [
         description: "Памятник неороманской архитектуры",
         fullDescription: "Построена в 1902-1905 годах на месте старой деревянной синагоги. Одна из немногих действующих синагог в Беларуси. Внутри сохранились оригинальные росписи и убранство.",
         address: "ул. Большая Троицкая, 59",
-        coords: { lat: 53.6778, lng: 23.8319 },
+        coords: { lat: 53.678983, lng: 23.825090 },
         images: ["images/synagogue.jpg"],
         workingHours: "по расписанию богослужений",
-        price: "бесплатно"
+        price: "бесплатно",
+        website: "https://grodnosynagogue.by/?ysclid=mhylgtju7970418410"
     },
     {
         id: 10,
@@ -121,10 +128,11 @@ const attractions = [
         description: "Исторический район с регулярной планировкой",
         fullDescription: "Район построен в XVIII веке по инициативе гродненского старосты Антония Тызенгауза. Сохранилась регулярная планировка улиц, каменная застройка, бывшие ремесленные мастерские.",
         address: "район ул. Ожешко, Элизы Ожешко",
-        coords: { lat: 53.6736, lng: 23.8275 },
+        coords: { lat: 53.679803, lng: 23.833434 },
         images: ["images/gorodnica.jpg"],
         workingHours: "круглосуточно",
-        price: "бесплатно"
+        price: "бесплатно",
+        website: "https://vetliva.ru/belarus/what-to-see/gorodnitsa-v-grodno/?ysclid=mhyljalrak910564859"
     }
 ];
 
