@@ -744,6 +744,312 @@ function showFavorites() {
     content.innerHTML = html;
 }
 
+// ==================== УЛУЧШЕННЫЕ МАРШРУТЫ ====================
+
+let currentRoute = null;
+let currentStep = 0;
+let routeProgress = JSON.parse(localStorage.getItem('routeProgress')) || {};
+
+function showRoutes() {
+    const content = document.getElementById('content');
+    
+    let html = `
+        <div class="fade-in">
+            <h2>🚶 Готовые маршруты</h2>
+            <p class="text-muted mb-4">Выберите маршрут для подробного просмотра или начала навигации</p>
+            
+            <div class="row">
+    `;
+    
+    routes.forEach(route => {
+        const completed = routeProgress[route.id] === 'completed';
+        const inProgress = routeProgress[route.id] === 'in-progress';
+        
+        html += `
+            <div class="col-md-6 mb-4">
+                <div class="card route-card ${completed ? 'completed' : ''} ${inProgress ? 'in-progress' : ''}">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="card-title">${route.name}</h5>
+                            ${completed ? '<span class="badge bg-success">✅ Завершен</span>' : ''}
+                            ${inProgress ? '<span class="badge bg-warning">🚶 В процессе</span>' : ''}
+                        </div>
+                        <p class="card-text">${route.description}</p>
+                        <div class="route-meta">
+                            <small class="text-muted">
+                                ⏱️ ${route.duration} | 📏 ${route.distance} | 🚶 ${route.difficulty}
+                            </small>
+                        </div>
+                        <div class="mt-3">
+                            <button class="btn btn-outline-primary btn-sm me-2" onclick="showRouteDetail(${route.id})">
+                                ℹ️ Подробнее
+                            </button>
+                            <button class="btn btn-success btn-sm me-2" onclick="startRoute(${route.id})">
+                                🚶 Начать
+                            </button>
+                            <button class="btn btn-info btn-sm" onclick="showRouteOnMap(${route.id})">
+                                🗺️ На карте
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    
+    html += `
+            </div>
+        </div>
+    `;
+    
+    content.innerHTML = html;
+}
+
+// Детальная страница маршрута
+function showRouteDetail(routeId) {
+    const route = routes.find(r => r.id === routeId);
+    const routeAttractions = route.stops.map(id => attractions.find(a => a.id === id));
+    
+    let html = `
+        <button class="back-btn" onclick="showRoutes()">← Назад к маршрутам</button>
+        <div class="fade-in">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2>${route.name}</h2>
+                    <p class="lead">${route.description}</p>
+                    <div class="route-header-info">
+                        <span class="badge bg-primary">⏱️ ${route.duration}</span>
+                        <span class="badge bg-secondary">📏 ${route.distance}</span>
+                        <span class="badge bg-info">🚶 ${route.difficulty}</span>
+                        ${routeProgress[route.id] === 'completed' ? '<span class="badge bg-success">✅ Завершен</span>' : ''}
+                        ${routeProgress[route.id] === 'in-progress' ? '<span class="badge bg-warning">🚶 В процессе</span>' : ''}
+                    </div>
+                </div>
+            </div>
+            
+            <h4>📍 Остановки маршрута:</h4>
+    `;
+    
+    route.points.forEach((point, index) => {
+        const attraction = attractions.find(a => a.id === point.id);
+        html += `
+            <div class="route-step-card">
+                <div class="step-number">${index + 1}</div>
+                <div class="step-content">
+                    <h5>${attraction.name}</h5>
+                    <p class="text-muted">${point.description}</p>
+                    <div class="step-meta">
+                        <span class="time-badge">⏱️ ${point.time} мин</span>
+                        <span class="address">📍 ${attraction.address}</span>
+                    </div>
+                    <div class="step-actions mt-2">
+                        <button class="btn btn-outline-primary btn-sm" onclick="showAttractionDetail(${attraction.id})">
+                            ℹ️ Подробнее
+                        </button>
+                        <button class="btn btn-outline-success btn-sm" onclick="openInMaps(${attraction.coords.lat}, ${attraction.coords.lng})">
+                            🗺️ Маршрут
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    
+    html += `
+            <div class="d-grid gap-2 mt-4">
+                <button class="btn btn-success btn-lg" onclick="startGuidedRoute(${route.id})">
+                    🚶 Начать guided-тур
+                </button>
+                <button class="btn btn-outline-info" onclick="showRouteOnMap(${route.id})">
+                    🗺️ Посмотреть на карте
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('content').innerHTML = html;
+}
+
+// Показ маршрута на карте
+function showRouteOnMap(routeId) {
+    const route = routes.find(r => r.id === routeId);
+    const routeAttractions = route.stops.map(id => attractions.find(a => a.id === id));
+    
+    // Создаем массив координат для линии маршрута
+    const routeCoordinates = routeAttractions.map(attr => [attr.coords.lat, attr.coords.lng]);
+    
+    let html = `
+        <button class="back-btn" onclick="showRouteDetail(${route.id})">← Назад к маршруту</button>
+        <div class="fade-in">
+            <h2>🗺️ Маршрут: ${route.name}</h2>
+            <div id="route-map" style="height: 500px; border-radius: 15px; border: 3px solid #667eea; margin-bottom: 20px;"></div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <h5>📍 Точки маршрута:</h5>
+                    <div class="list-group">
+                        ${routeAttractions.map((attr, index) => `
+                            <div class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>${index + 1}. ${attr.name}</strong>
+                                        <br><small>📍 ${attr.address}</small>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="openInMaps(${attr.coords.lat}, ${attr.coords.lng})">
+                                        🗺️
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('content').innerHTML = html;
+    
+    // Инициализируем карту маршрута
+    setTimeout(() => initRouteMap(routeId, routeCoordinates, routeAttractions), 100);
+}
+
+// Инициализация карты маршрута
+function initRouteMap(routeId, coordinates, attractions) {
+    try {
+        const map = L.map('route-map').setView([53.6780, 23.8293], 14);
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+        
+        // Добавляем линию маршрута
+        const routeLine = L.polyline(coordinates, {
+            color: '#667eea',
+            weight: 6,
+            opacity: 0.7,
+            smoothFactor: 1
+        }).addTo(map);
+        
+        // Добавляем маркеры с номерами
+        attractions.forEach((attr, index) => {
+            const isCurrent = routeProgress[routeId] === 'in-progress' && index === currentStep;
+            
+            L.marker([attr.coords.lat, attr.coords.lng])
+                .addTo(map)
+                .bindPopup(`
+                    <div style="min-width: 200px;">
+                        <h5>${index + 1}. ${attr.name}</h5>
+                        <p>${attr.description}</p>
+                        ${isCurrent ? '<div class="text-success">🚶 Текущая остановка</div>' : ''}
+                        <button onclick="openInMaps(${attr.coords.lat}, ${attr.coords.lng})" 
+                                style="background: #28a745; color: white; border: none; padding: 8px; border-radius: 5px; width: 100%; margin-top: 5px;">
+                            🗺️ Маршрут
+                        </button>
+                    </div>
+                `)
+                .openPopup();
+        });
+        
+        // Подстраиваем карту под маршрут
+        map.fitBounds(routeLine.getBounds());
+        
+    } catch (error) {
+        console.error('Ошибка карты маршрута:', error);
+    }
+}
+
+// Guided-тур с пошаговой навигацией
+function startGuidedRoute(routeId) {
+    currentRoute = routes.find(r => r.id === routeId);
+    currentStep = 0;
+    
+    // Сохраняем прогресс
+    routeProgress[routeId] = 'in-progress';
+    localStorage.setItem('routeProgress', JSON.stringify(routeProgress));
+    
+    showRouteStep();
+}
+
+function showRouteStep() {
+    if (currentStep >= currentRoute.stops.length) {
+        // Маршрут завершен
+        routeProgress[currentRoute.id] = 'completed';
+        localStorage.setItem('routeProgress', JSON.stringify(routeProgress));
+        
+        tg.showAlert('🎉 Поздравляем! Вы завершили маршрут!');
+        showRoutes();
+        return;
+    }
+    
+    const attractionId = currentRoute.stops[currentStep];
+    const attraction = attractions.find(a => a.id === attractionId);
+    const pointInfo = currentRoute.points.find(p => p.id === attractionId);
+    
+    const isLastStep = currentStep === currentRoute.stops.length - 1;
+    
+    tg.showPopup({
+        title: `🚶 ${currentRoute.name} (Шаг ${currentStep + 1}/${currentRoute.stops.length})`,
+        message: `📍 ${attraction.name}\n\n${pointInfo.description}\n\n⏱️ Время на осмотр: ${pointInfo.time} минут`,
+        buttons: [
+            { 
+                text: '🗺️ Построить маршрут', 
+                id: 'navigate',
+                type: 'default'
+            },
+            { 
+                text: isLastStep ? '✅ Завершить' : '➡️ Следующая точка', 
+                id: 'next',
+                type: isLastStep ? 'destructive' : 'ok'
+            },
+            {
+                text: 'ℹ️ Подробнее о месте',
+                id: 'details',
+                type: 'default'
+            }
+        ]
+    });
+    
+    // Обработчик кнопок
+    const popupHandler = (event) => {
+        if (event.button_id === 'navigate') {
+            openInMaps(attraction.coords.lat, attraction.coords.lng);
+        } else if (event.button_id === 'next') {
+            currentStep++;
+            showRouteStep();
+        } else if (event.button_id === 'details') {
+            showAttractionDetail(attractionId);
+        }
+        tg.offEvent('popupClosed', popupHandler);
+    };
+    
+    tg.onEvent('popupClosed', popupHandler);
+}
+
+// Старт маршрута (простая версия)
+function startRoute(routeId) {
+    const route = routes.find(r => r.id === routeId);
+    
+    tg.showPopup({
+        title: 'Выберите режим',
+        message: `Маршрут: ${route.name}\n\nВыберите способ навигации:`,
+        buttons: [
+            { text: '🚶 Guided-тур', id: 'guided' },
+            { text: '🗺️ Показать на карте', id: 'map' },
+            { text: '📋 Детали маршрута', id: 'details' }
+        ]
+    });
+    
+    tg.onEvent('popupClosed', (event) => {
+        if (event.button_id === 'guided') {
+            startGuidedRoute(routeId);
+        } else if (event.button_id === 'map') {
+            showRouteOnMap(routeId);
+        } else if (event.button_id === 'details') {
+            showRouteDetail(routeId);
+        }
+    });
+}
+
 function openInMaps(lat, lng) {
     const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=walking`;
     tg.openLink(url);

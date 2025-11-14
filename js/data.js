@@ -144,7 +144,14 @@ const routes = [
         stops: [1, 3, 5, 2], // Старый замок, Новый замок, Советская площадь, Фарный костел
         description: "Классический маршрут по главным достопримечательностям исторического центра",
         distance: "2.5 км",
-        difficulty: "легко"
+        difficulty: "легко",
+        theme: "history",
+        points: [
+            { id: 1, time: 60, description: "Осмотр экспозиций Старого замка" },
+            { id: 3, time: 45, description: "Экскурсия по Новому замку" },
+            { id: 5, time: 30, description: "Прогулка по Советской площади" },
+            { id: 2, time: 45, description: "Посещение Фарного костела" }
+        ]
     },
     {
         id: 2, 
@@ -153,24 +160,44 @@ const routes = [
         stops: [2, 4, 8, 9], // Фарный костел, Каложская церковь, Лютеранская кирха, Синагога
         description: "Знакомство с многоконфессиональным наследием Гродно",
         distance: "3 км",
-        difficulty: "средне"
+        difficulty: "средне",
+        theme: "religion",
+        points: [
+            { id: 2, time: 40, description: "Осмотр Фарного костела" },
+            { id: 4, time: 50, description: "Посещение Каложской церкви" },
+            { id: 8, time: 30, description: "Лютеранская кирха" },
+            { id: 9, time: 60, description: "Экскурсия по синагоге" }
+        ]
     },
     {
         id: 3,
-        name: "Семейный маршрут",
+        name: "Семейный маршрут", 
         duration: "5 часов",
         stops: [7, 6, 1], // Парк Жилибера, Зоопарк, Старый замок
-        description: "Идеально для отдыха с детьми", 
+        description: "Идеально для отдыха с детьми",
         distance: "4 км",
-        difficulty: "легко"
+        difficulty: "легко",
+        theme: "family",
+        points: [
+            { id: 7, time: 120, description: "Отдых в парке Жилибера" },
+            { id: 6, time: 150, description: "Посещение зоопарка" },
+            { id: 1, time: 30, description: "Быстрый осмотр Старого замка" }
+        ]
     },
     {
         id: 4,
         name: "Архитектурный тур",
-        duration: "4 часа",
+        duration: "4 часа", 
         stops: [1, 3, 10, 5], // Старый замок, Новый замок, Городница, Советская площадь
         description: "Знакомство с архитектурным наследием Гродно",
         distance: "3.5 км",
-        difficulty: "легко"
+        difficulty: "легко",
+        theme: "architecture",
+        points: [
+            { id: 1, time: 60, description: "Архитектура Старого замка" },
+            { id: 3, time: 45, description: "Дворец Нового замка" },
+            { id: 10, time: 75, description: "Прогулка по району Городница" },
+            { id: 5, time: 60, description: "Историческая застройка площади" }
+        ]
     }
 ];
