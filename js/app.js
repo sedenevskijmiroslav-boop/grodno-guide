@@ -346,28 +346,78 @@ function showAttractionDetail(id) {
     const item = attractions.find(attr => attr.id === id);
     const content = document.getElementById('content');
     
-    if (!item) return;
+    const categoryNames = {
+        'architecture': '🏛️ Архитектура',
+        'religion': '⛪ Религия',
+        'sights': '📸 Достопримечательности', 
+        'parks': '🌳 Парки',
+        'entertainment': '🎪 Развлечения'
+    };
     
-    const isFav = isFavorite(item.id);
-    const favoriteButton = isFav 
-        ? `<button class="btn btn-warning" onclick="removeFromFavorites(${item.id})">❌ Удалить из избранного</button>`
-        : `<button class="btn btn-outline-warning" onclick="addToFavorites(${item.id})">⭐ Добавить в избранное</button>`;
+    let contactsHtml = '';
     
+    // Телефон
+    if (item.phone) {
+        contactsHtml += `<p><strong>📞 Телефон:</strong> ${item.phone}</p>`;
+    }
+    
+    // Сайт (теперь всегда показываем если есть)
+    if (item.website) {
+        contactsHtml += `
+            <p>
+                <strong>🌐 Сайт:</strong> 
+                <a href="${item.website}" target="_blank" onclick="tg.openLink('${item.website}'); return false;">
+                    ${item.website.replace('https://', '').replace('http://', '')}
+                </a>
+            </p>
+        `;
+    }
+    
+    // Определяем кнопку избранного
+    const favoriteButton = isFavorite(item.id) 
+        ? `<button class="btn btn-warning" onclick="removeFromFavorites(${item.id})">
+               ❌ Удалить из избранного
+           </button>`
+        : `<button class="btn btn-outline-warning" onclick="addToFavorites(${item.id})">
+               ⭐ Добавить в избранное
+           </button>`;
+
     content.innerHTML = `
-        <button class="btn btn-secondary mb-3" onclick="showAttractions()">← Назад к списку</button>
-        <div class="card">
+        <button class="back-btn" onclick="showAttractions()">← Назад к списку</button>
+        <div class="card fade-in">
             <div class="card-body">
-                <h3>${item.name}</h3>
-                <p>${item.fullDescription}</p>
-                <p><strong>📌 Адрес:</strong> ${item.address}</p>
-                <p><strong>🕒 Время работы:</strong> ${item.workingHours}</p>
-                <p><strong>💰 Стоимость:</strong> ${item.price}</p>
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <h2 class="card-title">${item.name}</h2>
+                    <span class="badge category-${item.category}">${categoryNames[item.category]}</span>
+                </div>
                 
-                <div class="d-grid gap-2 mt-3">
-                    <button class="btn btn-success" onclick="openInMaps(${item.coords.lat}, ${item.coords.lng})">
+                <div class="info-card">
+                    <p class="mb-1"><strong>📌 Адрес:</strong> ${item.address}</p>
+                    <p class="mb-1"><strong>🕒 Время работы:</strong> ${item.workingHours}</p>
+                    <p class="mb-0"><strong>💰 Стоимость:</strong> ${item.price}</p>
+                </div>
+                
+                <p class="card-text">${item.fullDescription}</p>
+                
+                ${contactsHtml ? `
+                    <div class="contacts-section mt-4">
+                        <h5>📞 Контакты</h5>
+                        <div class="contacts-card">
+                            ${contactsHtml}
+                        </div>
+                    </div>
+                ` : ''}
+                
+                <div class="d-grid gap-2 mt-4">
+                    <button class="btn btn-success btn-lg" onclick="openInMaps(${item.coords.lat}, ${item.coords.lng})">
                         🗺️ Построить маршрут
                     </button>
                     ${favoriteButton}
+                    ${item.website ? `
+                        <button class="btn btn-info" onclick="tg.openLink('${item.website}')">
+                            🌐 Открыть сайт
+                        </button>
+                    ` : ''}
                 </div>
             </div>
         </div>

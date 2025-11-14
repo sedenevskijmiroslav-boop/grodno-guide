@@ -309,3 +309,39 @@ h1, h2, h3 {
     border-radius: 12px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
+
+/* Стили для секции контактов */
+.contacts-section {
+    border-top: 2px solid #f8f9fa;
+    padding-top: 20px;
+}
+
+.contacts-card {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid #667eea;
+}
+
+.contacts-section a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.contacts-section a:hover {
+    text-decoration: underline;
+    color: #5a67d8;
+}
+
+/* Улучшаем отображение ссылок */
+.btn-info {
+    background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+    border: none;
+    color: white;
+}
+
+.btn-info:hover {
+    background: linear-gradient(135deg, #138496 0%, #117a8b 100%);
+    transform: translateY(-2px);
+}
