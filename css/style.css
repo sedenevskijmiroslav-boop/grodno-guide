@@ -345,3 +345,50 @@ h1, h2, h3 {
     background: linear-gradient(135deg, #138496 0%, #117a8b 100%);
     transform: translateY(-2px);
 }
+
+/* Стили для карты */
+.map-controls {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.map-btn {
+    padding: 10px 15px;
+    border-radius: 25px;
+    border: 2px solid #667eea;
+    background: white;
+    color: #667eea;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.map-btn.active {
+    background: #667eea;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.map-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Кастомные маркеры */
+.custom-marker {
+    background: transparent !important;
+    border: none !important;
+}
+
+.leaflet-popup-content {
+    margin: 8px 12px !important;
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: 12px !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
+}

@@ -199,86 +199,269 @@ function filterAttractions(category) {
     listDiv.innerHTML = html;
 }
 
-// ==================== ПРОСТАЯ КАРТА ====================
+// ==================== ИНТЕРАКТИВНАЯ КАРТА С ИКОНКАМИ ====================
+
+let map; // Глобальная переменная для карты
+let currentMarkers = []; // Массив текущих маркеров
 
 function showMap() {
     const content = document.getElementById('content');
     
     content.innerHTML = `
         <div class="fade-in">
-            <h2>🗺️ Карта достопримечательностей Гродно</h2>
-            <p class="text-muted mb-3">Все места на карте:</p>
+            <h2>🗺️ Интерактивная карта Гродно</h2>
+            <p class="text-muted mb-3">Нажмите на маркер для информации о достопримечательности</p>
             
-            <div id="map" style="height: 500px; border-radius: 15px; border: 3px solid #667eea;"></div>
+            <div class="map-controls mb-3">
+                <button class="map-btn active" onclick="filterMapMarkers('all')">Все места</button>
+                <button class="map-btn" onclick="filterMapMarkers('architecture')">🏛️ Архитектура</button>
+                <button class="map-btn" onclick="filterMapMarkers('religion')">⛪ Религия</button>
+                <button class="map-btn" onclick="filterMapMarkers('sights')">📸 Достопримечательности</button>
+                <button class="map-btn" onclick="filterMapMarkers('parks')">🌳 Парки</button>
+                <button class="map-btn" onclick="filterMapMarkers('entertainment')">🎪 Развлечения</button>
+            </div>
             
-            <div class="mt-3">
-                <div class="alert alert-info">
-                    <h5>📍 Список достопримечательностей:</h5>
-                    <div class="list-group mt-2">
-                        ${attractions.map(item => `
-                            <div class="list-group-item">
-                                <strong>${item.name}</strong> - ${item.address}
-                                <button class="btn btn-sm btn-outline-primary float-end" 
-                                        onclick="openInMaps(${item.coords.lat}, ${item.coords.lng})">
-                                    🗺️ Маршрут
-                                </button>
-                            </div>
-                        `).join('')}
+            <div id="map" style="height: 500px; border-radius: 15px; border: 3px solid #667eea; margin-bottom: 20px;"></div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <h5>📍 Легенда карты</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><span style="color: #3498db;">●</span> <strong>Архитектура</strong> - исторические здания</p>
+                            <p><span style="color: #9b59b6;">●</span> <strong>Религия</strong> - храмы и церкви</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><span style="color: #27ae60;">●</span> <strong>Парки</strong> - зоны отдыха</p>
+                            <p><span style="color: #f39c12;">●</span> <strong>Развлечения</strong> - музеи, зоопарк</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     `;
     
-    // Инициализируем карту с задержкой
-    setTimeout(initMap, 200);
+    // Инициализируем карту
+    setTimeout(initMap, 100);
 }
 
 function initMap() {
     try {
-        console.log('Пытаемся загрузить карту...');
+        console.log('Инициализация карты с иконками...');
         
-        // Создаем карту
-        const map = L.map('map').setView([53.6780, 23.8293], 14);
+        // Удаляем старую карту если есть
+        if (map) {
+            map.remove();
+        }
+        
+        // Создаем новую карту
+        map = L.map('map').setView([53.6780, 23.8293], 14);
         
         // Добавляем тайлы
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap'
         }).addTo(map);
         
-        // Добавляем маркеры
-        attractions.forEach(place => {
-            L.marker([place.coords.lat, place.coords.lng])
-                .addTo(map)
-                .bindPopup(`
-                    <div style="min-width: 200px;">
-                        <h5>${place.name}</h5>
-                        <p>${place.description}</p>
-                        <button onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=${place.coords.lat},${place.coords.lng}&travelmode=walking', '_blank')" 
-                                style="background: #28a745; color: white; border: none; padding: 8px; border-radius: 5px; width: 100%;">
-                            🗺️ Маршрут
-                        </button>
-                        <button onclick="showAttractionDetail(${place.id})" 
-                                style="background: #007bff; color: white; border: none; padding: 8px; border-radius: 5px; width: 100%; margin-top: 5px;">
-                            ℹ️ Подробнее
-                        </button>
-                    </div>
-                `);
-        });
+        // Добавляем все маркеры
+        addMarkersToMap('all');
         
-        console.log('Карта успешно загружена!');
+        console.log('Карта успешно загружена с иконками!');
         
     } catch (error) {
         console.error('Ошибка карты:', error);
-        // Показываем запасной вариант
-        document.getElementById('map').innerHTML = `
-            <div class="alert alert-warning text-center p-5">
-                <h4>🗺️ Карта временно недоступна</h4>
-                <p>Используйте список ниже для навигации</p>
-                <button class="btn btn-primary" onclick="showMap()">🔄 Попробовать снова</button>
-            </div>
-        `;
+        showSimpleMap();
     }
+}
+
+// Функция создания кастомных иконок
+function createCustomIcon(category, isFavorite = false) {
+    const colors = {
+        'architecture': '#3498db',
+        'religion': '#9b59b6',
+        'sights': '#e74c3c',
+        'parks': '#27ae60',
+        'entertainment': '#f39c12'
+    };
+    
+    const icons = {
+        'architecture': '🏛️',
+        'religion': '⛪',
+        'sights': '📸',
+        'parks': '🌳',
+        'entertainment': '🎪'
+    };
+    
+    const color = colors[category] || '#95a5a6';
+    const icon = icons[category] || '📍';
+    
+    // Если в избранном, добавляем звезду
+    const favoriteBadge = isFavorite ? '⭐' : '';
+    
+    return L.divIcon({
+        className: `custom-marker ${category}`,
+        html: `
+            <div style="
+                background-color: ${color};
+                width: 45px;
+                height: 45px;
+                border-radius: 50%;
+                border: 3px solid white;
+                box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-weight: bold;
+                font-size: 18px;
+                cursor: pointer;
+                position: relative;
+            ">
+                ${icon}
+                ${favoriteBadge ? `<div style="position: absolute; top: -5px; right: -5px; font-size: 12px; background: gold; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;">${favoriteBadge}</div>` : ''}
+            </div>
+        `,
+        iconSize: [45, 45],
+        iconAnchor: [22, 22]
+    });
+}
+
+// Добавление маркеров на карту с фильтрацией
+function addMarkersToMap(category = 'all') {
+    // Очищаем старые маркеры
+    currentMarkers.forEach(marker => map.removeLayer(marker));
+    currentMarkers = [];
+    
+    // Фильтруем достопримечательности
+    const filteredAttractions = category === 'all' 
+        ? attractions 
+        : attractions.filter(item => item.category === category);
+    
+    // Добавляем маркеры
+    filteredAttractions.forEach(attraction => {
+        const isFav = isFavorite(attraction.id);
+        const customIcon = createCustomIcon(attraction.category, isFav);
+        
+        const marker = L.marker(
+            [attraction.coords.lat, attraction.coords.lng],
+            { icon: customIcon }
+        ).addTo(map);
+        
+        // Добавляем всплывающее окно с избранным
+        marker.bindPopup(`
+            <div style="min-width: 280px; font-family: Arial, sans-serif;">
+                <h4 style="margin: 0 0 8px 0; color: #2c3e50; border-bottom: 2px solid #667eea; padding-bottom: 5px;">
+                    ${attraction.name} ${isFav ? '⭐' : ''}
+                </h4>
+                <p style="margin: 0 0 8px 0; color: #666; font-size: 14px;">
+                    ${attraction.description}
+                </p>
+                <p style="margin: 0 0 6px 0; font-size: 13px;">
+                    <strong>📍 Адрес:</strong> ${attraction.address}
+                </p>
+                ${attraction.website ? `
+                <p style="margin: 0 0 6px 0; font-size: 13px;">
+                    <strong>🌐 Сайт:</strong> 
+                    <a href="${attraction.website}" target="_blank" style="color: #667eea; text-decoration: none;">
+                        ${attraction.website.replace('https://', '').replace('http://', '').split('/')[0]}
+                    </a>
+                </p>
+                ` : ''}
+                
+                <div style="display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap;">
+                    <button onclick="openMapInMaps(${attraction.coords.lat}, ${attraction.coords.lng})" 
+                            style="background: #28a745; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; flex: 1;">
+                        🗺️ Маршрут
+                    </button>
+                    <button onclick="showAttractionFromMap(${attraction.id})" 
+                            style="background: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; flex: 1;">
+                        ℹ️ Подробнее
+                    </button>
+                </div>
+                
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button onclick="${isFav ? `removeFromFavoritesFromMap(${attraction.id})` : `addToFavoritesFromMap(${attraction.id})`}" 
+                            style="background: ${isFav ? '#dc3545' : '#ffc107'}; color: ${isFav ? 'white' : 'black'}; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; flex: 1;">
+                        ${isFav ? '❌ Удалить' : '⭐ В избранное'}
+                    </button>
+                    ${attraction.website ? `
+                    <button onclick="openMapWebsite('${attraction.website}')" 
+                            style="background: #17a2b8; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; flex: 1;">
+                        🌐 Сайт
+                    </button>
+                    ` : ''}
+                </div>
+            </div>
+        `);
+        
+        currentMarkers.push(marker);
+    });
+    
+    // Если не все маркеры, подстраиваем вид
+    if (category !== 'all' && filteredAttractions.length > 0) {
+        const group = new L.featureGroup(currentMarkers);
+        map.fitBounds(group.getBounds().pad(0.1));
+    }
+}
+
+// Фильтрация маркеров на карте
+function filterMapMarkers(category) {
+    // Обновляем активные кнопки
+    document.querySelectorAll('.map-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    // Добавляем маркеры с фильтром
+    addMarkersToMap(category);
+}
+
+// Функции для работы с картой
+function openMapInMaps(lat, lng) {
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=walking`;
+    tg.openLink(url);
+}
+
+function openMapWebsite(url) {
+    tg.openLink(url);
+}
+
+function showAttractionFromMap(attractionId) {
+    showAttractionDetail(attractionId);
+}
+
+// Функции избранного для карты
+function addToFavoritesFromMap(attractionId) {
+    addToFavorites(attractionId);
+    // Обновляем маркер на карте
+    setTimeout(() => {
+        const currentCategory = document.querySelector('.map-btn.active').textContent;
+        const categoryMap = {
+            'Все места': 'all',
+            '🏛️ Архитектура': 'architecture',
+            '⛪ Религия': 'religion',
+            '📸 Достопримечательности': 'sights',
+            '🌳 Парки': 'parks',
+            '🎪 Развлечения': 'entertainment'
+        };
+        addMarkersToMap(categoryMap[currentCategory] || 'all');
+    }, 100);
+}
+
+function removeFromFavoritesFromMap(attractionId) {
+    removeFromFavorites(attractionId);
+    // Обновляем маркер на карте
+    setTimeout(() => {
+        const currentCategory = document.querySelector('.map-btn.active').textContent;
+        const categoryMap = {
+            'Все места': 'all',
+            '🏛️ Архитектура': 'architecture',
+            '⛪ Религия': 'religion',
+            '📸 Достопримечательности': 'sights',
+            '🌳 Парки': 'parks',
+            '🎪 Развлечения': 'entertainment'
+        };
+        addMarkersToMap(categoryMap[currentCategory] || 'all');
+    }, 100);
 }
 
 // Резервная версия карты
@@ -289,15 +472,9 @@ function showSimpleMap() {
         <div class="fade-in">
             <h2>🗺️ Карта достопримечательностей Гродно</h2>
             
-            <div class="alert alert-info">
-                <h5>📍 Расположение достопримечательностей:</h5>
-                <div id="static-map" style="height: 300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; margin: 20px 0;">
-                    <div class="text-center">
-                        <div style="font-size: 48px;">🗺️</div>
-                        <div>Интерактивная карта</div>
-                        <small>Используйте список ниже</small>
-                    </div>
-                </div>
+            <div class="alert alert-warning">
+                <h5>⚠️ Интерактивная карта временно недоступна</h5>
+                <p>Используйте список ниже для навигации по достопримечательностям</p>
             </div>
 
             <div class="list-group">
@@ -305,7 +482,7 @@ function showSimpleMap() {
                     <div class="list-group-item">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <h5 class="mb-1">${item.name}</h5>
+                                <h5 class="mb-1">${item.name} ${isFavorite(item.id) ? '⭐' : ''}</h5>
                                 <p class="mb-1">${item.description}</p>
                                 <small>📍 ${item.address}</small>
                             </div>
@@ -317,6 +494,10 @@ function showSimpleMap() {
                                 <button class="btn btn-sm btn-primary" 
                                         onclick="showAttractionDetail(${item.id})">
                                     ℹ️
+                                </button>
+                                <button class="btn btn-sm ${isFavorite(item.id) ? 'btn-warning' : 'btn-outline-warning'}" 
+                                        onclick="${isFavorite(item.id) ? `removeFromFavorites(${item.id})` : `addToFavorites(${item.id})`}">
+                                    ${isFavorite(item.id) ? '❌' : '⭐'}
                                 </button>
                             </div>
                         </div>
