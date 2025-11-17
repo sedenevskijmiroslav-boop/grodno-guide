@@ -520,7 +520,29 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function showAttractions() {
-    showCategories();
+    const content = document.getElementById('content');
+    const t = translations[currentLanguage];
+    
+    content.innerHTML = `
+        <div class="fade-in">
+            <h2 data-i18n="categories">🎯 Категории достопримечательностей</h2>
+            <p class="text-muted mb-3" data-i18n="chooseCategory">Выберите категорию для просмотра мест</p>
+            
+            <div class="filter-buttons mb-3">
+                <button class="filter-btn active" onclick="filterAttractions('all')" data-i18n="allPlaces">Все</button>
+                <button class="filter-btn" onclick="filterAttractions('architecture')">🏛️ <span data-i18n="architecture">Архитектура</span></button>
+                <button class="filter-btn" onclick="filterAttractions('religion')">⛪ <span data-i18n="religion">Религия</span></button>
+                <button class="filter-btn" onclick="filterAttractions('sights')">📸 <span data-i18n="sights">Достопримечательности</span></button>
+                <button class="filter-btn" onclick="filterAttractions('parks')">🌳 <span data-i18n="parks">Парки</span></button>
+                <button class="filter-btn" onclick="filterAttractions('entertainment')">🎪 <span data-i18n="entertainment">Развлечения</span></button>
+            </div>
+            
+            <div id="attractions-list"></div>
+        </div>
+    `;
+    
+    applyTranslations();
+    filterAttractions('all');
 }
 
 function showAttractionDetail(id) {
@@ -1058,4 +1080,91 @@ function openInMaps(lat, lng) {
 function startRoute(id) {
     const route = routes.find(r => r.id === id);
     tg.showAlert(`Начинаем маршрут: "${route.name}"`);
+}
+
+// ==================== НАСТРОЙКИ (ТЕМЫ И ЯЗЫК) ====================
+
+function showSettings() {
+    const content = document.getElementById('content');
+    const t = translations[currentLanguage];
+    
+    content.innerHTML = `
+        <div class="fade-in">
+            <h2 data-i18n="settingsTitle">⚙️ Настройки</h2>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 data-i18n="language">🌐 Язык</h5>
+                    <p class="text-muted" data-i18n="selectLanguage">Выберите язык</p>
+                    
+                    <div class="language-buttons">
+                        <button class="lang-btn ${currentLanguage === 'ru' ? 'active' : ''}" 
+                                onclick="changeLanguage('ru')">
+                            🇷🇺 Русский
+                        </button>
+                        <button class="lang-btn ${currentLanguage === 'en' ? 'active' : ''}" 
+                                onclick="changeLanguage('en')">
+                            🇺🇸 English
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <h5 data-i18n="theme">🎨 Тема оформления</h5>
+                    <p class="text-muted" data-i18n="selectTheme">Выберите тему оформления</p>
+                    
+                    <div class="theme-grid">
+                        <div class="theme-option ${currentTheme === 'default' ? 'active' : ''}" 
+                             onclick="changeTheme('default')">
+                            <div class="theme-preview default-theme"></div>
+                            <span>${themes.default.name}</span>
+                        </div>
+                        <div class="theme-option ${currentTheme === 'dark' ? 'active' : ''}" 
+                             onclick="changeTheme('dark')">
+                            <div class="theme-preview dark-theme"></div>
+                            <span>${themes.dark.name}</span>
+                        </div>
+                        <div class="theme-option ${currentTheme === 'green' ? 'active' : ''}" 
+                             onclick="changeTheme('green')">
+                            <div class="theme-preview green-theme"></div>
+                            <span>${themes.green.name}</span>
+                        </div>
+                        <div class="theme-option ${currentTheme === 'orange' ? 'active' : ''}" 
+                             onclick="changeTheme('orange')">
+                            <div class="theme-preview orange-theme"></div>
+                            <span>${themes.orange.name}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4 text-center">
+                <button class="btn btn-outline-secondary" onclick="showMainMenu()">
+                    ← <span data-i18n="back">Назад</span>
+                </button>
+            </div>
+        </div>
+    `;
+    
+    applyTranslations();
+}
+
+function changeLanguage(lang) {
+    setLanguage(lang);
+    showSettings(); // Перезагружаем настройки с новым языком
+    tg.showAlert(lang === 'ru' ? '🌐 Язык изменен на Русский' : '🌐 Language changed to English');
+}
+
+function changeTheme(themeName) {
+    applyTheme(themeName);
+    showSettings(); // Перезагружаем настройки
+    tg.showAlert(`🎨 Тема изменена на "${themes[themeName].name}"`);
+}
+
+function showMainMenu() {
+    const content = document.getElementById('content');
+    content.innerHTML = '';
+    applyTranslations(); // Применяем переводы к главному меню
 }
