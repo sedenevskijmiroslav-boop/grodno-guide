@@ -241,36 +241,48 @@ function showMap() {
     `;
     
     applyTranslations();
-    setTimeout(initMap, 100);
+    
+    // Инициализируем карту с небольшой задержкой
+    setTimeout(() => {
+        initMap();
+    }, 300);
 }
 
 function initMap() {
     try {
-        console.log('Инициализация карты с иконками...');
+        console.log('Инициализация карты...');
         
         // Удаляем старую карту если есть
-        if (map) {
-            map.remove();
+        if (window.map) {
+            window.map.remove();
+            window.map = null;
         }
         
         // Создаем новую карту
-        map = L.map('map').setView([53.6780, 23.8293], 14);
+        window.map = L.map('map').setView([53.6780, 23.8293], 14);
         
         // Добавляем тайлы
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap'
-        }).addTo(map);
+        }).addTo(window.map);
         
         // Добавляем все маркеры
         addMarkersToMap('all');
         
-        console.log('Карта успешно загружена с иконками!');
+        console.log('Карта успешно загружена!');
         
     } catch (error) {
         console.error('Ошибка карты:', error);
-        showSimpleMap();
+        // Показываем запасной вариант
+        document.getElementById('map').innerHTML = `
+            <div class="alert alert-warning text-center p-4">
+                <h5>🗺️ Карта временно недоступна</h5>
+                <p>Попробуйте обновить страницу или проверьте подключение к интернету</p>
+                <button class="btn btn-primary mt-2" onclick="showMap()">🔄 Обновить карту</button>
+            </div>
+        `;
     }
-}
+}   
 
 // Функция создания кастомных иконок
 function createCustomIcon(category, isFavorite = false) {
@@ -326,79 +338,105 @@ function createCustomIcon(category, isFavorite = false) {
 
 // Добавление маркеров на карту с фильтрацией
 function addMarkersToMap(category = 'all') {
+    // Проверяем что карта существует
+    if (!window.map) {
+        console.error('Карта не инициализирована');
+        return;
+    }
+    
     // Очищаем старые маркеры
-    currentMarkers.forEach(marker => map.removeLayer(marker));
-    currentMarkers = [];
+    if (window.currentMarkers) {
+        window.currentMarkers.forEach(marker => {
+            if (marker && window.map.hasLayer(marker)) {
+                window.map.removeLayer(marker);
+            }
+        });
+    }
+    window.currentMarkers = [];
     
     // Фильтруем достопримечательности
     const filteredAttractions = category === 'all' 
         ? attractions 
         : attractions.filter(item => item.category === category);
     
+    console.log(`Добавляем ${filteredAttractions.length} маркеров на карту`);
+    
     // Добавляем маркеры
     filteredAttractions.forEach(attraction => {
-        const isFav = isFavorite(attraction.id);
-        const customIcon = createCustomIcon(attraction.category, isFav);
-        
-        const marker = L.marker(
-            [attraction.coords.lat, attraction.coords.lng],
-            { icon: customIcon }
-        ).addTo(map);
-        
-        // Добавляем всплывающее окно с избранным
-        marker.bindPopup(`
-            <div style="min-width: 280px; font-family: Arial, sans-serif;">
-                <h4 style="margin: 0 0 8px 0; color: #2c3e50; border-bottom: 2px solid #667eea; padding-bottom: 5px;">
-                    ${attraction.name} ${isFav ? '⭐' : ''}
-                </h4>
-                <p style="margin: 0 0 8px 0; color: #666; font-size: 14px;">
-                    ${attraction.description}
-                </p>
-                <p style="margin: 0 0 6px 0; font-size: 13px;">
-                    <strong>📍 Адрес:</strong> ${attraction.address}
-                </p>
-                ${attraction.website ? `
-                <p style="margin: 0 0 6px 0; font-size: 13px;">
-                    <strong>🌐 Сайт:</strong> 
-                    <a href="${attraction.website}" target="_blank" style="color: #667eea; text-decoration: none;">
-                        ${attraction.website.replace('https://', '').replace('http://', '').split('/')[0]}
-                    </a>
-                </p>
-                ` : ''}
-                
-                <div style="display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap;">
-                    <button onclick="openMapInMaps(${attraction.coords.lat}, ${attraction.coords.lng})" 
-                            style="background: #28a745; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; flex: 1;">
-                        🗺️ Маршрут
-                    </button>
-                    <button onclick="showAttractionFromMap(${attraction.id})" 
-                            style="background: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; flex: 1;">
-                        ℹ️ Подробнее
-                    </button>
-                </div>
-                
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    <button onclick="${isFav ? `removeFromFavoritesFromMap(${attraction.id})` : `addToFavoritesFromMap(${attraction.id})`}" 
-                            style="background: ${isFav ? '#dc3545' : '#ffc107'}; color: ${isFav ? 'white' : 'black'}; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; flex: 1;">
-                        ${isFav ? '❌ Удалить' : '⭐ В избранное'}
-                    </button>
+        try {
+            const isFav = isFavorite(attraction.id);
+            const customIcon = createCustomIcon(attraction.category, isFav);
+            
+            const marker = L.marker(
+                [attraction.coords.lat, attraction.coords.lng],
+                { icon: customIcon }
+            ).addTo(window.map);
+            
+            // Получаем переводы для попапа
+            const t = translations[currentLanguage];
+            
+            // Добавляем всплывающее окно с избранным
+            marker.bindPopup(`
+                <div style="min-width: 280px; font-family: Arial, sans-serif;">
+                    <h4 style="margin: 0 0 8px 0; color: #2c3e50; border-bottom: 2px solid #667eea; padding-bottom: 5px;">
+                        ${attraction.name} ${isFav ? '⭐' : ''}
+                    </h4>
+                    <p style="margin: 0 0 8px 0; color: #666; font-size: 14px;">
+                        ${attraction.description}
+                    </p>
+                    <p style="margin: 0 0 6px 0; font-size: 13px;">
+                        <strong>📍 ${t.address || 'Адрес'}:</strong> ${attraction.address}
+                    </p>
                     ${attraction.website ? `
-                    <button onclick="openMapWebsite('${attraction.website}')" 
-                            style="background: #17a2b8; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; flex: 1;">
-                        🌐 Сайт
-                    </button>
+                    <p style="margin: 0 0 6px 0; font-size: 13px;">
+                        <strong>🌐 ${t.website || 'Сайт'}:</strong> 
+                        <a href="${attraction.website}" target="_blank" style="color: #667eea; text-decoration: none;">
+                            ${attraction.website.replace('https://', '').replace('http://', '').split('/')[0]}
+                        </a>
+                    </p>
                     ` : ''}
+                    
+                    <div style="display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap;">
+                        <button onclick="openMapInMaps(${attraction.coords.lat}, ${attraction.coords.lng})" 
+                                style="background: #28a745; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; flex: 1;">
+                            🗺️ ${t.navigate || 'Маршрут'}
+                        </button>
+                        <button onclick="showAttractionFromMap(${attraction.id})" 
+                                style="background: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; flex: 1;">
+                            ℹ️ ${t.details || 'Подробнее'}
+                        </button>
+                    </div>
+                    
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button onclick="${isFav ? `removeFromFavoritesFromMap(${attraction.id})` : `addToFavoritesFromMap(${attraction.id})`}" 
+                                style="background: ${isFav ? '#dc3545' : '#ffc107'}; color: ${isFav ? 'white' : 'black'}; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; flex: 1;">
+                            ${isFav ? '❌ ' + (currentLanguage === 'en' ? 'Remove' : 'Удалить') : '⭐ ' + (currentLanguage === 'en' ? 'Favorite' : 'В избранное')}
+                        </button>
+                        ${attraction.website ? `
+                        <button onclick="openMapWebsite('${attraction.website}')" 
+                                style="background: #17a2b8; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; flex: 1;">
+                            🌐 ${t.website || 'Сайт'}
+                        </button>
+                        ` : ''}
+                    </div>
                 </div>
-            </div>
-        `);
-        
-        currentMarkers.push(marker);
+            `);
+            
+            window.currentMarkers.push(marker);
+            
+        } catch (error) {
+            console.error('Ошибка при добавлении маркера:', error, attraction);
+        }
     });
     
     // Если не все маркеры, подстраиваем вид
     if (category !== 'all' && filteredAttractions.length > 0) {
-        const group = new L.featureGroup(currentMarkers);
-        map.fitBounds(group.getBounds().pad(0.1));
+        try {
+            const group = L.featureGroup(window.currentMarkers);
+            window.map.fitBounds(group.getBounds().pad(0.1));
+        } catch (error) {
+            console.error('Ошибка при подстройке карты:', error);
+        }
     }
 }
 
@@ -433,16 +471,23 @@ function addToFavoritesFromMap(attractionId) {
     addToFavorites(attractionId);
     // Обновляем маркер на карте
     setTimeout(() => {
-        const currentCategory = document.querySelector('.map-btn.active').textContent;
-        const categoryMap = {
-            'Все места': 'all',
-            '🏛️ Архитектура': 'architecture',
-            '⛪ Религия': 'religion',
-            '📸 Достопримечательности': 'sights',
-            '🌳 Парки': 'parks',
-            '🎪 Развлечения': 'entertainment'
-        };
-        addMarkersToMap(categoryMap[currentCategory] || 'all');
+        const activeBtn = document.querySelector('.map-btn.active');
+        if (activeBtn) {
+            const btnText = activeBtn.textContent.trim();
+            const categoryMap = {
+                'Все места': 'all',
+                'All Places': 'all',
+                'Архитектура': 'architecture', 
+                'Architecture': 'architecture',
+                'Религия': 'religion',
+                'Religion': 'religion',
+                'Парки': 'parks',
+                'Parks': 'parks',
+                'Развлечения': 'entertainment',
+                'Entertainment': 'entertainment'
+            };
+            addMarkersToMap(categoryMap[btnText] || 'all');
+        }
     }, 100);
 }
 
@@ -450,16 +495,23 @@ function removeFromFavoritesFromMap(attractionId) {
     removeFromFavorites(attractionId);
     // Обновляем маркер на карте
     setTimeout(() => {
-        const currentCategory = document.querySelector('.map-btn.active').textContent;
-        const categoryMap = {
-            'Все места': 'all',
-            '🏛️ Архитектура': 'architecture',
-            '⛪ Религия': 'religion',
-            '📸 Достопримечательности': 'sights',
-            '🌳 Парки': 'parks',
-            '🎪 Развлечения': 'entertainment'
-        };
-        addMarkersToMap(categoryMap[currentCategory] || 'all');
+        const activeBtn = document.querySelector('.map-btn.active');
+        if (activeBtn) {
+            const btnText = activeBtn.textContent.trim();
+            const categoryMap = {
+                'Все места': 'all',
+                'All Places': 'all',
+                'Архитектура': 'architecture',
+                'Architecture': 'architecture', 
+                'Религия': 'religion',
+                'Religion': 'religion',
+                'Парки': 'parks',
+                'Parks': 'parks',
+                'Развлечения': 'entertainment',
+                'Entertainment': 'entertainment'
+            };
+            addMarkersToMap(categoryMap[btnText] || 'all');
+        }
     }, 100);
 }
 
