@@ -20,63 +20,25 @@
             width: 100%;
             border-radius: 15px;
         }
-        .lang-switcher {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-        .map-controls {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-        .map-btn {
-            padding: 10px 15px;
-            border-radius: 25px;
-            border: 2px solid #667eea;
-            background: white;
-            color: #667eea;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .map-btn.active {
-            background: #667eea;
-            color: white;
-        }
     </style>
 </head>
 <body>
-    <div class="container mt-4 position-relative">
-        <!-- Переключатель языка -->
-        <div class="lang-switcher">
-            <div class="btn-group">
-                <button class="lang-btn btn btn-sm btn-outline-primary active" onclick="setLanguage('ru')">RU</button>
-                <button class="lang-btn btn btn-sm btn-outline-primary" onclick="setLanguage('en')">EN</button>
-            </div>
-        </div>
-
-        <h1 class="text-center mb-4" data-i18n="welcome">🏰 Добро пожаловать в Гродно!</h1>
-        <p class="text-center text-muted mb-4" data-i18n="chooseSection">Выберите раздел для исследования города</p>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">🏰 Добро пожаловать в Гродно!</h1>
+        <p class="text-center text-muted mb-4">Выберите раздел для исследования города</p>
         
         <div class="d-grid gap-2">
-            <button class="btn btn-primary btn-lg" onclick="showAttractions()" data-i18n="attractions">
+            <button class="btn btn-primary btn-lg" onclick="showAttractions()">
                 📍 Достопримечательности
             </button>
-            <button class="btn btn-success btn-lg" onclick="showMap()" data-i18n="map">
+            <button class="btn btn-success btn-lg" onclick="showMap()">
                 🗺️ Карта города
             </button>
-            <button class="btn btn-info btn-lg" onclick="showRoutes()" data-i18n="routes">
-                🚶 Готовые маршруты
+            <button class="btn btn-info btn-lg" onclick="showRoutes()">
+                🚶 Маршруты
             </button>
-            <button class="btn btn-warning btn-lg" onclick="showFavorites()" data-i18n="favorites">
+            <button class="btn btn-warning btn-lg" onclick="showFavorites()">
                 ⭐ Избранное
-            </button>
-            <button class="btn btn-outline-dark btn-lg" onclick="showSettings()" data-i18n="settings">
-                ⚙️ Настройки
             </button>
         </div>
         
@@ -93,9 +55,6 @@
     
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    
-    <!-- Translations -->
-    <script src="js/translations.js"></script>
     
     <!-- Data -->
     <script src="js/data.js"></script>

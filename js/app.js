@@ -4,25 +4,23 @@ const tg = window.Telegram.WebApp;
 // Глобальные переменные
 let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
 let map = null;
-let currentMarkers = [];
 
 // Инициализация при загрузке
 document.addEventListener('DOMContentLoaded', function() {
     tg.expand();
     tg.ready();
-    console.log('Приложение запущено! Язык:', currentLanguage);
+    console.log('Приложение запущено!');
 });
 
 // ==================== ОСНОВНЫЕ ФУНКЦИИ ====================
 
 function showAttractions() {
     const content = document.getElementById('content');
-    const t = translations[currentLanguage];
     
     content.innerHTML = `
         <div class="fade-in">
-            <h2 data-i18n="attractionsTitle">📍 ${t.attractionsTitle}</h2>
-            <p class="text-muted mb-3" data-i18n="chooseAttraction">${t.chooseAttraction}</p>
+            <h2>📍 Достопримечательности</h2>
+            <p class="text-muted mb-3">Выберите место для подробной информации</p>
             
             <div class="list-group">
                 ${attractions.map(item => `
@@ -40,27 +38,22 @@ function showAttractions() {
             </div>
         </div>
     `;
-    
-    applyTranslations();
 }
 
 function showAttractionDetail(id) {
     const item = attractions.find(attr => attr.id === id);
     const content = document.getElementById('content');
-    const t = translations[currentLanguage];
     
     const isFavorite = favorites.includes(id);
     
     let contactsHtml = '';
-    if (item.phone) {
-        contactsHtml += `<p><strong>📞 ${t.phone}:</strong> ${item.phone}</p>`;
-    }
+    if (item.phone) contactsHtml += `<p><strong>📞 Телефон:</strong> ${item.phone}</p>`;
     if (item.website) {
-        contactsHtml += `<p><strong>🌐 ${t.website}:</strong> <a href="${item.website}" target="_blank" onclick="tg.openLink('${item.website}'); return false;">${item.website}</a></p>`;
+        contactsHtml += `<p><strong>🌐 Сайт:</strong> <a href="${item.website}" target="_blank">${item.website}</a></p>`;
     }
     
     content.innerHTML = `
-        <button class="btn btn-secondary mb-3" onclick="showAttractions()" data-i18n="back">← ${t.back}</button>
+        <button class="btn btn-secondary mb-3" onclick="showAttractions()">← Назад</button>
         
         <div class="card fade-in">
             <div class="card-body">
@@ -70,16 +63,16 @@ function showAttractionDetail(id) {
                 </div>
                 
                 <div class="info-card mb-3">
-                    <p class="mb-1"><strong>📍 ${t.address}:</strong> ${item.address}</p>
-                    <p class="mb-1"><strong>🕒 ${t.workingHours}:</strong> ${item.workingHours}</p>
-                    <p class="mb-0"><strong>💰 ${t.price}:</strong> ${item.price}</p>
+                    <p class="mb-1"><strong>📍 Адрес:</strong> ${item.address}</p>
+                    <p class="mb-1"><strong>🕒 Время работы:</strong> ${item.workingHours}</p>
+                    <p class="mb-0"><strong>💰 Стоимость:</strong> ${item.price}</p>
                 </div>
                 
                 <p class="card-text">${item.fullDescription}</p>
                 
                 ${contactsHtml ? `
                     <div class="contacts-section mt-3">
-                        <h5>📞 ${t.contacts}</h5>
+                        <h5>📞 Контакты</h5>
                         <div class="contacts-card">
                             ${contactsHtml}
                         </div>
@@ -88,37 +81,34 @@ function showAttractionDetail(id) {
                 
                 <div class="d-grid gap-2 mt-4">
                     <button class="btn btn-success btn-lg" onclick="openInMaps(${item.coords.lat}, ${item.coords.lng})">
-                        🗺️ ${t.navigate}
+                        🗺️ Построить маршрут
                     </button>
                     
                     <button class="btn ${isFavorite ? 'btn-warning' : 'btn-outline-warning'}" 
                             onclick="${isFavorite ? `removeFromFavorites(${item.id})` : `addToFavorites(${item.id})`}">
-                        ${isFavorite ? `❌ ${t.removeFromFavorites}` : `⭐ ${t.addToFavorites}`}
+                        ${isFavorite ? '❌ Удалить из избранного' : '⭐ Добавить в избранное'}
                     </button>
                     
                     ${item.website ? `
                         <button class="btn btn-info" onclick="tg.openLink('${item.website}')">
-                            🌐 ${t.openWebsite}
+                            🌐 Открыть сайт
                         </button>
                     ` : ''}
                 </div>
             </div>
         </div>
     `;
-    
-    applyTranslations();
 }
 
 // ==================== КАРТА ====================
 
 function showMap() {
     const content = document.getElementById('content');
-    const t = translations[currentLanguage];
     
     content.innerHTML = `
         <div class="fade-in">
-            <h2 data-i18n="mapTitle">🗺️ ${t.mapTitle}</h2>
-            <p class="text-muted mb-3" data-i18n="mapDescription">${t.mapDescription}</p>
+            <h2>🗺️ Карта Гродно</h2>
+            <p class="text-muted mb-3">Все достопримечательности на карте</p>
             
             <div id="map"></div>
             
@@ -133,7 +123,7 @@ function showMap() {
                                 </div>
                                 <button class="btn btn-sm btn-outline-primary" 
                                         onclick="openInMaps(${item.coords.lat}, ${item.coords.lng})">
-                                    🗺️ ${t.navigate}
+                                    🗺️ Маршрут
                                 </button>
                             </div>
                         </div>
@@ -143,19 +133,13 @@ function showMap() {
         </div>
     `;
     
-    applyTranslations();
+    // Инициализируем карту
     setTimeout(initMap, 100);
 }
 
 function initMap() {
     try {
         console.log('Инициализация карты...');
-        
-        // Очищаем предыдущую карту
-        if (map) {
-            map.remove();
-            map = null;
-        }
         
         // Создаем карту
         map = L.map('map').setView([53.6780, 23.8293], 14);
@@ -165,37 +149,27 @@ function initMap() {
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
         
-        // Очищаем старые маркеры
-        currentMarkers.forEach(marker => {
-            if (map.hasLayer(marker)) {
-                map.removeLayer(marker);
-            }
-        });
-        currentMarkers = [];
-        
         // Добавляем маркеры
         attractions.forEach(place => {
-            const marker = L.marker([place.coords.lat, place.coords.lng])
+            L.marker([place.coords.lat, place.coords.lng])
                 .addTo(map)
                 .bindPopup(`
                     <div style="min-width: 250px;">
                         <h5>${place.name}</h5>
                         <p>${place.description}</p>
-                        <p><strong>📍 ${translations[currentLanguage].address}:</strong> ${place.address}</p>
+                        <p><strong>📍 Адрес:</strong> ${place.address}</p>
                         <div class="d-grid gap-2">
                             <button onclick="openInMaps(${place.coords.lat}, ${place.coords.lng})" 
                                     style="background: #28a745; color: white; border: none; padding: 8px; border-radius: 5px;">
-                                🗺️ ${translations[currentLanguage].navigate}
+                                🗺️ Маршрут
                             </button>
                             <button onclick="showAttractionDetail(${place.id})" 
                                     style="background: #007bff; color: white; border: none; padding: 8px; border-radius: 5px;">
-                                ℹ️ ${translations[currentLanguage].details}
+                                ℹ️ Подробнее
                             </button>
                         </div>
                     </div>
                 `);
-            
-            currentMarkers.push(marker);
         });
         
         console.log('Карта успешно загружена!');
@@ -204,8 +178,8 @@ function initMap() {
         console.error('Ошибка загрузки карты:', error);
         document.getElementById('map').innerHTML = `
             <div class="alert alert-warning text-center p-4">
-                <h5>🗺️ ${currentLanguage === 'ru' ? 'Карта временно недоступна' : 'Map temporarily unavailable'}</h5>
-                <p>${currentLanguage === 'ru' ? 'Используйте список ниже для навигации' : 'Use the list below for navigation'}</p>
+                <h5>🗺️ Карта временно недоступна</h5>
+                <p>Используйте список ниже для навигации</p>
             </div>
         `;
     }
@@ -215,12 +189,11 @@ function initMap() {
 
 function showRoutes() {
     const content = document.getElementById('content');
-    const t = translations[currentLanguage];
     
     content.innerHTML = `
         <div class="fade-in">
-            <h2 data-i18n="routesTitle">🚶 ${t.routesTitle}</h2>
-            <p class="text-muted mb-4" data-i18n="chooseRoute">${t.chooseRoute}</p>
+            <h2>🚶 Маршруты</h2>
+            <p class="text-muted mb-4">Выберите маршрут для исследования города</p>
             
             <div class="row">
                 ${routes.map(route => `
@@ -231,13 +204,13 @@ function showRoutes() {
                                 <p class="card-text">${route.description}</p>
                                 <div class="route-meta">
                                     <small class="text-muted">
-                                        ⏱️ ${t.duration}: ${route.duration} | 📏 ${t.distance}: ${route.distance}
+                                        ⏱️ ${route.duration} | 📏 ${route.distance}
                                     </small>
                                 </div>
                             </div>
                             <div class="card-footer">
                                 <button class="btn btn-primary w-100" onclick="startRoute(${route.id})">
-                                    🚶 ${t.startRoute}
+                                    🚶 Начать маршрут
                                 </button>
                             </div>
                         </div>
@@ -246,34 +219,29 @@ function showRoutes() {
             </div>
         </div>
     `;
-    
-    applyTranslations();
 }
 
 function startRoute(routeId) {
     const route = routes.find(r => r.id === routeId);
-    const t = translations[currentLanguage];
-    tg.showAlert(`${t.startRoute}: "${route.name}"`);
+    tg.showAlert(`Начинаем маршрут: "${route.name}"`);
 }
 
 // ==================== ИЗБРАННОЕ ====================
 
 function showFavorites() {
     const content = document.getElementById('content');
-    const t = translations[currentLanguage];
     
     if (favorites.length === 0) {
         content.innerHTML = `
             <div class="text-center py-5">
                 <div style="font-size: 64px; margin-bottom: 20px;">⭐</div>
-                <h3 data-i18n="favoritesEmpty">${t.favoritesEmpty}</h3>
-                <p class="text-muted" data-i18n="favoritesEmptyText">${t.favoritesEmptyText}</p>
-                <button class="btn btn-primary mt-3" onclick="showAttractions()" data-i18n="attractions">
-                    📍 ${t.attractions}
+                <h3>Избранное пусто</h3>
+                <p class="text-muted">Добавляйте места в избранное, нажимая на звездочку</p>
+                <button class="btn btn-primary mt-3" onclick="showAttractions()">
+                    📍 Смотреть достопримечательности
                 </button>
             </div>
         `;
-        applyTranslations();
         return;
     }
     
@@ -281,8 +249,8 @@ function showFavorites() {
     
     content.innerHTML = `
         <div class="fade-in">
-            <h2 data-i18n="favoritesTitle">⭐ ${t.favoritesTitle}</h2>
-            <p class="text-muted mb-3">${favorites.length} ${t.placesInFavorites}</p>
+            <h2>⭐ Избранное</h2>
+            <p class="text-muted mb-3">${favorites.length} мест в избранном</p>
             
             <div class="list-group">
                 ${favoriteItems.map(item => `
@@ -303,27 +271,22 @@ function showFavorites() {
             </div>
             
             <div class="mt-3 text-center">
-                <button class="btn btn-outline-secondary" onclick="clearAllFavorites()" data-i18n="clearAll">
-                    🗑️ ${t.clearAll}
+                <button class="btn btn-outline-secondary" onclick="clearAllFavorites()">
+                    🗑️ Очистить все
                 </button>
             </div>
         </div>
     `;
-    
-    applyTranslations();
 }
 
 function addToFavorites(attractionId) {
     if (!favorites.includes(attractionId)) {
         favorites.push(attractionId);
         localStorage.setItem('favorites', JSON.stringify(favorites));
-        
-        const t = translations[currentLanguage];
-        tg.showAlert(`✅ ${t.addToFavorites}`);
+        tg.showAlert('✅ Добавлено в избранное!');
         
         // Если открыта страница избранного - обновляем
-        if (document.getElementById('content').innerHTML.includes('Избранное') || 
-            document.getElementById('content').innerHTML.includes('Favorites')) {
+        if (document.getElementById('content').innerHTML.includes('Избранное')) {
             showFavorites();
         }
     }
@@ -332,24 +295,19 @@ function addToFavorites(attractionId) {
 function removeFromFavorites(attractionId) {
     favorites = favorites.filter(id => id !== attractionId);
     localStorage.setItem('favorites', JSON.stringify(favorites));
-    
-    const t = translations[currentLanguage];
-    tg.showAlert(`❌ ${t.removeFromFavorites}`);
+    tg.showAlert('❌ Удалено из избранного');
     showFavorites();
 }
 
 function clearAllFavorites() {
     if (favorites.length === 0) {
-        const t = translations[currentLanguage];
-        tg.showAlert(`📭 ${t.favoritesEmpty}`);
+        tg.showAlert('📭 Избранное уже пустое');
         return;
     }
     
     favorites = [];
     localStorage.setItem('favorites', JSON.stringify(favorites));
-    
-    const t = translations[currentLanguage];
-    tg.showAlert(`🗑️ ${t.clearAll}`);
+    tg.showAlert('🗑️ Все очищено!');
     showFavorites();
 }
 
@@ -360,8 +318,7 @@ function getCategoryIcon(category) {
         'architecture': '🏛️',
         'religion': '⛪',
         'sights': '📸',
-        'entertainment': '🎪',
-        'parks': '🌳'
+        'entertainment': '🎪'
     };
     return icons[category] || '📍';
 }
@@ -369,47 +326,4 @@ function getCategoryIcon(category) {
 function openInMaps(lat, lng) {
     const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=walking`;
     tg.openLink(url);
-}
-
-// ==================== НАСТРОЙКИ ЯЗЫКА ====================
-
-function showSettings() {
-    const content = document.getElementById('content');
-    
-    content.innerHTML = `
-        <div class="fade-in">
-            <h2 data-i18n="settingsTitle">⚙️ Настройки</h2>
-            
-            <div class="card">
-                <div class="card-body">
-                    <h5 data-i18n="language">🌐 Язык</h5>
-                    <p class="text-muted" data-i18n="selectLanguage">Выберите язык</p>
-                    
-                    <div class="language-buttons">
-                        <button class="lang-btn ${currentLanguage === 'ru' ? 'active' : ''}" 
-                                onclick="setLanguage('ru')">
-                            🇷🇺 Русский
-                        </button>
-                        <button class="lang-btn ${currentLanguage === 'en' ? 'active' : ''}" 
-                                onclick="setLanguage('en')">
-                            🇺🇸 English
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="mt-4 text-center">
-                <button class="btn btn-outline-secondary" onclick="goToMainMenu()" data-i18n="back">
-                    ← Назад
-                </button>
-            </div>
-        </div>
-    `;
-    
-    applyTranslations();
-}
-
-function goToMainMenu() {
-    const content = document.getElementById('content');
-    content.innerHTML = '';
 }
