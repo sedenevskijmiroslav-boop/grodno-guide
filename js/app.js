@@ -370,3 +370,46 @@ function openInMaps(lat, lng) {
     const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=walking`;
     tg.openLink(url);
 }
+
+// ==================== НАСТРОЙКИ ЯЗЫКА ====================
+
+function showSettings() {
+    const content = document.getElementById('content');
+    
+    content.innerHTML = `
+        <div class="fade-in">
+            <h2 data-i18n="settingsTitle">⚙️ Настройки</h2>
+            
+            <div class="card">
+                <div class="card-body">
+                    <h5 data-i18n="language">🌐 Язык</h5>
+                    <p class="text-muted" data-i18n="selectLanguage">Выберите язык</p>
+                    
+                    <div class="language-buttons">
+                        <button class="lang-btn ${currentLanguage === 'ru' ? 'active' : ''}" 
+                                onclick="setLanguage('ru')">
+                            🇷🇺 Русский
+                        </button>
+                        <button class="lang-btn ${currentLanguage === 'en' ? 'active' : ''}" 
+                                onclick="setLanguage('en')">
+                            🇺🇸 English
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4 text-center">
+                <button class="btn btn-outline-secondary" onclick="goToMainMenu()" data-i18n="back">
+                    ← Назад
+                </button>
+            </div>
+        </div>
+    `;
+    
+    applyTranslations();
+}
+
+function goToMainMenu() {
+    const content = document.getElementById('content');
+    content.innerHTML = '';
+}
