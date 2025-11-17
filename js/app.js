@@ -26,7 +26,21 @@ function showAttractions() {
             
             <!-- Фильтры по категориям -->
             <div class="mb-4">
-                <div class="btn-group w-100" role="group">
+                <div class="dropdown mb-2 d-block d-md-none">
+                    <button class="btn btn-primary dropdown-toggle w-100" type="button" id="mobileCategoryDropdown" data-bs-toggle="dropdown">
+                        ${getCategoryIcon(currentCategory)} ${currentCategory === 'all' ? 'Все категории' : getCategoryName(currentCategory)}
+                    </button>
+                    <ul class="dropdown-menu w-100">
+                        <li><a class="dropdown-item ${currentCategory === 'all' ? 'active' : ''}" href="#" onclick="filterAttractions('all')">🌟 Все категории</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item ${currentCategory === 'architecture' ? 'active' : ''}" href="#" onclick="filterAttractions('architecture')">🏛️ Архитектура</a></li>
+                        <li><a class="dropdown-item ${currentCategory === 'religion' ? 'active' : ''}" href="#" onclick="filterAttractions('religion')">⛪ Религия</a></li>
+                        <li><a class="dropdown-item ${currentCategory === 'sights' ? 'active' : ''}" href="#" onclick="filterAttractions('sights')">📸 Достопримечательности</a></li>
+                        <li><a class="dropdown-item ${currentCategory === 'entertainment' ? 'active' : ''}" href="#" onclick="filterAttractions('entertainment')">🎪 Развлечения</a></li>
+                    </ul>
+                </div>
+                
+                <div class="btn-group w-100 d-none d-md-flex" role="group">
                     <button type="button" class="btn ${currentCategory === 'all' ? 'btn-primary' : 'btn-outline-primary'}" 
                             onclick="filterAttractions('all')">
                         🌟 Все
@@ -48,6 +62,11 @@ function showAttractions() {
                         🎪 Развлечения
                     </button>
                 </div>
+                
+                <!-- Бейджи активных фильтров для мобильных -->
+                <div class="d-flex flex-wrap gap-2 mt-2 d-block d-md-none">
+                    <span class="badge bg-primary">${getCategoryIcon(currentCategory)} ${currentCategory === 'all' ? 'Все категории' : getCategoryName(currentCategory)}</span>
+                </div>
             </div>
             
             <div class="list-group" id="attractions-list">
@@ -67,6 +86,12 @@ function filterAttractions(category) {
         // Если список не найден, перерисовываем весь контент
         showAttractions();
     }
+    
+    // Обновляем текст в dropdown на мобильных
+    const dropdownBtn = document.getElementById('mobileCategoryDropdown');
+    if (dropdownBtn) {
+        dropdownBtn.innerHTML = `${getCategoryIcon(category)} ${category === 'all' ? 'Все категории' : getCategoryName(category)}`;
+    }
 }
 
 function renderAttractionsList(category = 'all') {
@@ -77,7 +102,12 @@ function renderAttractionsList(category = 'all') {
     if (filteredAttractions.length === 0) {
         return `
             <div class="text-center py-4">
-                <p class="text-muted">Нет достопримечательностей в этой категории</p>
+                <div style="font-size: 48px; margin-bottom: 10px;">🔍</div>
+                <h5>Ничего не найдено</h5>
+                <p class="text-muted">Попробуйте выбрать другую категорию</p>
+                <button class="btn btn-outline-primary" onclick="filterAttractions('all')">
+                    Показать все достопримечательности
+                </button>
             </div>
         `;
     }
@@ -85,12 +115,16 @@ function renderAttractionsList(category = 'all') {
     return filteredAttractions.map(item => `
         <div class="list-group-item list-group-item-action" onclick="showAttractionDetail(${item.id})">
             <div class="d-flex justify-content-between align-items-start">
-                <div>
+                <div class="flex-grow-1">
                     <h5 class="mb-1">${item.name}</h5>
-                    <p class="mb-1">${item.description}</p>
+                    <p class="mb-1 text-muted small">${item.description}</p>
                     <small class="text-muted">📍 ${item.address}</small>
                 </div>
-                <span class="badge bg-primary">${getCategoryIcon(item.category)} ${getCategoryName(item.category)}</span>
+                <div class="text-end ms-2">
+                    <span class="badge bg-primary mb-1">${getCategoryIcon(item.category)}</span>
+                    <br>
+                    <small class="text-muted d-none d-md-block">${getCategoryName(item.category)}</small>
+                </div>
             </div>
         </div>
     `).join('');
@@ -109,26 +143,26 @@ function showAttractionDetail(id) {
     }
     
     content.innerHTML = `
-        <button class="btn btn-secondary mb-3" onclick="showAttractions()">← Назад</button>
+        <button class="btn btn-secondary mb-3" onclick="showAttractions()">← Назад к списку</button>
         
         <div class="card fade-in">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-start mb-3">
-                    <h2 class="card-title">${item.name}</h2>
+                    <h2 class="card-title h4">${item.name}</h2>
                     <span class="badge bg-primary">${getCategoryIcon(item.category)} ${getCategoryName(item.category)}</span>
                 </div>
                 
                 <div class="info-card mb-3">
-                    <p class="mb-1"><strong>📍 Адрес:</strong> ${item.address}</p>
-                    <p class="mb-1"><strong>🕒 Время работы:</strong> ${item.workingHours}</p>
+                    <p class="mb-2"><strong>📍 Адрес:</strong> ${item.address}</p>
+                    <p class="mb-2"><strong>🕒 Время работы:</strong> ${item.workingHours}</p>
                     <p class="mb-0"><strong>💰 Стоимость:</strong> ${item.price}</p>
                 </div>
                 
                 <p class="card-text">${item.fullDescription}</p>
                 
                 ${contactsHtml ? `
-                    <div class="contacts-section mt-3">
-                        <h5>📞 Контакты</h5>
+                    <div class="contacts-section mt-4">
+                        <h5 class="mb-3">📞 Контакты</h5>
                         <div class="contacts-card">
                             ${contactsHtml}
                         </div>
@@ -168,7 +202,21 @@ function showMap() {
             
             <!-- Фильтры для карты -->
             <div class="mb-4">
-                <div class="btn-group w-100 flex-wrap" role="group">
+                <div class="dropdown mb-2 d-block d-md-none">
+                    <button class="btn btn-success dropdown-toggle w-100" type="button" id="mobileMapCategoryDropdown" data-bs-toggle="dropdown">
+                        ${getCategoryIcon(currentMapCategory)} ${currentMapCategory === 'all' ? 'Все на карте' : getCategoryName(currentMapCategory)}
+                    </button>
+                    <ul class="dropdown-menu w-100">
+                        <li><a class="dropdown-item ${currentMapCategory === 'all' ? 'active' : ''}" href="#" onclick="filterMap('all')">🌟 Все на карте</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item ${currentMapCategory === 'architecture' ? 'active' : ''}" href="#" onclick="filterMap('architecture')">🏛️ Архитектура</a></li>
+                        <li><a class="dropdown-item ${currentMapCategory === 'religion' ? 'active' : ''}" href="#" onclick="filterMap('religion')">⛪ Религия</a></li>
+                        <li><a class="dropdown-item ${currentMapCategory === 'sights' ? 'active' : ''}" href="#" onclick="filterMap('sights')">📸 Достопримечательности</a></li>
+                        <li><a class="dropdown-item ${currentMapCategory === 'entertainment' ? 'active' : ''}" href="#" onclick="filterMap('entertainment')">🎪 Развлечения</a></li>
+                    </ul>
+                </div>
+                
+                <div class="btn-group w-100 d-none d-md-flex flex-wrap" role="group">
                     <button type="button" class="btn ${currentMapCategory === 'all' ? 'btn-success' : 'btn-outline-success'} mb-1" 
                             onclick="filterMap('all')">
                         🌟 Все
@@ -190,9 +238,14 @@ function showMap() {
                         🎪 Развлечения
                     </button>
                 </div>
+                
+                <!-- Бейджи активных фильтров для мобильных -->
+                <div class="d-flex flex-wrap gap-2 mt-2 d-block d-md-none">
+                    <span class="badge bg-success">${getCategoryIcon(currentMapCategory)} ${currentMapCategory === 'all' ? 'Все на карте' : getCategoryName(currentMapCategory)}</span>
+                </div>
             </div>
             
-            <div id="map"></div>
+            <div id="map" style="height: 400px;"></div>
             
             <div class="mt-3">
                 <div class="list-group" id="map-attractions-list">
@@ -215,6 +268,12 @@ function filterMap(category) {
         mapAttractionsList.innerHTML = renderMapAttractionsList(category);
     }
     
+    // Обновляем текст в dropdown на мобильных
+    const dropdownBtn = document.getElementById('mobileMapCategoryDropdown');
+    if (dropdownBtn) {
+        dropdownBtn.innerHTML = `${getCategoryIcon(category)} ${category === 'all' ? 'Все на карте' : getCategoryName(category)}`;
+    }
+    
     // Перерисовываем карту с новыми маркерами
     if (map) {
         map.remove();
@@ -232,7 +291,12 @@ function renderMapAttractionsList(category = 'all') {
     if (filteredAttractions.length === 0) {
         return `
             <div class="text-center py-4">
-                <p class="text-muted">Нет достопримечательностей в этой категории</p>
+                <div style="font-size: 48px; margin-bottom: 10px;">🗺️</div>
+                <h5>Ничего не найдено</h5>
+                <p class="text-muted">Попробуйте выбрать другую категорию</p>
+                <button class="btn btn-outline-success" onclick="filterMap('all')">
+                    Показать все на карте
+                </button>
             </div>
         `;
     }
@@ -240,19 +304,19 @@ function renderMapAttractionsList(category = 'all') {
     return filteredAttractions.map(item => `
         <div class="list-group-item">
             <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <strong>${item.name}</strong>
-                    <br><small class="text-muted">📍 ${item.address}</small>
-                    <br><small class="badge bg-primary">${getCategoryIcon(item.category)} ${getCategoryName(item.category)}</small>
+                <div class="flex-grow-1">
+                    <strong class="d-block">${item.name}</strong>
+                    <small class="text-muted d-block">📍 ${item.address}</small>
+                    <span class="badge bg-success small">${getCategoryIcon(item.category)} ${getCategoryName(item.category)}</span>
                 </div>
-                <div>
+                <div class="d-flex flex-column gap-1 ms-2">
                     <button class="btn btn-sm btn-outline-primary" 
                             onclick="openInMaps(${item.coords.lat}, ${item.coords.lng})">
-                        🗺️ Маршрут
+                        🗺️
                     </button>
-                    <button class="btn btn-sm btn-outline-info ms-1" 
+                    <button class="btn btn-sm btn-outline-info" 
                             onclick="showAttractionDetail(${item.id})">
-                        ℹ️ Подробнее
+                        ℹ️
                     </button>
                 </div>
             </div>
@@ -282,18 +346,18 @@ function initMap(category = 'all') {
             const marker = L.marker([place.coords.lat, place.coords.lng])
                 .addTo(map)
                 .bindPopup(`
-                    <div style="min-width: 250px;">
-                        <h5>${place.name}</h5>
-                        <p><strong>${getCategoryIcon(place.category)} ${getCategoryName(place.category)}</strong></p>
-                        <p>${place.description}</p>
-                        <p><strong>📍 Адрес:</strong> ${place.address}</p>
-                        <div class="d-grid gap-2">
+                    <div style="min-width: 200px;">
+                        <h6 class="mb-1">${place.name}</h6>
+                        <p class="mb-1"><strong>${getCategoryIcon(place.category)} ${getCategoryName(place.category)}</strong></p>
+                        <p class="mb-1 small">${place.description}</p>
+                        <p class="mb-2 small"><strong>📍 Адрес:</strong> ${place.address}</p>
+                        <div class="d-grid gap-1">
                             <button onclick="openInMaps(${place.coords.lat}, ${place.coords.lng})" 
-                                    style="background: #28a745; color: white; border: none; padding: 8px; border-radius: 5px;">
+                                    style="background: #28a745; color: white; border: none; padding: 6px; border-radius: 4px; font-size: 12px;">
                                 🗺️ Маршрут
                             </button>
                             <button onclick="showAttractionDetail(${place.id})" 
-                                    style="background: #007bff; color: white; border: none; padding: 8px; border-radius: 5px;">
+                                    style="background: #007bff; color: white; border: none; padding: 6px; border-radius: 4px; font-size: 12px;">
                                 ℹ️ Подробнее
                             </button>
                         </div>
@@ -331,7 +395,7 @@ function showRoutes() {
             
             <div class="row">
                 ${routes.map(route => `
-                    <div class="col-md-6 mb-4">
+                    <div class="col-12 col-md-6 mb-4">
                         <div class="card h-100">
                             <div class="card-body">
                                 <h5 class="card-title">${route.name}</h5>
@@ -384,7 +448,7 @@ function showFavorites() {
     content.innerHTML = `
         <div class="fade-in">
             <h2>⭐ Избранное</h2>
-            <p class="text-muted mb-3">${favorites.length} мест в избранном</p>
+            <p class="text-muted mb-3">${favorites.length} ${getPluralForm(favorites.length, ['место', 'места', 'мест'])} в избранном</p>
             
             <div class="list-group">
                 ${favoriteItems.map(item => `
@@ -392,9 +456,10 @@ function showFavorites() {
                         <div class="d-flex justify-content-between align-items-start">
                             <div class="flex-grow-1" onclick="showAttractionDetail(${item.id})" style="cursor: pointer;">
                                 <h5 class="mb-1">${item.name} ⭐</h5>
-                                <p class="mb-1">${item.description}</p>
+                                <p class="mb-1 text-muted small">${item.description}</p>
                                 <small class="text-muted">📍 ${item.address}</small>
-                                <br><small class="badge bg-primary">${getCategoryIcon(item.category)} ${getCategoryName(item.category)}</small>
+                                <br>
+                                <span class="badge bg-primary">${getCategoryIcon(item.category)} ${getCategoryName(item.category)}</span>
                             </div>
                             <button class="btn btn-outline-danger btn-sm ms-2" 
                                     onclick="event.stopPropagation(); removeFromFavorites(${item.id})">
@@ -466,6 +531,11 @@ function getCategoryName(category) {
         'entertainment': 'Развлечения'
     };
     return names[category] || 'Другое';
+}
+
+function getPluralForm(number, forms) {
+    const cases = [2, 0, 1, 1, 1, 2];
+    return forms[(number % 100 > 4 && number % 100 < 20) ? 2 : cases[Math.min(number % 10, 5)]];
 }
 
 function openInMaps(lat, lng) {
