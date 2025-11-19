@@ -7,11 +7,11 @@ const attractions = [
         description: "Историческая крепость на берегу Немана",
         fullDescription: "Старый замок в Гродно — памятник оборонного зодчества XI-XIX веков. Первые укрепления возникли здесь в XI веке. Замок был резиденцией великого князя Витовта, здесь жил Стефан Баторий.",
         address: "ул. Замковая, 22",
-        coords: { lat: 53.6775, lng: 23.8228 },
+        coords: { lat: 53.677080, lng: 23.823231 },
         workingHours: "10:00 - 18:00 (вт-вс)",
         price: "7 BYN - взрослый, 4 BYN - школьники/студенты",
         phone: "+375 (152) 72-18-51",
-        website: "https://museum-grodno.by"
+        website: "https://grodno-museum.by/?ysclid=mi5sklf20140452655#"
     },
     {
         id: 2,
@@ -20,10 +20,11 @@ const attractions = [
         description: "Величественный католический собор в стиле барокко",
         fullDescription: "Фарный костел Святого Франциска Ксаверия — один из самых красивых храмов Беларуси. Построен в стиле барокко в XVII-XVIII веках.",
         address: "пл. Советская, 4",
-        coords: { lat: 53.6789, lng: 23.8347 },
+        coords: { lat: 53.678118, lng: 23.831423 },
         workingHours: "07:00 - 20:00 ежедневно",
         price: "бесплатно",
-        phone: "+375 (152) 74-28-23"
+        phone: "+375 (152) 74-28-23",
+        website: "https://katedra-grodno.by/"
     },
     {
         id: 3,
@@ -35,7 +36,8 @@ const attractions = [
         coords: { lat: 53.6761, lng: 23.8253 },
         workingHours: "10:00 - 18:00 (вт-вс)",
         price: "6 BYN - взрослый, 3 BYN - школьники/студенты",
-        phone: "+375 (152) 72-18-51"
+        phone: "+375 (152) 72-18-51",
+        website: "https://grodno-museum.by/?ysclid=mi5sklf20140452655#"
     },
     {
         id: 4,
@@ -44,10 +46,11 @@ const attractions = [
         description: "Уникальный памятник древнерусского зодчества XII века",
         fullDescription: "Одна из древнейших церквей на территории Беларуси, построена в 1180-х годах. Уникальность храма — в голосниках (глиняных сосудах) в стенах.",
         address: "ул. Каложская, 6",
-        coords: { lat: 53.6847, lng: 23.8269 },
+        coords: { lat: 53.678414, lng: 23.818604 },
         workingHours: "09:00 - 18:00 ежедневно",
         price: "бесплатно",
-        phone: "+375 (152) 77-12-25"
+        phone: "+375 (152) 77-12-25",
+        website: "http://kalozha.by/"
     },
     {
         id: 5,
@@ -56,9 +59,10 @@ const attractions = [
         description: "Главная площадь исторического центра",
         fullDescription: "Центральная площадь Гродно, бывшая Рыночная. Сохранила историческую планировку с XVI века.",
         address: "пл. Советская",
-        coords: { lat: 53.6785, lng: 23.8342 },
+        coords: { lat: 53.677520, lng: 23.829443 },
         workingHours: "круглосуточно",
-        price: "бесплатно"
+        price: "бесплатно",
+        website: "https://my-places.by/places/grodno-sovetskaya-ploshad"
     },
     {
         id: 6,
@@ -67,10 +71,11 @@ const attractions = [
         description: "Старейший зоопарк в Беларуси",
         fullDescription: "Основан в 1927 году Яном Кохановским. Здесь содержится около 3000 животных 317 видов.",
         address: "ул. Тимирязева, 11",
-        coords: { lat: 53.6942, lng: 23.8358 },
+        coords: { lat: 53.688830, lng: 23.848559 },
         workingHours: "10:00 - 20:00 (летом), 10:00 - 17:00 (зимой)",
         price: "10 BYN - взрослый, 5 BYN - детский",
-        phone: "+375 (152) 75-38-54"
+        phone: "+375 (152) 75-38-54",
+        website: "https://www.grodnozoo.by/"
     }
 ];
 
