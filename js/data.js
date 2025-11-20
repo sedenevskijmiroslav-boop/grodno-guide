@@ -3,7 +3,7 @@ const attractions = [
     {
         id: 1,
         name: "Старый замок",
-        nameEn: "Old Castle",
+        nameEn: "Old Castle",   
         category: "architecture",
         description: "Историческая крепость на берегу Немана",
         descriptionEn: "Historical fortress on the Neman River bank",

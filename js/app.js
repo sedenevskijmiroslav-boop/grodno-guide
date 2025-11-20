@@ -143,7 +143,9 @@ function renderAttractionsList(category = 'all') {
     // Фильтр по поиску
     if (currentSearch) {
         filteredAttractions = filteredAttractions.filter(item =>
-            item.name.toLowerCase().includes(currentSearch)
+            getAttractionText(item, 'name').toLowerCase().includes(currentSearch) ||
+            getAttractionText(item, 'description').toLowerCase().includes(currentSearch) ||
+            getAttractionText(item, 'address').toLowerCase().includes(currentSearch)
         );
     }
 
@@ -426,7 +428,9 @@ function renderMapAttractionsList(category = 'all') {
     // Фильтр по поиску
     if (currentSearch) {
         filteredAttractions = filteredAttractions.filter(item =>
-            item.name.toLowerCase().includes(currentSearch)
+            getAttractionText(item, 'name').toLowerCase().includes(currentSearch) ||
+            getAttractionText(item, 'description').toLowerCase().includes(currentSearch) ||
+            getAttractionText(item, 'address').toLowerCase().includes(currentSearch)
         );
     }
 

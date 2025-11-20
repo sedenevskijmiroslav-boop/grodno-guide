@@ -2,7 +2,7 @@
 const translations = {
     ru: {
         // Общие
-        welcomeTitle: "🏰 Добро пожаловать в Гродно!",
+        welcomeTitle: "Добро пожаловать в Гродно!",
         welcomeSubtitle: "Выберите раздел для исследования города",
         attractions: "📍 Достопримечательности",
         map: "🗺️ Карта города",
@@ -137,11 +137,11 @@ const translations = {
                 price: "10 BYN - взрослый, 5 BYN - детский"
             },
             7: {
-                name: "Борисоглебская церковь",
-                description: "Древний православный храм XII века",
-                fullDescription: "Борисоглебская (Коложская) церковь — один из старейших храмов Беларуси, построена в XII веке. Входит в список Всемирного наследия ЮНЕСКО.",
-                address: "ул. Каложская, 6",
-                workingHours: "09:00 - 18:00 ежедневно",
+                name: "Лютеранская церковь",
+                description: "Памятник архитектуры в стиле неоготики.",
+                fullDescription: "Лютеранская церковь Святого Иоанна — протестантская кирха в Гродно, расположенная на улице 1 Мая, 5. Впервые упоминается в 1793 году. Памятник архитектуры в стиле неоготики. Кирха включена в Государственный список историко-культурных ценностей Республики Беларусь.",
+                address: "ул. Академическая, 7А",
+                workingHours: "вт-пт 10:00–17:00, перерыв 11:00–15:00; сб 18:00–20:00; вс 09:00–16:00, перерыв 11:00–15:00",
                 price: "бесплатно"
             },
             8: {
@@ -164,17 +164,17 @@ const translations = {
                 name: "Парк Жилибера",
                 description: "Романтический парк с озером и скульптурами",
                 fullDescription: "Парк Жилибера — один из старейших парков Гродно, основан в XIX веке. Здесь находится озеро, скульптуры и уютные аллеи для прогулок.",
-                address: "ул. Горького, 87",
+                address: "ул. Ожешко 16",
                 workingHours: "круглосуточно",
                 price: "бесплатно"
             },
             11: {
-                name: "Ратуша",
-                description: "Историческое здание городской администрации",
-                fullDescription: "Гродненская ратуша — памятник архитектуры XVII века. Здание неоднократно перестраивалось, но сохранило свой исторический облик.",
-                address: "пл. Советская, 1",
-                workingHours: "внешний осмотр - круглосуточно",
-                price: "бесплатно"
+                name: "Гродненский областной драматический театр",
+                description: "профессиональный государственный театр Республики Беларусь",
+                fullDescription: "Гро́дненский областно́й драмати́ческий теа́тр (бел. Гродзенскі абласны драматычны тэатр) — профессиональный государственный театр Республики Беларусь, образованный в 1947 году.",
+                address: "ул. Мостовая, 35",
+                workingHours: "ежедневно, 09:30–20:15",
+                price: "от 4 BYN, до 17 BYN"
             },
             12: {
                 name: "Большая хоральная синагога",
@@ -185,35 +185,34 @@ const translations = {
                 price: "бесплатно"
             },
             13: {
-                name: "Музей природы",
-                description: "Музей с коллекцией флоры и фауны региона",
-                fullDescription: "Гродненский государственный музей природы знакомит посетителей с природой Гродненской области, её флорой и фауной.",
-                address: "ул. Горького, 85",
-                workingHours: "10:00 - 17:00 (вт-вс)",
-                price: "4 BYN - взрослый, 2 BYN - детский"
-            },
-            14: {
-                name: "Площадь Победы",
-                description: "Мемориальная площадь с памятником",
-                fullDescription: "Площадь Победы — центральная площадь Гродно, где установлен памятник советским воинам-освободителям.",
-                address: "пл. Победы",
-                workingHours: "круглосуточно",
+                name: "Водонапорные башни Кася и Бася",
+                description: "Ценные образцы инженерно-технической архитектуры .",
+                fullDescription: "Кася и Бася — городские достопримечательности. Ценные образцы инженерно-технической архитектуры . История. Возникновение в Гродно водопроводных систем, по-видимому, произошло ещё в период существования Речи Посполитой.",
+                address: "ул. Свердлова, 2",
+                workingHours: "пн-вс: В любое время",
                 price: "бесплатно"
             },
+            14: {
+                name: "Дворец Четвертинских",
+                description: "Памятник архитектуры XVIII века.",
+                fullDescription: "Здание построено в 70-х годах XVIII века, в рамках масштабного проекта застройки пригорода Гродно — Городницы. Курировал работы Антоний Тизенгауз, хотя фактическим хозяином всего комплекса Городницы являлся король Станислав Август Понятовский. Архитектором здания, как считают исследователи, был королевский зодчий Джузеппе де Сакко. Здание предназначалось для размещения Королевской медицинской академии — первого высшего учебного заведения на территории современной Беларуси.",
+                address: "ул. Ожешко, 20",
+                workingHours: "на реконструкции",
+                price: "на реконструкции"
+            },
             15: {
-                name: "Дворец Пусловских",
-                description: "Неоклассический дворец XIX века",
-                fullDescription: "Дворец Пусловских — яркий пример неоклассической архитектуры. Построен в XIX веке для богатой семьи Пусловских.",
-                address: "ул. Дзержинского, 19",
-                workingHours: "внешний осмотр - круглосуточно",
+                name: "Каланча",
+                description: "Башня пожарного депо в Гродно",
+                fullDescription: "Пожарная каланча в Гродно (Башня пожарного депо в Гродно, Гродненская каланча) — архитектурный памятник в городе Гродно. Популярный туристический объект.",
+                address: "ул. Замковая, 19А",
+                workingHours: "пн-пт 08:00–17:00, перерыв 13:00–14:00",
                 price: "бесплатно"
             },
             16: {
-                name: "Коложский монастырь",
-                description: "Мужской православный монастырь",
-                fullDescription: "Коложский монастырь — один из древнейших монастырей Беларуси. Основан в XII веке, здесь находится Борисоглебская церковь.",
-                address: "ул. Каложская, 6",
-                workingHours: "09:00 - 18:00 ежедневно",
+                name: "Пышки",
+                description: "Лесопарк в Гродно",
+                fullDescription: "Лесопарк «Пышки» — зелёный массив, расположенный в Гродно. Самый большой городской лесопарк Республики Беларусь. История. Деревня Пышки отмечена на плане города 1797 года.",
+                workingHours: "круглосуточно",
                 price: "бесплатно"
             },
             17: {
@@ -225,19 +224,19 @@ const translations = {
                 price: "бесплатно"
             },
             18: {
-                name: "Музей истории Гродно",
-                description: "Музей, рассказывающий об истории города",
-                fullDescription: "Гродненский государственный историко-археологический музей знакомит с историей Гродно от древних времён до наших дней.",
-                address: "ул. Замковая, 22",
-                workingHours: "10:00 - 18:00 (вт-вс)",
-                price: "6 BYN - взрослый, 3 BYN - школьники"
+                name: "Солнечные часы",
+                description: "Солнечные часы (швейцарская долина)",
+                fullDescription: "В городе Гродно, расположенном в Беларуси, есть уникальное архитектурное сооружение — солнечные часы в швейцарской долине. Это не просто часы, а настоящее произведение искусства, которое привлекает внимание туристов и жителей города. ",
+                address: "сквер Швейцарская долина",
+                workingHours: "круглосуточно",
+                price: "бесплатно"
             },
             19: {
-                name: "Парк имени Максима Горького",
-                description: "Городской парк с аттракционами и кафе",
-                fullDescription: "Парк имени Максима Горького — любимое место отдыха горожан. Здесь есть аттракционы, кафе, озеро и зоны для пикников.",
-                address: "ул. Горького",
-                workingHours: "08:00 - 22:00",
+                name: "Покровский собор",
+                description: "Кафедральный собор Покрова Пресвятой Богородицы",
+                fullDescription: "Собо́р Покрова́ Пресвято́й Богоро́дицы (Покро́вский собо́р) (бел. Сабор Пакрова Прасвятой Багародзіцы (Пакроўскі сабор) — православный храм в городе Гродно, кафедральный собор Гродненской епархии Белорусской православной церкви. Сооружён в начале XX века в русском стиле.",
+                address: "ул. Ожешко, 23",
+                workingHours: "ежедневно, 07:30–20:00",
                 price: "бесплатно"
             },
             20: {
@@ -252,7 +251,7 @@ const translations = {
     },
     en: {
         // Общие
-        welcomeTitle: "🏰 Welcome to Grodno!",
+        welcomeTitle: "Welcome to Grodno!",
         welcomeSubtitle: "Choose a section to explore the city",
         attractions: "📍 Attractions",
         map: "🗺️ City Map",
@@ -387,11 +386,11 @@ const translations = {
                 price: "10 BYN - adult, 5 BYN - child"
             },
             7: {
-                name: "Borisoglebskaya Church",
-                description: "Ancient Orthodox church of the 12th century",
-                fullDescription: "Borisoglebskaya (Kalozhskaya) Church is one of the oldest temples in Belarus, built in the 12th century. Included in the UNESCO World Heritage List.",
-                address: "Kalozhskaya St, 6",
-                workingHours: "09:00 - 18:00 daily",
+                name: "Lutheran Church",
+                description: "Architectural monument in Neo-Gothic style.",
+                fullDescription: "The Lutheran Church of St. John is a Protestant church in Grodno, located at 1 Maya Street, 5. First mentioned in 1793. Architectural monument in Neo-Gothic style. The church is included in the State List of Historical and Cultural Values of the Republic of Belarus.",
+                address: "Akademicheskaya St, 7A",
+                workingHours: "Tue-Fri 10:00–17:00, break 11:00–15:00; Sat 18:00–20:00; Sun 09:00–16:00, break 11:00–15:00",
                 price: "free"
             },
             8: {
@@ -414,17 +413,17 @@ const translations = {
                 name: "Zhiliber Park",
                 description: "Romantic park with a lake and sculptures",
                 fullDescription: "Zhiliber Park is one of the oldest parks in Grodno, founded in the 19th century. There is a lake, sculptures and cozy alleys for walking.",
-                address: "Gorkogo St, 87",
+                address: "Ozheshko St 16",
                 workingHours: "24/7",
                 price: "free"
             },
             11: {
-                name: "Town Hall",
-                description: "Historical building of the city administration",
-                fullDescription: "The Grodno Town Hall is an architectural monument of the 17th century. The building has been rebuilt many times, but has preserved its historical appearance.",
-                address: "Sovetskaya Sq, 1",
-                workingHours: "external inspection - 24/7",
-                price: "free"
+                name: "Grodno Regional Drama Theater",
+                description: "professional state theater of the Republic of Belarus",
+                fullDescription: "Grodno Regional Drama Theater (Belarusian: Hrodna Regional Drama Theater) is a professional state theater of the Republic of Belarus, formed in 1947.",
+                address: "Mostovaya St, 35",
+                workingHours: "daily, 09:30–20:15",
+                price: "from 4 BYN, up to 17 BYN"
             },
             12: {
                 name: "Great Choir Synagogue",
@@ -435,35 +434,34 @@ const translations = {
                 price: "free"
             },
             13: {
-                name: "Nature Museum",
-                description: "Museum with a collection of flora and fauna of the region",
-                fullDescription: "The Grodno State Nature Museum introduces visitors to the nature of the Grodno region, its flora and fauna.",
-                address: "Gorkogo St, 85",
-                workingHours: "10:00 - 17:00 (Tue-Sun)",
-                price: "4 BYN - adult, 2 BYN - child"
-            },
-            14: {
-                name: "Victory Square",
-                description: "Memorial square with a monument",
-                fullDescription: "Victory Square is the central square of Grodno, where a monument to Soviet liberating soldiers is installed.",
-                address: "Victory Sq",
-                workingHours: "24/7",
+                name: "Water Towers Kasya and Basya",
+                description: "Valuable examples of engineering and technical architecture.",
+                fullDescription: "Kasya and Basya are city attractions. Valuable examples of engineering and technical architecture. History. The emergence of water supply systems in Grodno apparently occurred during the period of the Polish-Lithuanian Commonwealth.",
+                address: "Sverdlova St, 2",
+                workingHours: "Mon-Sun: Anytime",
                 price: "free"
             },
+            14: {
+                name: "Czartoryski Palace",
+                description: "Architectural monument of the 18th century.",
+                fullDescription: "The building was built in the 1770s as part of a large-scale project for the development of the suburb of Grodno - Horodnica. Antoni Tyzenhaus supervised the work, although the actual owner of the entire Horodnica complex was King Stanislaw August Poniatowski. The architect of the building, as researchers believe, was the royal architect Giuseppe de Sacco. The building was intended to house the Royal Medical Academy - the first higher educational institution on the territory of modern Belarus.",
+                address: "Ozheshko St, 20",
+                workingHours: "under reconstruction",
+                price: "under reconstruction"
+            },
             15: {
-                name: "Puslovskiy Palace",
-                description: "Neoclassical palace of the 19th century",
-                fullDescription: "The Puslovskiy Palace is a bright example of neoclassical architecture. Built in the 19th century for the wealthy Puslovskiy family.",
-                address: "Dzerzhinskogo St, 19",
-                workingHours: "external inspection - 24/7",
+                name: "Fire Tower",
+                description: "Fire station tower in Grodno",
+                fullDescription: "The fire tower in Grodno (Fire Station Tower in Grodno, Grodno Fire Tower) is an architectural monument in the city of Grodno. Popular tourist attraction.",
+                address: "Zamkovaya St, 19A",
+                workingHours: "Mon-Fri 08:00–17:00, break 13:00–14:00",
                 price: "free"
             },
             16: {
-                name: "Kolozhsky Monastery",
-                description: "Male Orthodox monastery",
-                fullDescription: "Kolozhsky Monastery is one of the oldest monasteries in Belarus. Founded in the 12th century, the Borisoglebskaya Church is located here.",
-                address: "Kalozhskaya St, 6",
-                workingHours: "09:00 - 18:00 daily",
+                name: "Pyshki",
+                description: "Forest park in Grodno",
+                fullDescription: "Forest park 'Pyshki' is a green area located in Grodno. The largest urban forest park in the Republic of Belarus. History. The village of Pyshki is marked on the city plan of 1797.",
+                workingHours: "24/7",
                 price: "free"
             },
             17: {
@@ -475,19 +473,19 @@ const translations = {
                 price: "free"
             },
             18: {
-                name: "Grodno History Museum",
-                description: "Museum telling about the history of the city",
-                fullDescription: "The Grodno State Historical and Archaeological Museum introduces the history of Grodno from ancient times to the present day.",
-                address: "Zamkovaya St, 22",
-                workingHours: "10:00 - 18:00 (Tue-Sun)",
-                price: "6 BYN - adult, 3 BYN - students"
+                name: "Sundial",
+                description: "Sundial (Swiss valley)",
+                fullDescription: "In the city of Grodno, located in Belarus, there is a unique architectural structure - the sundial in the Swiss valley. This is not just a clock, but a real work of art that attracts the attention of tourists and city residents.",
+                address: "Swiss Valley Square",
+                workingHours: "24/7",
+                price: "free"
             },
             19: {
-                name: "Maxim Gorky Park",
-                description: "City park with attractions and cafes",
-                fullDescription: "Maxim Gorky Park is a favorite recreation spot for residents. There are attractions, cafes, a lake and picnic areas.",
-                address: "Gorkogo St",
-                workingHours: "08:00 - 22:00",
+                name: "Pokrovsky Cathedral",
+                description: "Cathedral of the Protection of the Holy Mother of God",
+                fullDescription: "The Cathedral of the Protection of the Holy Mother of God (Pokrovsky Cathedral) (Belarusian: Cathedral of the Protection of the Holy Mother of God (Pokrovsky Cathedral) is an Orthodox church in the city of Grodno, the cathedral of the Grodno Diocese of the Belarusian Orthodox Church. Built at the beginning of the 20th century in Russian style.",
+                address: "Ozheshko St, 23",
+                workingHours: "daily, 07:30–20:00",
                 price: "free"
             },
             20: {

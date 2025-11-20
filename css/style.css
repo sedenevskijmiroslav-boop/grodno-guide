@@ -1,56 +1,55 @@
 /* Переменные для тем */
 :root {
-    --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --bg-color: #0f0f23;
-    --container-bg: linear-gradient(145deg, #1e1e2e, #2a2a3e);
+    --bg-gradient: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    --bg-color: #121212;
+    --container-bg: #1e1e1e;
     --text-color: #ffffff;
-    --muted-text: #b0b0c0;
-    --border-color: #3a3a5c;
-    --card-bg: linear-gradient(145deg, #2d2d4a, #3a3a5e);
-    --list-bg: linear-gradient(145deg, #2a2a3e, #3a3a5e);
-    --info-bg: linear-gradient(145deg, #3a3a5c, #4a4a6e);
-    --contacts-bg: linear-gradient(145deg, #2a2a3e, #3a3a5e);
+    --muted-text: #b3b3b3;
+    --border-color: #333333;
+    --card-bg: #262626;
+    --list-bg: #1e1e1e;
+    --info-bg: #333333;
+    --contacts-bg: #262626;
     --marker-bg: #ffffff;
     --marker-border: #ffd700;
-    --btn-primary: linear-gradient(135deg, #667eea, #764ba2);
-    --btn-success: linear-gradient(135deg, #4facfe, #00f2fe);
-    --btn-info: linear-gradient(135deg, #43e97b, #38f9d7);
-    --btn-warning: linear-gradient(135deg, #fa709a, #fee140);
-    --btn-secondary: linear-gradient(135deg, #a8edea, #fed6e3);
-    --btn-outline: #667eea;
-    --shadow: rgba(0,0,0,0.4);
-    --shadow-hover: rgba(0,0,0,0.6);
-    --accent-color: #667eea;
+    --btn-primary: #ffd700;
+    --btn-success: #ffffff;
+    --btn-info: #666666;
+    --btn-warning: #ffd700;
+    --btn-secondary: #404040;
+    --btn-outline: #ffd700;
+    --shadow: rgba(0,0,0,0.3);
+    --shadow-hover: rgba(0,0,0,0.5);
+    --accent-color: #ffd700;
 }
 
 body.light-theme {
-    --bg-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    --bg-color: #f8f9fa;
-    --container-bg: linear-gradient(145deg, #ffffff, #f8f9fa);
-    --text-color: #2d3748;
-    --muted-text: #718096;
-    --border-color: #e2e8f0;
-    --card-bg: linear-gradient(145deg, #ffffff, #f7fafc);
-    --list-bg: linear-gradient(145deg, #ffffff, #f7fafc);
-    --info-bg: linear-gradient(145deg, #f7fafc, #edf2f7);
-    --contacts-bg: linear-gradient(145deg, #f7fafc, #edf2f7);
+    --bg-gradient: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+    --bg-color: #f8f8f8;
+    --container-bg: #ffffff;
+    --text-color: #333333;
+    --muted-text: #666666;
+    --border-color: #cccccc;
+    --card-bg: #f9f9f9;
+    --list-bg: #ffffff;
+    --info-bg: #f0f0f0;
+    --contacts-bg: #f5f5f5;
     --marker-bg: #ffffff;
-    --marker-border: #3182ce;
-    --btn-primary: linear-gradient(135deg, #667eea, #764ba2);
-    --btn-success: linear-gradient(135deg, #48bb78, #38a169);
-    --btn-info: linear-gradient(135deg, #4299e1, #3182ce);
-    --btn-warning: linear-gradient(135deg, #ed8936, #dd6b20);
-    --btn-secondary: linear-gradient(135deg, #a0aec0, #718096);
-    --btn-outline: #667eea;
+    --marker-border: #ffd700;
+    --btn-primary: #ffd700;
+    --btn-success: #ffffff;
+    --btn-info: #666666;
+    --btn-warning: #ffd700;
+    --btn-secondary: #e0e0e0;
+    --btn-outline: #ffd700;
     --shadow: rgba(0,0,0,0.1);
-    --shadow-hover: rgba(0,0,0,0.2);
-    --accent-color: #667eea;
+    --shadow-hover: rgba(0,0,0,0.15);
+    --accent-color: #ffd700;
 }
 
 /* Основные стили */
 body {
-    background: var(--bg-gradient);
-    background-attachment: fixed;
+    background: var(--bg-color);
     min-height: 100vh;
     font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: var(--text-color);
@@ -60,96 +59,64 @@ body {
 
 .container {
     background: var(--container-bg);
-    border-radius: 20px;
-    padding: 25px;
+    border-radius: 16px;
+    padding: 20px;
     margin-top: 15px;
     margin-bottom: 15px;
-    box-shadow: 0 10px 30px var(--shadow);
+    box-shadow: 0 4px 16px var(--shadow);
     border: 1px solid var(--border-color);
-    backdrop-filter: blur(10px);
     transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--accent-color), #ffd700, var(--accent-color));
-    border-radius: 20px 20px 0 0;
 }
 
 /* Кнопки */
 .btn {
-    border-radius: 12px;
-    padding: 14px 20px;
-    font-weight: 600;
+    border-radius: 8px;
+    padding: 12px 18px;
+    font-weight: 500;
     font-size: 16px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    margin-bottom: 12px;
-    border: none;
-    position: relative;
-    overflow: hidden;
-    text-transform: none;
-    letter-spacing: 0.5px;
-}
-
-.btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transition: left 0.5s;
-}
-
-.btn:hover::before {
-    left: 100%;
+    transition: all 0.2s ease;
+    margin-bottom: 10px;
+    border: 1px solid var(--border-color);
 }
 
 .btn:hover {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 8px 25px var(--shadow-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px var(--shadow-hover);
 }
 
 .btn:active {
-    transform: translateY(0) scale(0.98);
+    transform: translateY(0);
 }
 
 .btn-primary {
     background: var(--btn-primary);
-    color: white;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    color: #000000;
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
 }
 
 .btn-success {
     background: var(--btn-success);
-    color: white;
-    box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+    color: #000000;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .btn-info {
     background: var(--btn-info);
-    color: white;
-    box-shadow: 0 4px 15px rgba(67, 233, 123, 0.4);
+    color: var(--text-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .btn-warning {
     background: var(--btn-warning);
-    color: white;
-    box-shadow: 0 4px 15px rgba(250, 112, 154, 0.4);
+    color: #000000;
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
 }
 
 .btn-secondary {
     background: var(--btn-secondary);
     color: var(--text-color);
-    box-shadow: 0 4px 15px rgba(160, 174, 192, 0.4);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .btn-outline-primary {
@@ -177,30 +144,19 @@ body {
 
 /* Карточки */
 .card {
-    border: none;
-    border-radius: 16px;
-    box-shadow: 0 8px 32px var(--shadow);
-    margin-bottom: 24px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px var(--shadow);
+    margin-bottom: 20px;
     background: var(--card-bg);
-    backdrop-filter: blur(10px);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s ease;
     position: relative;
-    overflow: hidden;
 }
 
-.card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent-color), #ffd700, var(--accent-color));
-}
 
 .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 40px var(--shadow-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px var(--shadow-hover);
 }
 
 .card-body {
@@ -211,38 +167,19 @@ body {
 
 /* Списки */
 .list-group-item {
-    border-radius: 12px !important;
-    margin-bottom: 16px;
-    border: none;
-    box-shadow: 0 4px 16px var(--shadow);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 8px !important;
+    margin-bottom: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 8px var(--shadow);
+    transition: all 0.3s ease;
     cursor: pointer;
     background: var(--list-bg);
     color: var(--text-color);
-    backdrop-filter: blur(5px);
-    position: relative;
-    overflow: hidden;
-}
-
-.list-group-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background: linear-gradient(to bottom, var(--accent-color), #ffd700);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.list-group-item:hover::before {
-    opacity: 1;
 }
 
 .list-group-item:hover {
-    transform: translateX(8px) translateY(-2px);
-    box-shadow: 0 8px 24px var(--shadow-hover);
+    transform: translateX(4px);
+    box-shadow: 0 4px 16px var(--shadow-hover);
     background: var(--info-bg);
 }
 
@@ -444,12 +381,24 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
     font-size: 2.2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+h1 .emoji-castle {
+    font-size: 2.5rem;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+h1 span:not(.emoji-castle) {
     background: linear-gradient(135deg, var(--accent-color), #ffd700);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-align: center;
-    margin-bottom: 2rem;
 }
 
 h2 {
