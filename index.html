@@ -24,28 +24,32 @@
 </head>
 <body>
     <div class="container mt-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div></div>
-            <div class="text-center">
-                <h1>🏰 Добро пожаловать в Гродно!</h1>
-                <p class="text-muted">Выберите раздел для исследования города</p>
+        <div class="d-flex justify-content-end mb-2">
+            <div class="btn-group">
+                <button class="btn btn-outline-info btn-sm" onclick="changeLanguage()" id="lang-toggle">
+                    🇷🇺 RU
+                </button>
+                <button class="btn btn-outline-warning btn-sm" onclick="toggleTheme()" id="theme-toggle">
+                    🌙 Тёмная
+                </button>
             </div>
-            <button class="btn btn-outline-warning" onclick="toggleTheme()" id="theme-toggle">
-                🌙 Тёмная
-            </button>
+        </div>
+        <div class="text-center mb-4">
+            <h1 id="welcome-title">🏰 Добро пожаловать в Гродно!</h1>
+            <p class="text-muted" id="welcome-subtitle">Выберите раздел для исследования города</p>
         </div>
         
         <div class="d-grid gap-2">
-            <button class="btn btn-primary btn-lg" onclick="showAttractions()">
+            <button class="btn btn-primary btn-lg" onclick="showAttractions()" id="btn-attractions">
                 📍 Достопримечательности
             </button>
-            <button class="btn btn-success btn-lg" onclick="showMap()">
+            <button class="btn btn-success btn-lg" onclick="showMap()" id="btn-map">
                 🗺️ Карта города
             </button>
-            <button class="btn btn-info btn-lg" onclick="showRoutes()">
+            <button class="btn btn-info btn-lg" onclick="showRoutes()" id="btn-routes">
                 🚶 Маршруты
             </button>
-            <button class="btn btn-warning btn-lg" onclick="showFavorites()">
+            <button class="btn btn-warning btn-lg" onclick="showFavorites()" id="btn-favorites">
                 ⭐ Избранное
             </button>
         </div>
@@ -68,9 +72,12 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
     <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
     
+    <!-- Translations -->
+    <script src="js/translations.js"></script>
+
     <!-- Data -->
     <script src="js/data.js"></script>
-    
+
     <!-- Main App -->
     <script src="js/app.js"></script>
 </body>

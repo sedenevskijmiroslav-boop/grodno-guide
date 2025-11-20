@@ -3,26 +3,38 @@ const attractions = [
     {
         id: 1,
         name: "Старый замок",
+        nameEn: "Old Castle",
         category: "architecture",
         description: "Историческая крепость на берегу Немана",
+        descriptionEn: "Historical fortress on the Neman River bank",
         fullDescription: "Старый замок в Гродно — памятник оборонного зодчества XI-XIX веков. Первые укрепления возникли здесь в XI веке. Замок был резиденцией великого князя Витовта, здесь жил Стефан Баторий.",
+        fullDescriptionEn: "The Old Castle in Grodno is a monument of defensive architecture from the 11th-19th centuries. The first fortifications appeared here in the 11th century. The castle was the residence of Grand Duke Vytautas, and Stefan Batory lived here.",
         address: "ул. Замковая, 22",
+        addressEn: "Zamkovaya St, 22",
         coords: { lat: 53.677080, lng: 23.823231 },
         workingHours: "10:00 - 18:00 (вт-вс)",
+        workingHoursEn: "10:00 - 18:00 (Tue-Sun)",
         price: "7 BYN - взрослый, 4 BYN - школьники/студенты",
+        priceEn: "7 BYN - adult, 4 BYN - students/schoolchildren",
         phone: "+375 (152) 72-18-51",
         website: "https://grodno-museum.by/?ysclid=mi5sklf20140452655#"
     },
     {
         id: 2,
         name: "Фарный костел",
-        category: "religion", 
+        nameEn: "Farniy Cathedral",
+        category: "religion",
         description: "Величественный католический собор в стиле барокко",
+        descriptionEn: "Magnificent Catholic cathedral in Baroque style",
         fullDescription: "Фарный костел Святого Франциска Ксаверия — один из самых красивых храмов Беларуси. Построен в стиле барокко в XVII-XVIII веках.",
+        fullDescriptionEn: "The Farniy Cathedral of St. Francis Xavier is one of the most beautiful temples in Belarus. Built in Baroque style in the 17th-18th centuries.",
         address: "пл. Советская, 4",
+        addressEn: "Sovetskaya Sq, 4",
         coords: { lat: 53.678118, lng: 23.831423 },
         workingHours: "07:00 - 20:00 ежедневно",
+        workingHoursEn: "07:00 - 20:00 daily",
         price: "бесплатно",
+        priceEn: "free",
         phone: "+375 (152) 74-28-23",
         website: "https://katedra-grodno.by/"
     },
@@ -257,50 +269,50 @@ const attractions = [
 const routes = [
     {
         id: 1,
-        name: "Исторический центр",
+        nameKey: "classicRouteName",
         duration: "3 часа",
         stops: [1, 3, 5, 2],
-        description: "Классический маршрут по главным достопримечательностям",
+        descriptionKey: "classicRoute",
         distance: "2.5 км"
     },
     {
         id: 2,
-        name: "Религиозный тур",
+        nameKey: "religiousTourName",
         duration: "4 часа",
         stops: [2, 4, 7, 12, 19],
-        description: "Знакомство с храмами Гродно",
+        descriptionKey: "religiousTour",
         distance: "5 км"
     },
     {
         id: 3,
-        name: "Архитектурный маршрут",
+        nameKey: "architecturalRouteName",
         duration: "2.5 часа",
         stops: [1, 3, 7, 15, 17, 13],
-        description: "Прогулка по архитектурным шедеврам города",
+        descriptionKey: "architecturalRoute",
         distance: "4 км"
     },
     {
         id: 4,
-        name: "Парковый отдых",
+        nameKey: "parkRelaxationName",
         duration: "3 часа",
         stops: [10, 16],
-        description: "Расслабленная прогулка по паркам и музеям природы",
+        descriptionKey: "parkRelaxation",
         distance: "3.5 км"
     },
     {
         id: 5,
-        name: "Семейный маршрут",
+        nameKey: "familyRouteName",
         duration: "4 часа",
         stops: [6, 8, 10, 11, 18, 20],
-        description: "Маршрут для всей семьи с зоопарком и парками",
+        descriptionKey: "familyRoute",
         distance: "6 км"
     },
     {
         id: 6,
-        name: "Музейный тур",
+        nameKey: "museumTourName",
         duration: "5 часов",
         stops: [1, 8, 9, 14, 15],
-        description: "Посещение музеев и исторических мест",
+        descriptionKey: "museumTour",
         distance: "4.5 км"
     }
 ];

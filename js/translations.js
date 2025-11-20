@@ -1,0 +1,481 @@
+// Переводы для всего приложения
+const translations = {
+    ru: {
+        // Общие
+        welcomeTitle: "🏰 Добро пожаловать в Гродно!",
+        welcomeSubtitle: "Выберите раздел для исследования города",
+        attractions: "📍 Достопримечательности",
+        map: "🗺️ Карта города",
+        routes: "🚶 Маршруты",
+        favorites: "⭐ Избранное",
+        darkTheme: "🌙 Тёмная",
+        lightTheme: "☀️ Светлая",
+        showFavorites: "⭐ Показать избранное",
+        onlyFavorites: "⭐ Только избранное",
+        searchPlaceholder: "🔍 Поиск по названию...",
+        allCategories: "Все категории",
+        allOnMap: "Все на карте",
+        architecture: "🏛️ Архитектура",
+        religion: "⛪ Религия",
+        sights: "📸 Достопримечательности",
+        entertainment: "🎪 Развлечения",
+        nothingFound: "Ничего не найдено",
+        tryDifferentCategory: "Попробуйте выбрать другую категорию",
+        showAllAttractions: "Показать все достопримечательности",
+        showAllOnMap: "Показать все на карте",
+        address: "Адрес",
+        workingHours: "Время работы",
+        price: "Стоимость",
+        route: "Маршрут",
+        details: "Подробнее",
+        addToFavorites: "Добавить в избранное",
+        removeFromFavorites: "Удалить из избранного",
+        back: "Назад",
+        duration: "Длительность",
+        distance: "Расстояние",
+        stops: "Остановки маршрута",
+        showRouteOnMap: "Показать маршрут на карте",
+        startNavigation: "Начать навигацию",
+        emptyFavorites: "Избранное пусто",
+        addToFavoritesHint: "Добавляйте места в избранное, нажимая на звездочку",
+        exploreAttractions: "Смотреть достопримечательности",
+        clearAll: "Очистить все",
+        placesInFavorites: "мест в избранном",
+        choosePlace: "Выберите место для подробной информации",
+        allAttractions: "Все достопримечательности",
+        cityMap: "Карта Гродно",
+        allAttractionsOnMap: "Все достопримечательности на карте",
+        chooseRoute: "Выберите маршрут для исследования города",
+        startRoute: "Начать маршрут",
+        backToRoutes: "Назад к маршрутам",
+        backToList: "Назад к списку",
+        contacts: "Контакты",
+        phone: "Телефон",
+        website: "Сайт",
+        openSite: "Открыть сайт",
+        buildRoute: "Построить маршрут",
+        favoritesCount: "мест в избранном",
+        clearAllConfirm: "Очистить все",
+        routeName: "маршрут",
+        classicRoute: "Классический маршрут по главным достопримечательностям",
+        religiousTour: "Знакомство с храмами Гродно",
+        architecturalRoute: "Прогулка по архитектурным шедеврам города",
+        parkRelaxation: "Расслабленная прогулка по паркам и музеям природы",
+        familyRoute: "Маршрут для всей семьи с зоопарком и парками",
+        museumTour: "Посещение музеев и исторических мест",
+        mapTemporarilyUnavailable: "Карта временно недоступна",
+        useListBelow: "Используйте список ниже для навигации",
+        routeOnMap: "на карте",
+        routeStops: "Остановки",
+        routeInfo: "Информация о маршруте",
+        classicRouteName: "Исторический центр",
+        religiousTourName: "Религиозный тур",
+        architecturalRouteName: "Архитектурный маршрут",
+        parkRelaxationName: "Парковый отдых",
+        familyRouteName: "Семейный маршрут",
+        museumTourName: "Музейный тур",
+
+        // Достопримечательности
+        attractionsData: {
+            1: {
+                name: "Старый замок",
+                description: "Историческая крепость на берегу Немана",
+                fullDescription: "Старый замок в Гродно — памятник оборонного зодчества XI-XIX веков. Первые укрепления возникли здесь в XI веке. Замок был резиденцией великого князя Витовта, здесь жил Стефан Баторий.",
+                address: "ул. Замковая, 22",
+                workingHours: "10:00 - 18:00 (вт-вс)",
+                price: "7 BYN - взрослый, 4 BYN - школьники/студенты"
+            },
+            2: {
+                name: "Фарный костел",
+                description: "Величественный католический собор в стиле барокко",
+                fullDescription: "Фарный костел Святого Франциска Ксаверия — один из самых красивых храмов Беларуси. Построен в стиле барокко в XVII-XVIII веках.",
+                address: "пл. Советская, 4",
+                workingHours: "07:00 - 20:00 ежедневно",
+                price: "бесплатно"
+            },
+            3: {
+                name: "Новый замок",
+                description: "Королевский дворец XVIII века",
+                fullDescription: "Новый замок построен в 1737-1752 годах как летняя резиденция польских королей и великих князей литовских.",
+                address: "ул. Замковая, 20",
+                workingHours: "10:00 - 18:00 (вт-вс)",
+                price: "6 BYN - взрослый, 3 BYN - школьники/студенты"
+            },
+            4: {
+                name: "Каложская церковь",
+                description: "Уникальный памятник древнерусского зодчества XII века",
+                fullDescription: "Одна из древнейших церквей на территории Беларуси, построена в 1180-х годах. Уникальность храма — в голосниках (глиняных сосудах) в стенах.",
+                address: "ул. Каложская, 6",
+                workingHours: "09:00 - 18:00 ежедневно",
+                price: "бесплатно"
+            },
+            5: {
+                name: "Советская площадь",
+                description: "Главная площадь исторического центра",
+                fullDescription: "Центральная площадь Гродно, бывшая Рыночная. Сохранила историческую планировку с XVI века.",
+                address: "пл. Советская",
+                workingHours: "круглосуточно",
+                price: "бесплатно"
+            },
+            6: {
+                name: "Гродненский зоопарк",
+                description: "Старейший зоопарк в Беларуси",
+                fullDescription: "Основан в 1927 году Яном Кохановским. Здесь содержится около 3000 животных 317 видов.",
+                address: "ул. Тимирязева, 11",
+                workingHours: "10:00 - 20:00 (летом), 10:00 - 17:00 (зимой)",
+                price: "10 BYN - взрослый, 5 BYN - детский"
+            },
+            7: {
+                name: "Борисоглебская церковь",
+                description: "Древний православный храм XII века",
+                fullDescription: "Борисоглебская (Коложская) церковь — один из старейших храмов Беларуси, построена в XII веке. Входит в список Всемирного наследия ЮНЕСКО.",
+                address: "ул. Каложская, 6",
+                workingHours: "09:00 - 18:00 ежедневно",
+                price: "бесплатно"
+            },
+            8: {
+                name: "Дом-музей Элизы Ожешко",
+                description: "Музей знаменитой белорусской писательницы",
+                fullDescription: "Дом, где жила и работала Элиза Ожешко — выдающаяся белорусская писательница XIX века. Музей рассказывает о её жизни и творчестве.",
+                address: "ул. Элизы Ожешко, 22",
+                workingHours: "10:00 - 17:00 (вт-вс)",
+                price: "3 BYN - взрослый, 1.5 BYN - школьники"
+            },
+            9: {
+                name: "Музей истории религии",
+                description: "Уникальный музей религиозных артефактов",
+                fullDescription: "Музей истории религии в Гродно — единственный в Беларуси музей такого профиля. Собрана коллекция предметов христианства, иудаизма и других религий.",
+                address: "ул. Замковая, 16",
+                workingHours: "10:00 - 18:00 (вт-вс)",
+                price: "5 BYN - взрослый, 2.5 BYN - школьники"
+            },
+            10: {
+                name: "Парк Жилибера",
+                description: "Романтический парк с озером и скульптурами",
+                fullDescription: "Парк Жилибера — один из старейших парков Гродно, основан в XIX веке. Здесь находится озеро, скульптуры и уютные аллеи для прогулок.",
+                address: "ул. Горького, 87",
+                workingHours: "круглосуточно",
+                price: "бесплатно"
+            },
+            11: {
+                name: "Ратуша",
+                description: "Историческое здание городской администрации",
+                fullDescription: "Гродненская ратуша — памятник архитектуры XVII века. Здание неоднократно перестраивалось, но сохранило свой исторический облик.",
+                address: "пл. Советская, 1",
+                workingHours: "внешний осмотр - круглосуточно",
+                price: "бесплатно"
+            },
+            12: {
+                name: "Большая хоральная синагога",
+                description: "Главная синагога еврейской общины Гродно",
+                fullDescription: "Большая хоральная синагога — центр еврейской религиозной жизни в Гродно. Построена в XIX веке в мавританском стиле.",
+                address: "ул. Большая Троицкая, 59а",
+                workingHours: "по договорённости",
+                price: "бесплатно"
+            },
+            13: {
+                name: "Музей природы",
+                description: "Музей с коллекцией флоры и фауны региона",
+                fullDescription: "Гродненский государственный музей природы знакомит посетителей с природой Гродненской области, её флорой и фауной.",
+                address: "ул. Горького, 85",
+                workingHours: "10:00 - 17:00 (вт-вс)",
+                price: "4 BYN - взрослый, 2 BYN - детский"
+            },
+            14: {
+                name: "Площадь Победы",
+                description: "Мемориальная площадь с памятником",
+                fullDescription: "Площадь Победы — центральная площадь Гродно, где установлен памятник советским воинам-освободителям.",
+                address: "пл. Победы",
+                workingHours: "круглосуточно",
+                price: "бесплатно"
+            },
+            15: {
+                name: "Дворец Пусловских",
+                description: "Неоклассический дворец XIX века",
+                fullDescription: "Дворец Пусловских — яркий пример неоклассической архитектуры. Построен в XIX веке для богатой семьи Пусловских.",
+                address: "ул. Дзержинского, 19",
+                workingHours: "внешний осмотр - круглосуточно",
+                price: "бесплатно"
+            },
+            16: {
+                name: "Коложский монастырь",
+                description: "Мужской православный монастырь",
+                fullDescription: "Коложский монастырь — один из древнейших монастырей Беларуси. Основан в XII веке, здесь находится Борисоглебская церковь.",
+                address: "ул. Каложская, 6",
+                workingHours: "09:00 - 18:00 ежедневно",
+                price: "бесплатно"
+            },
+            17: {
+                name: "Гродненская крепость",
+                description: "Военная крепость XIX века",
+                fullDescription: "Гродненская крепость — комплекс фортификационных сооружений XIX века. Включает в себя несколько фортов и укреплений.",
+                address: "ул. Гродненская Крепость",
+                workingHours: "круглосуточно",
+                price: "бесплатно"
+            },
+            18: {
+                name: "Музей истории Гродно",
+                description: "Музей, рассказывающий об истории города",
+                fullDescription: "Гродненский государственный историко-археологический музей знакомит с историей Гродно от древних времён до наших дней.",
+                address: "ул. Замковая, 22",
+                workingHours: "10:00 - 18:00 (вт-вс)",
+                price: "6 BYN - взрослый, 3 BYN - школьники"
+            },
+            19: {
+                name: "Парк имени Максима Горького",
+                description: "Городской парк с аттракционами и кафе",
+                fullDescription: "Парк имени Максима Горького — любимое место отдыха горожан. Здесь есть аттракционы, кафе, озеро и зоны для пикников.",
+                address: "ул. Горького",
+                workingHours: "08:00 - 22:00",
+                price: "бесплатно"
+            },
+            20: {
+                name: "Фонтан на Советской площади",
+                description: "Красивый фонтан в центре города",
+                fullDescription: "Фонтан на Советской площади — украшение центральной площади Гродно. Особенно красив в вечернее время с подсветкой.",
+                address: "пл. Советская",
+                workingHours: "круглосуточно",
+                price: "бесплатно"
+            }
+        }
+    },
+    en: {
+        // Общие
+        welcomeTitle: "🏰 Welcome to Grodno!",
+        welcomeSubtitle: "Choose a section to explore the city",
+        attractions: "📍 Attractions",
+        map: "🗺️ City Map",
+        routes: "🚶 Routes",
+        favorites: "⭐ Favorites",
+        darkTheme: "🌙 Dark",
+        lightTheme: "☀️ Light",
+        showFavorites: "⭐ Show favorites",
+        onlyFavorites: "⭐ Favorites only",
+        searchPlaceholder: "🔍 Search by name...",
+        allCategories: "All categories",
+        allOnMap: "All on map",
+        architecture: "🏛️ Architecture",
+        religion: "⛪ Religion",
+        sights: "📸 Sights",
+        entertainment: "🎪 Entertainment",
+        nothingFound: "Nothing found",
+        tryDifferentCategory: "Try selecting a different category",
+        showAllAttractions: "Show all attractions",
+        showAllOnMap: "Show all on map",
+        address: "Address",
+        workingHours: "Working hours",
+        price: "Price",
+        route: "Route",
+        details: "Details",
+        addToFavorites: "Add to favorites",
+        removeFromFavorites: "Remove from favorites",
+        back: "Back",
+        duration: "Duration",
+        distance: "Distance",
+        stops: "Route stops",
+        showRouteOnMap: "Show route on map",
+        startNavigation: "Start navigation",
+        emptyFavorites: "Favorites is empty",
+        addToFavoritesHint: "Add places to favorites by clicking the star",
+        exploreAttractions: "Explore attractions",
+        clearAll: "Clear all",
+        placesInFavorites: "places in favorites",
+        choosePlace: "Choose a place for detailed information",
+        allAttractions: "All attractions",
+        cityMap: "Grodno Map",
+        allAttractionsOnMap: "All attractions on the map",
+        chooseRoute: "Choose a route to explore the city",
+        startRoute: "Start route",
+        backToRoutes: "Back to routes",
+        backToList: "Back to list",
+        contacts: "Contacts",
+        phone: "Phone",
+        website: "Website",
+        openSite: "Open website",
+        buildRoute: "Build route",
+        favoritesCount: "places in favorites",
+        clearAllConfirm: "Clear all",
+        routeName: "route",
+        classicRoute: "Classic route through the main attractions",
+        religiousTour: "Introduction to Grodno churches",
+        architecturalRoute: "Walk through architectural masterpieces",
+        parkRelaxation: "Relaxed walk through parks and nature museums",
+        familyRoute: "Family route with zoo and parks",
+        museumTour: "Visiting museums and historical places",
+        mapTemporarilyUnavailable: "Map temporarily unavailable",
+        useListBelow: "Use the list below for navigation",
+        routeOnMap: "on map",
+        routeStops: "Stops",
+        routeInfo: "Route information",
+        classicRouteName: "Historical Center",
+        religiousTourName: "Religious Tour",
+        architecturalRouteName: "Architectural Route",
+        parkRelaxationName: "Park Relaxation",
+        familyRouteName: "Family Route",
+        museumTourName: "Museum Tour",
+
+        // Attractions
+        attractionsData: {
+            1: {
+                name: "Old Castle",
+                description: "Historical fortress on the Neman River bank",
+                fullDescription: "The Old Castle in Grodno is a monument of defensive architecture from the 11th-19th centuries. The first fortifications appeared here in the 11th century. The castle was the residence of Grand Duke Vytautas, and Stefan Batory lived here.",
+                address: "Zamkovaya St, 22",
+                workingHours: "10:00 - 18:00 (Tue-Sun)",
+                price: "7 BYN - adult, 4 BYN - students/schoolchildren"
+            },
+            2: {
+                name: "Farniy Cathedral",
+                description: "Magnificent Catholic cathedral in Baroque style",
+                fullDescription: "The Farniy Cathedral of St. Francis Xavier is one of the most beautiful temples in Belarus. Built in Baroque style in the 17th-18th centuries.",
+                address: "Sovetskaya Sq, 4",
+                workingHours: "07:00 - 20:00 daily",
+                price: "free"
+            },
+            3: {
+                name: "New Castle",
+                description: "Royal palace of the 18th century",
+                fullDescription: "The New Castle was built in 1737-1752 as a summer residence for Polish kings and Grand Dukes of Lithuania.",
+                address: "Zamkovaya St, 20",
+                workingHours: "10:00 - 18:00 (Tue-Sun)",
+                price: "6 BYN - adult, 3 BYN - students/schoolchildren"
+            },
+            4: {
+                name: "Kalozha Church",
+                description: "Unique monument of ancient Russian architecture of the 12th century",
+                fullDescription: "One of the oldest churches in Belarus, built in the 1180s. The uniqueness of the temple lies in the voice resonators (clay vessels) in the walls.",
+                address: "Kalozhskaya St, 6",
+                workingHours: "09:00 - 18:00 daily",
+                price: "free"
+            },
+            5: {
+                name: "Sovetskaya Square",
+                description: "Main square of the historical center",
+                fullDescription: "The central square of Grodno, formerly the Market Square. It has preserved the historical layout from the 16th century.",
+                address: "Sovetskaya Sq",
+                workingHours: "24/7",
+                price: "free"
+            },
+            6: {
+                name: "Grodno Zoo",
+                description: "The oldest zoo in Belarus",
+                fullDescription: "Founded in 1927 by Jan Kohanowski. It houses about 3000 animals of 317 species.",
+                address: "Timiryazeva St, 11",
+                workingHours: "10:00 - 20:00 (summer), 10:00 - 17:00 (winter)",
+                price: "10 BYN - adult, 5 BYN - child"
+            },
+            7: {
+                name: "Borisoglebskaya Church",
+                description: "Ancient Orthodox church of the 12th century",
+                fullDescription: "Borisoglebskaya (Kalozhskaya) Church is one of the oldest temples in Belarus, built in the 12th century. Included in the UNESCO World Heritage List.",
+                address: "Kalozhskaya St, 6",
+                workingHours: "09:00 - 18:00 daily",
+                price: "free"
+            },
+            8: {
+                name: "Eliza Orzeszkowa Museum House",
+                description: "Museum of the famous Belarusian writer",
+                fullDescription: "The house where Eliza Orzeszkowa lived and worked - an outstanding Belarusian writer of the 19th century. The museum tells about her life and work.",
+                address: "Eliza Orzeszkowej St, 22",
+                workingHours: "10:00 - 17:00 (Tue-Sun)",
+                price: "3 BYN - adult, 1.5 BYN - students"
+            },
+            9: {
+                name: "Museum of the History of Religion",
+                description: "Unique museum of religious artifacts",
+                fullDescription: "The Museum of the History of Religion in Grodno is the only museum of its kind in Belarus. It has a collection of items of Christianity, Judaism and other religions.",
+                address: "Zamkovaya St, 16",
+                workingHours: "10:00 - 18:00 (Tue-Sun)",
+                price: "5 BYN - adult, 2.5 BYN - students"
+            },
+            10: {
+                name: "Zhiliber Park",
+                description: "Romantic park with a lake and sculptures",
+                fullDescription: "Zhiliber Park is one of the oldest parks in Grodno, founded in the 19th century. There is a lake, sculptures and cozy alleys for walking.",
+                address: "Gorkogo St, 87",
+                workingHours: "24/7",
+                price: "free"
+            },
+            11: {
+                name: "Town Hall",
+                description: "Historical building of the city administration",
+                fullDescription: "The Grodno Town Hall is an architectural monument of the 17th century. The building has been rebuilt many times, but has preserved its historical appearance.",
+                address: "Sovetskaya Sq, 1",
+                workingHours: "external inspection - 24/7",
+                price: "free"
+            },
+            12: {
+                name: "Great Choir Synagogue",
+                description: "Main synagogue of the Grodno Jewish community",
+                fullDescription: "The Great Choir Synagogue is the center of Jewish religious life in Grodno. Built in the 19th century in the Moorish style.",
+                address: "Bolshaya Troitskaya St, 59a",
+                workingHours: "by appointment",
+                price: "free"
+            },
+            13: {
+                name: "Nature Museum",
+                description: "Museum with a collection of flora and fauna of the region",
+                fullDescription: "The Grodno State Nature Museum introduces visitors to the nature of the Grodno region, its flora and fauna.",
+                address: "Gorkogo St, 85",
+                workingHours: "10:00 - 17:00 (Tue-Sun)",
+                price: "4 BYN - adult, 2 BYN - child"
+            },
+            14: {
+                name: "Victory Square",
+                description: "Memorial square with a monument",
+                fullDescription: "Victory Square is the central square of Grodno, where a monument to Soviet liberating soldiers is installed.",
+                address: "Victory Sq",
+                workingHours: "24/7",
+                price: "free"
+            },
+            15: {
+                name: "Puslovskiy Palace",
+                description: "Neoclassical palace of the 19th century",
+                fullDescription: "The Puslovskiy Palace is a bright example of neoclassical architecture. Built in the 19th century for the wealthy Puslovskiy family.",
+                address: "Dzerzhinskogo St, 19",
+                workingHours: "external inspection - 24/7",
+                price: "free"
+            },
+            16: {
+                name: "Kolozhsky Monastery",
+                description: "Male Orthodox monastery",
+                fullDescription: "Kolozhsky Monastery is one of the oldest monasteries in Belarus. Founded in the 12th century, the Borisoglebskaya Church is located here.",
+                address: "Kalozhskaya St, 6",
+                workingHours: "09:00 - 18:00 daily",
+                price: "free"
+            },
+            17: {
+                name: "Grodno Fortress",
+                description: "Military fortress of the 19th century",
+                fullDescription: "Grodno Fortress is a complex of fortification structures of the 19th century. It includes several forts and fortifications.",
+                address: "Grodno Fortress St",
+                workingHours: "24/7",
+                price: "free"
+            },
+            18: {
+                name: "Grodno History Museum",
+                description: "Museum telling about the history of the city",
+                fullDescription: "The Grodno State Historical and Archaeological Museum introduces the history of Grodno from ancient times to the present day.",
+                address: "Zamkovaya St, 22",
+                workingHours: "10:00 - 18:00 (Tue-Sun)",
+                price: "6 BYN - adult, 3 BYN - students"
+            },
+            19: {
+                name: "Maxim Gorky Park",
+                description: "City park with attractions and cafes",
+                fullDescription: "Maxim Gorky Park is a favorite recreation spot for residents. There are attractions, cafes, a lake and picnic areas.",
+                address: "Gorkogo St",
+                workingHours: "08:00 - 22:00",
+                price: "free"
+            },
+            20: {
+                name: "Fountain on Sovetskaya Square",
+                description: "Beautiful fountain in the city center",
+                fullDescription: "The fountain on Sovetskaya Square is a decoration of the central square of Grodno. Especially beautiful in the evening with lighting.",
+                address: "Sovetskaya Sq",
+                workingHours: "24/7",
+                price: "free"
+            }
+        }
+    }
+};
