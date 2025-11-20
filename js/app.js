@@ -6,6 +6,7 @@ let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
 let map = null;
 let currentCategory = 'all';
 let currentMapCategory = 'all';
+let currentSearch = '';
 
 // Инициализация при загрузке
 document.addEventListener('DOMContentLoaded', function() {
@@ -18,12 +19,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function showAttractions() {
     const content = document.getElementById('content');
-    
+
     content.innerHTML = `
         <div class="fade-in">
             <h2>📍 Достопримечательности</h2>
             <p class="text-muted mb-3">Выберите место для подробной информации</p>
-            
+
+            <!-- Поиск -->
+            <div class="mb-3">
+                <input type="text" id="attractions-search" class="form-control" placeholder="🔍 Поиск по названию..." oninput="searchAttractions()">
+            </div>
+
             <!-- Фильтры по категориям -->
             <div class="mb-4">
                 <div class="dropdown mb-2 d-block d-md-none">
@@ -39,36 +45,36 @@ function showAttractions() {
                         <li><a class="dropdown-item ${currentCategory === 'entertainment' ? 'active' : ''}" href="#" onclick="filterAttractions('entertainment')">🎪 Развлечения</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="btn-group w-100 d-none d-md-flex" role="group">
-                    <button type="button" class="btn ${currentCategory === 'all' ? 'btn-primary' : 'btn-outline-primary'}" 
+                    <button type="button" class="btn ${currentCategory === 'all' ? 'btn-primary' : 'btn-outline-primary'}"
                             onclick="filterAttractions('all')">
                         🌟 Все
                     </button>
-                    <button type="button" class="btn ${currentCategory === 'architecture' ? 'btn-primary' : 'btn-outline-primary'}" 
+                    <button type="button" class="btn ${currentCategory === 'architecture' ? 'btn-primary' : 'btn-outline-primary'}"
                             onclick="filterAttractions('architecture')">
                         🏛️ Архитектура
                     </button>
-                    <button type="button" class="btn ${currentCategory === 'religion' ? 'btn-primary' : 'btn-outline-primary'}" 
+                    <button type="button" class="btn ${currentCategory === 'religion' ? 'btn-primary' : 'btn-outline-primary'}"
                             onclick="filterAttractions('religion')">
                         ⛪ Религия
                     </button>
-                    <button type="button" class="btn ${currentCategory === 'sights' ? 'btn-primary' : 'btn-outline-primary'}" 
+                    <button type="button" class="btn ${currentCategory === 'sights' ? 'btn-primary' : 'btn-outline-primary'}"
                             onclick="filterAttractions('sights')">
                         📸 Достопримечательности
                     </button>
-                    <button type="button" class="btn ${currentCategory === 'entertainment' ? 'btn-primary' : 'btn-outline-primary'}" 
+                    <button type="button" class="btn ${currentCategory === 'entertainment' ? 'btn-primary' : 'btn-outline-primary'}"
                             onclick="filterAttractions('entertainment')">
                         🎪 Развлечения
                     </button>
                 </div>
-                
+
                 <!-- Бейджи активных фильтров для мобильных -->
                 <div class="d-flex flex-wrap gap-2 mt-2 d-block d-md-none">
                     <span class="badge bg-primary">${getCategoryIcon(currentCategory)} ${currentCategory === 'all' ? 'Все категории' : getCategoryName(currentCategory)}</span>
                 </div>
             </div>
-            
+
             <div class="list-group" id="attractions-list">
                 ${renderAttractionsList(currentCategory)}
             </div>
@@ -79,14 +85,14 @@ function showAttractions() {
 function filterAttractions(category) {
     currentCategory = category;
     const attractionsList = document.getElementById('attractions-list');
-    
+
     if (attractionsList) {
         attractionsList.innerHTML = renderAttractionsList(category);
     } else {
         // Если список не найден, перерисовываем весь контент
         showAttractions();
     }
-    
+
     // Обновляем текст в dropdown на мобильных
     const dropdownBtn = document.getElementById('mobileCategoryDropdown');
     if (dropdownBtn) {
@@ -94,24 +100,43 @@ function filterAttractions(category) {
     }
 }
 
+function searchAttractions() {
+    const searchInput = document.getElementById('attractions-search');
+    if (searchInput) {
+        currentSearch = searchInput.value.toLowerCase();
+        const attractionsList = document.getElementById('attractions-list');
+
+        if (attractionsList) {
+            attractionsList.innerHTML = renderAttractionsList(currentCategory);
+        }
+    }
+}
+
 function renderAttractionsList(category = 'all') {
-    const filteredAttractions = category === 'all' 
-        ? attractions 
+    let filteredAttractions = category === 'all'
+        ? attractions
         : attractions.filter(item => item.category === category);
-    
+
+    // Фильтр по поиску
+    if (currentSearch) {
+        filteredAttractions = filteredAttractions.filter(item =>
+            item.name.toLowerCase().includes(currentSearch)
+        );
+    }
+
     if (filteredAttractions.length === 0) {
         return `
             <div class="text-center py-4">
                 <div style="font-size: 48px; margin-bottom: 10px;">🔍</div>
                 <h5>Ничего не найдено</h5>
-                <p class="text-muted">Попробуйте выбрать другую категорию</p>
-                <button class="btn btn-outline-primary" onclick="filterAttractions('all')">
+                <p class="text-muted">Попробуйте изменить поиск или категорию</p>
+                <button class="btn btn-outline-primary" onclick="filterAttractions('all'); document.getElementById('attractions-search').value=''; currentSearch='';">
                     Показать все достопримечательности
                 </button>
             </div>
         `;
     }
-    
+
     return filteredAttractions.map(item => `
         <div class="list-group-item list-group-item-action" onclick="showAttractionDetail(${item.id})">
             <div class="d-flex justify-content-between align-items-start">
@@ -194,12 +219,17 @@ function showAttractionDetail(id) {
 
 function showMap() {
     const content = document.getElementById('content');
-    
+
     content.innerHTML = `
         <div class="fade-in">
             <h2>🗺️ Карта Гродно</h2>
             <p class="text-muted mb-3">Все достопримечательности на карте</p>
-            
+
+            <!-- Поиск -->
+            <div class="mb-3">
+                <input type="text" id="map-search" class="form-control" placeholder="🔍 Поиск по названию..." oninput="searchMap()">
+            </div>
+
             <!-- Фильтры для карты -->
             <div class="mb-4">
                 <div class="dropdown mb-2 d-block d-md-none">
@@ -215,38 +245,38 @@ function showMap() {
                         <li><a class="dropdown-item ${currentMapCategory === 'entertainment' ? 'active' : ''}" href="#" onclick="filterMap('entertainment')">🎪 Развлечения</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="btn-group w-100 d-none d-md-flex flex-wrap" role="group">
-                    <button type="button" class="btn ${currentMapCategory === 'all' ? 'btn-success' : 'btn-outline-success'} mb-1" 
+                    <button type="button" class="btn ${currentMapCategory === 'all' ? 'btn-success' : 'btn-outline-success'} mb-1"
                             onclick="filterMap('all')">
                         🌟 Все
                     </button>
-                    <button type="button" class="btn ${currentMapCategory === 'architecture' ? 'btn-success' : 'btn-outline-success'} mb-1" 
+                    <button type="button" class="btn ${currentMapCategory === 'architecture' ? 'btn-success' : 'btn-outline-success'} mb-1"
                             onclick="filterMap('architecture')">
                         🏛️ Архитектура
                     </button>
-                    <button type="button" class="btn ${currentMapCategory === 'religion' ? 'btn-success' : 'btn-outline-success'} mb-1" 
+                    <button type="button" class="btn ${currentMapCategory === 'religion' ? 'btn-success' : 'btn-outline-success'} mb-1"
                             onclick="filterMap('religion')">
                         ⛪ Религия
                     </button>
-                    <button type="button" class="btn ${currentMapCategory === 'sights' ? 'btn-success' : 'btn-outline-success'} mb-1" 
+                    <button type="button" class="btn ${currentMapCategory === 'sights' ? 'btn-success' : 'btn-outline-success'} mb-1"
                             onclick="filterMap('sights')">
                         📸 Достопримечательности
                     </button>
-                    <button type="button" class="btn ${currentMapCategory === 'entertainment' ? 'btn-success' : 'btn-outline-success'} mb-1" 
+                    <button type="button" class="btn ${currentMapCategory === 'entertainment' ? 'btn-success' : 'btn-outline-success'} mb-1"
                             onclick="filterMap('entertainment')">
                         🎪 Развлечения
                     </button>
                 </div>
-                
+
                 <!-- Бейджи активных фильтров для мобильных -->
                 <div class="d-flex flex-wrap gap-2 mt-2 d-block d-md-none">
                     <span class="badge bg-success">${getCategoryIcon(currentMapCategory)} ${currentMapCategory === 'all' ? 'Все на карте' : getCategoryName(currentMapCategory)}</span>
                 </div>
             </div>
-            
+
             <div id="map" style="height: 400px;"></div>
-            
+
             <div class="mt-3">
                 <div class="list-group" id="map-attractions-list">
                     ${renderMapAttractionsList(currentMapCategory)}
@@ -254,53 +284,81 @@ function showMap() {
             </div>
         </div>
     `;
-    
+
     // Инициализируем карту
     setTimeout(() => initMap(currentMapCategory), 100);
 }
 
 function filterMap(category) {
     currentMapCategory = category;
-    
+
     // Обновляем список достопримечательностей под картой
     const mapAttractionsList = document.getElementById('map-attractions-list');
     if (mapAttractionsList) {
         mapAttractionsList.innerHTML = renderMapAttractionsList(category);
     }
-    
+
     // Обновляем текст в dropdown на мобильных
     const dropdownBtn = document.getElementById('mobileMapCategoryDropdown');
     if (dropdownBtn) {
         dropdownBtn.innerHTML = `${getCategoryIcon(category)} ${category === 'all' ? 'Все на карте' : getCategoryName(category)}`;
     }
-    
+
     // Перерисовываем карту с новыми маркерами
     if (map) {
         map.remove();
         map = null;
     }
-    
+
     setTimeout(() => initMap(category), 50);
 }
 
+function searchMap() {
+    const searchInput = document.getElementById('map-search');
+    if (searchInput) {
+        currentSearch = searchInput.value.toLowerCase();
+
+        // Обновляем список
+        const mapAttractionsList = document.getElementById('map-attractions-list');
+        if (mapAttractionsList) {
+            mapAttractionsList.innerHTML = renderMapAttractionsList(currentMapCategory);
+        }
+
+        // Перерисовываем карту
+        if (map) {
+            map.remove();
+            map = null;
+        }
+
+        setTimeout(() => initMap(currentMapCategory), 50);
+    }
+}
+
 function renderMapAttractionsList(category = 'all') {
-    const filteredAttractions = category === 'all' 
-        ? attractions 
+    let filteredAttractions = category === 'all'
+        ? attractions
         : attractions.filter(item => item.category === category);
-    
+
+    // Фильтр по поиску
+    if (currentSearch) {
+        filteredAttractions = filteredAttractions.filter(item =>
+            item.name.toLowerCase().includes(currentSearch)
+        );
+    }
+
     if (filteredAttractions.length === 0) {
         return `
             <div class="text-center py-4">
                 <div style="font-size: 48px; margin-bottom: 10px;">🗺️</div>
                 <h5>Ничего не найдено</h5>
-                <p class="text-muted">Попробуйте выбрать другую категорию</p>
-                <button class="btn btn-outline-success" onclick="filterMap('all')">
+                <p class="text-muted">Попробуйте изменить поиск или категорию</p>
+                <button class="btn btn-outline-success" onclick="filterMap('all'); document.getElementById('map-search').value=''; currentSearch='';">
                     Показать все на карте
                 </button>
             </div>
         `;
     }
-    
+
     return filteredAttractions.map(item => `
         <div class="list-group-item">
             <div class="d-flex justify-content-between align-items-center">
@@ -310,11 +368,11 @@ function renderMapAttractionsList(category = 'all') {
                     <span class="badge bg-success small">${getCategoryIcon(item.category)} ${getCategoryName(item.category)}</span>
                 </div>
                 <div class="d-flex flex-column gap-1 ms-2">
-                    <button class="btn btn-sm btn-outline-primary" 
+                    <button class="btn btn-sm btn-outline-primary"
                             onclick="openInMaps(${item.coords.lat}, ${item.coords.lng})">
                         🗺️
                     </button>
-                    <button class="btn btn-sm btn-outline-info" 
+                    <button class="btn btn-sm btn-outline-info"
                             onclick="showAttractionDetail(${item.id})">
                         ℹ️
                     </button>
@@ -336,13 +394,20 @@ function initMap(category = 'all') {
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
         
-        // Фильтруем места по категории
-        const filteredPlaces = category === 'all' 
-            ? attractions 
+        // Фильтруем места по категории и поиску
+        let filteredPlaces = category === 'all'
+            ? attractions
             : attractions.filter(place => place.category === category);
+
+        if (currentSearch) {
+            filteredPlaces = filteredPlaces.filter(place =>
+                place.name.toLowerCase().includes(currentSearch)
+            );
+        }
         
         // Добавляем маркеры
         filteredPlaces.forEach(place => {
+            const isFavorite = favorites.includes(place.id);
             const marker = L.marker([place.coords.lat, place.coords.lng])
                 .addTo(map)
                 .bindPopup(`
@@ -352,13 +417,17 @@ function initMap(category = 'all') {
                         <p class="mb-1 small">${place.description}</p>
                         <p class="mb-2 small"><strong>📍 Адрес:</strong> ${place.address}</p>
                         <div class="d-grid gap-1">
-                            <button onclick="openInMaps(${place.coords.lat}, ${place.coords.lng})" 
+                            <button onclick="openInMaps(${place.coords.lat}, ${place.coords.lng})"
                                     style="background: #28a745; color: white; border: none; padding: 6px; border-radius: 4px; font-size: 12px;">
                                 🗺️ Маршрут
                             </button>
-                            <button onclick="showAttractionDetail(${place.id})" 
+                            <button onclick="showAttractionDetail(${place.id})"
                                     style="background: #007bff; color: white; border: none; padding: 6px; border-radius: 4px; font-size: 12px;">
                                 ℹ️ Подробнее
+                            </button>
+                            <button onclick="${isFavorite ? `removeFromFavorites(${place.id})` : `addToFavorites(${place.id})`}; this.closest('.leaflet-popup').remove();"
+                                    style="background: ${isFavorite ? '#ffc107' : '#6f42c1'}; color: white; border: none; padding: 6px; border-radius: 4px; font-size: 12px;">
+                                ${isFavorite ? '❌ Удалить из избранного' : '⭐ Добавить в избранное'}
                             </button>
                         </div>
                     </div>
