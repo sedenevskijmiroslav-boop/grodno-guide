@@ -490,7 +490,60 @@ function showRoutes() {
 
 function startRoute(routeId) {
     const route = routes.find(r => r.id === routeId);
-    tg.showAlert(`Начинаем маршрут: "${route.name}"`);
+    const content = document.getElementById('content');
+
+    content.innerHTML = `
+        <button class="btn btn-secondary mb-3" onclick="showRoutes()">← Назад к маршрутам</button>
+
+        <div class="card fade-in">
+            <div class="card-body">
+                <h2 class="card-title">${route.name}</h2>
+                <p class="card-text">${route.description}</p>
+                <div class="route-info mb-4">
+                    <div class="row">
+                        <div class="col-6">
+                            <strong>⏱️ Длительность:</strong> ${route.duration}
+                        </div>
+                        <div class="col-6">
+                            <strong>📏 Расстояние:</strong> ${route.distance}
+                        </div>
+                    </div>
+                </div>
+
+                <h5 class="mb-3">🚶 Остановки маршрута:</h5>
+                <div class="list-group mb-4">
+                    ${route.stops.map((stopId, index) => {
+                        const place = attractions.find(a => a.id === stopId);
+                        return `
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>${index + 1}. ${place.name}</strong>
+                                    <br><small class="text-muted">${place.address}</small>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-sm btn-outline-info" onclick="showAttractionDetail(${place.id})">
+                                        ℹ️
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="openInMaps(${place.coords.lat}, ${place.coords.lng})">
+                                        🗺️
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button class="btn btn-success btn-lg" onclick="showRouteOnMap(${routeId})">
+                        🗺️ Показать маршрут на карте
+                    </button>
+                    <button class="btn btn-primary" onclick="startRouteNavigation(${routeId})">
+                        🚶 Начать навигацию
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
 }
 
 // ==================== ИЗБРАННОЕ ====================
@@ -610,4 +663,97 @@ function getPluralForm(number, forms) {
 function openInMaps(lat, lng) {
     const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=walking`;
     tg.openLink(url);
+}
+
+function showRouteOnMap(routeId) {
+    const route = routes.find(r => r.id === routeId);
+    const content = document.getElementById('content');
+
+    content.innerHTML = `
+        <button class="btn btn-secondary mb-3" onclick="startRoute(${routeId})">← Назад к маршруту</button>
+
+        <div class="fade-in">
+            <h2>🗺️ ${route.name} на карте</h2>
+            <p class="text-muted mb-3">Маршрут с остановками</p>
+
+            <div id="route-map" style="height: 500px;"></div>
+
+            <div class="mt-3">
+                <h5>🚶 Остановки:</h5>
+                <div class="list-group">
+                    ${route.stops.map((stopId, index) => {
+                        const place = attractions.find(a => a.id === stopId);
+                        return `
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>${index + 1}. ${place.name}</strong>
+                                    <br><small class="text-muted">${place.address}</small>
+                                </div>
+                                <button class="btn btn-sm btn-outline-info" onclick="showAttractionDetail(${place.id})">
+                                    ℹ️
+                                </button>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+        </div>
+    `;
+
+    setTimeout(() => initRouteMap(route), 100);
+}
+
+function initRouteMap(route) {
+    try {
+        const map = L.map('route-map').setView([53.6780, 23.8293], 14);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        const latlngs = [];
+        route.stops.forEach((stopId, index) => {
+            const place = attractions.find(a => a.id === stopId);
+            latlngs.push([place.coords.lat, place.coords.lng]);
+
+            const marker = L.marker([place.coords.lat, place.coords.lng])
+                .addTo(map)
+                .bindPopup(`
+                    <div style="min-width: 200px;">
+                        <h6>${index + 1}. ${place.name}</h6>
+                        <p class="mb-1 small">${place.description}</p>
+                        <p class="mb-2 small"><strong>📍 Адрес:</strong> ${place.address}</p>
+                        <div class="d-grid gap-1">
+                            <button onclick="showAttractionDetail(${place.id})"
+                                    style="background: #007bff; color: white; border: none; padding: 6px; border-radius: 4px; font-size: 12px;">
+                                ℹ️ Подробнее
+                            </button>
+                        </div>
+                    </div>
+                `);
+        });
+
+        // Рисуем линию маршрута
+        L.polyline(latlngs, {color: 'blue', weight: 3, opacity: 0.7}).addTo(map);
+
+        // Подгоняем карту под маршрут
+        map.fitBounds(latlngs);
+
+    } catch (error) {
+        console.error('Ошибка загрузки карты маршрута:', error);
+        document.getElementById('route-map').innerHTML = `
+            <div class="alert alert-warning text-center p-4">
+                <h5>🗺️ Карта временно недоступна</h5>
+            </div>
+        `;
+    }
+}
+
+function startRouteNavigation(routeId) {
+    const route = routes.find(r => r.id === routeId);
+    if (route.stops.length > 0) {
+        const firstStop = attractions.find(a => a.id === route.stops[0]);
+        tg.showAlert(`Начинаем маршрут "${route.name}" с первой остановки: ${firstStop.name}`);
+        openInMaps(firstStop.coords.lat, firstStop.coords.lng);
+    }
 }
