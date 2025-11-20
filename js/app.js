@@ -7,6 +7,7 @@ let map = null;
 let currentCategory = 'all';
 let currentMapCategory = 'all';
 let currentSearch = '';
+let showOnlyFavorites = false;
 
 // Инициализация при загрузке
 document.addEventListener('DOMContentLoaded', function() {
@@ -225,9 +226,18 @@ function showMap() {
             <h2>🗺️ Карта Гродно</h2>
             <p class="text-muted mb-3">Все достопримечательности на карте</p>
 
-            <!-- Поиск -->
+            <!-- Поиск и фильтры -->
             <div class="mb-3">
-                <input type="text" id="map-search" class="form-control" placeholder="🔍 Поиск по названию..." oninput="searchMap()">
+                <div class="row">
+                    <div class="col-8">
+                        <input type="text" id="map-search" class="form-control" placeholder="🔍 Поиск по названию..." oninput="searchMap()">
+                    </div>
+                    <div class="col-4">
+                        <button class="btn ${showOnlyFavorites ? 'btn-warning' : 'btn-outline-warning'} w-100" onclick="toggleFavoritesFilter()">
+                            ${showOnlyFavorites ? '⭐ Только избранное' : '⭐ Показать избранное'}
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <!-- Фильтры для карты -->
@@ -334,10 +344,40 @@ function searchMap() {
     }
 }
 
+function toggleFavoritesFilter() {
+    showOnlyFavorites = !showOnlyFavorites;
+
+    // Обновляем кнопку
+    const button = document.querySelector('button[onclick="toggleFavoritesFilter()"]');
+    if (button) {
+        button.className = `btn ${showOnlyFavorites ? 'btn-warning' : 'btn-outline-warning'} w-100`;
+        button.innerHTML = showOnlyFavorites ? '⭐ Только избранное' : '⭐ Показать избранное';
+    }
+
+    // Обновляем список
+    const mapAttractionsList = document.getElementById('map-attractions-list');
+    if (mapAttractionsList) {
+        mapAttractionsList.innerHTML = renderMapAttractionsList(currentMapCategory);
+    }
+
+    // Перерисовываем карту
+    if (map) {
+        map.remove();
+        map = null;
+    }
+
+    setTimeout(() => initMap(currentMapCategory), 50);
+}
+
 function renderMapAttractionsList(category = 'all') {
     let filteredAttractions = category === 'all'
         ? attractions
         : attractions.filter(item => item.category === category);
+
+    // Фильтр по избранному
+    if (showOnlyFavorites) {
+        filteredAttractions = filteredAttractions.filter(item => favorites.includes(item.id));
+    }
 
     // Фильтр по поиску
     if (currentSearch) {
@@ -394,10 +434,14 @@ function initMap(category = 'all') {
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
         
-        // Фильтруем места по категории и поиску
+        // Фильтруем места по категории, избранному и поиску
         let filteredPlaces = category === 'all'
             ? attractions
             : attractions.filter(place => place.category === category);
+
+        if (showOnlyFavorites) {
+            filteredPlaces = filteredPlaces.filter(place => favorites.includes(place.id));
+        }
 
         if (currentSearch) {
             filteredPlaces = filteredPlaces.filter(place =>
@@ -408,7 +452,16 @@ function initMap(category = 'all') {
         // Добавляем маркеры
         filteredPlaces.forEach(place => {
             const isFavorite = favorites.includes(place.id);
-            const marker = L.marker([place.coords.lat, place.coords.lng])
+            const iconHtml = getMarkerIcon(place.category, isFavorite);
+
+            const customIcon = L.divIcon({
+                html: iconHtml,
+                className: 'custom-marker',
+                iconSize: [30, 30],
+                iconAnchor: [15, 30]
+            });
+
+            const marker = L.marker([place.coords.lat, place.coords.lng], { icon: customIcon })
                 .addTo(map)
                 .bindPopup(`
                     <div style="min-width: 200px;">
@@ -432,7 +485,7 @@ function initMap(category = 'all') {
                         </div>
                     </div>
                 `);
-            
+
             // Добавляем анимацию при наведении
             marker.on('mouseover', function() {
                 this.openPopup();
@@ -658,6 +711,18 @@ function getCategoryName(category) {
 function getPluralForm(number, forms) {
     const cases = [2, 0, 1, 1, 1, 2];
     return forms[(number % 100 > 4 && number % 100 < 20) ? 2 : cases[Math.min(number % 10, 5)]];
+}
+
+function getMarkerIcon(category, isFavorite) {
+    const icons = {
+        'architecture': '🏛️',
+        'religion': '⛪',
+        'sights': '📸',
+        'entertainment': '🎪'
+    };
+    const baseIcon = icons[category] || '📍';
+    const favoriteStar = isFavorite ? '⭐' : '';
+    return `<div style="font-size: 24px; text-align: center;">${baseIcon}${favoriteStar}</div>`;
 }
 
 function openInMaps(lat, lng) {
