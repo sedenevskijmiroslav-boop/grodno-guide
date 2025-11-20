@@ -11,6 +11,11 @@
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
     
@@ -34,13 +39,13 @@
                 </button>
             </div>
         </div>
-        <div class="text-center mb-4">
+        <div class="text-center mb-4 fade-in">
             <h1 id="welcome-title">🏰 Добро пожаловать в Гродно!</h1>
             <p class="text-muted" id="welcome-subtitle">Выберите раздел для исследования города</p>
         </div>
-        
-        <div class="d-grid gap-2">
-            <button class="btn btn-primary btn-lg" onclick="showAttractions()" id="btn-attractions">
+
+        <div class="d-grid gap-2 fade-in-delay">
+            <button class="btn btn-primary btn-lg pulse" onclick="showAttractions()" id="btn-attractions">
                 📍 Достопримечательности
             </button>
             <button class="btn btn-success btn-lg" onclick="showMap()" id="btn-map">
@@ -52,7 +57,7 @@
             <button class="btn btn-warning btn-lg" onclick="showFavorites()" id="btn-favorites">
                 ⭐ Избранное
             </button>
-            <button class="btn btn-secondary btn-lg" onclick="showProfile()">
+            <button class="btn btn-secondary btn-lg" onclick="showProfile()" id="btn-profile">
                 👤 Личный кабинет
             </button>
         </div>

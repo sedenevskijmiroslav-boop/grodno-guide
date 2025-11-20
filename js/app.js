@@ -229,8 +229,8 @@ function showAttractionDetail(id) {
                         ${isFavorite ? '❌ ' + t('removeFromFavorites') : '⭐ ' + t('addToFavorites')}
                     </button>
 
-                    <button class="btn btn-outline-success" onclick="markAsVisited(${item.id})">
-                        ✅ ${t('markedAsVisited')}
+                    <button class="btn ${visited.includes(item.id) ? 'btn-success' : 'btn-outline-success'}" onclick="${visited.includes(item.id) ? '' : `markAsVisited(${item.id})`}" ${visited.includes(item.id) ? 'disabled' : ''}>
+                        ✅ ${visited.includes(item.id) ? t('visited') : t('markAsVisited')}
                     </button>
 
                     ${item.website ? `
@@ -244,7 +244,7 @@ function showAttractionDetail(id) {
                     <h6>${t('review')}:</h6>
                     <textarea id="review-${item.id}" class="form-control mb-2" rows="3" placeholder="${t('review')}...">${reviews[item.id] || ''}</textarea>
                     <button class="btn btn-primary btn-sm" onclick="saveReview(${item.id})">
-                        💬 ${t('reviewSaved')}
+                        💬 ${t('saveReview')}
                     </button>
                 </div>
             </div>
@@ -765,7 +765,7 @@ function showProfile() {
 
     content.innerHTML = `
         <div class="fade-in">
-            <h2>👤 ${t('profile')}</h2>
+            <h2>${t('profile')}</h2>
             <p class="text-muted mb-3">${visited.length} ${t('visitedPlaces')}</p>
 
             <div class="list-group">
@@ -805,7 +805,8 @@ function markAsVisited(attractionId) {
     if (!visited.includes(attractionId)) {
         visited.push(attractionId);
         localStorage.setItem('visited', JSON.stringify(visited));
-        tg.showAlert('✅ ' + t('markedAsVisited'));
+        tg.showAlert('✅ ' + t('markedAsVisitedMessage'));
+        showAttractionDetail(currentAttractionId);
     }
 }
 
@@ -1047,6 +1048,9 @@ function refreshCurrentView() {
         case 'favorites':
             showFavorites();
             break;
+        case 'profile':
+            showProfile();
+            break;
         case 'route-detail':
             if (currentRouteId) startRoute(currentRouteId);
             break;
@@ -1071,6 +1075,7 @@ function updateLanguage() {
     document.getElementById('btn-map').textContent = t.map;
     document.getElementById('btn-routes').textContent = t.routes;
     document.getElementById('btn-favorites').textContent = t.favorites;
+    document.getElementById('btn-profile').textContent = t.profile;
 
     // Обновляем кнопки темы и языка
     const themeToggle = document.getElementById('theme-toggle');
