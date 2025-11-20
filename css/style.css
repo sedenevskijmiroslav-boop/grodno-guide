@@ -1,94 +1,170 @@
+/* Переменные для тем */
+:root {
+    --bg-color: #000000;
+    --container-bg: #1a1a1a;
+    --text-color: #ffffff;
+    --muted-text: #aaaaaa;
+    --border-color: #333333;
+    --card-bg: #222222;
+    --list-bg: #2a2a2a;
+    --info-bg: #333333;
+    --contacts-bg: #2a2a2a;
+    --marker-bg: #333333;
+    --marker-border: #ffd700;
+    --btn-primary: #ffd700;
+    --btn-success: #333333;
+    --btn-info: #444444;
+    --btn-outline: #666666;
+    --shadow: rgba(0,0,0,0.3);
+    --shadow-hover: rgba(0,0,0,0.4);
+}
+
+body.light-theme {
+    --bg-color: #f8f8f8;
+    --container-bg: #ffffff;
+    --text-color: #333333;
+    --muted-text: #666666;
+    --border-color: #e0e0e0;
+    --card-bg: #f9f9f9;
+    --list-bg: #ffffff;
+    --info-bg: #f0f0f0;
+    --contacts-bg: #f5f5f5;
+    --marker-bg: #ffffff;
+    --marker-border: #007bff;
+    --btn-primary: #007bff;
+    --btn-success: #28a745;
+    --btn-info: #17a2b8;
+    --btn-outline: #6c757d;
+    --shadow: rgba(0,0,0,0.1);
+    --shadow-hover: rgba(0,0,0,0.15);
+}
+
 /* Основные стили */
 body {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--bg-color);
     min-height: 100vh;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-color);
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 .container {
-    background: white;
-    border-radius: 20px;
+    background: var(--container-bg);
+    border-radius: 15px;
     padding: 20px;
     margin-top: 10px;
     margin-bottom: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 15px var(--shadow);
+    border: 1px solid var(--border-color);
+    transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 /* Кнопки */
 .btn {
-    border-radius: 12px;
-    padding: 15px;
-    font-weight: 600;
-    transition: all 0.3s ease;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-weight: 500;
+    transition: all 0.2s ease;
     margin-bottom: 8px;
+    border: 1px solid var(--border-color);
 }
 
 .btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px var(--shadow-hover);
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border: none;
+    background: var(--btn-primary);
+    border-color: var(--btn-primary);
+    color: var(--text-color);
 }
 
 .btn-success {
-    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-    border: none;
+    background: var(--btn-success);
+    border-color: var(--btn-success);
+    color: var(--text-color);
 }
 
 .btn-info {
-    background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%);
-    border: none;
+    background: var(--btn-info);
+    border-color: var(--btn-outline);
+    color: var(--text-color);
 }
 
 .btn-warning {
-    background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
-    border: none;
+    background: var(--btn-primary);
+    border-color: var(--btn-primary);
+    color: var(--bg-color);
+}
+
+.btn-outline-primary {
+    border-color: var(--btn-primary);
+    color: var(--btn-primary);
+    background: transparent;
+}
+
+.btn-outline-success {
+    border-color: var(--btn-outline);
+    color: var(--text-color);
+    background: transparent;
+}
+
+.btn-outline-warning {
+    border-color: var(--btn-primary);
+    color: var(--btn-primary);
+    background: transparent;
 }
 
 /* Карточки */
 .card {
-    border: none;
-    border-radius: 16px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px var(--shadow);
     margin-bottom: 20px;
+    background: var(--card-bg);
+    transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .card-body {
-    padding: 25px;
+    padding: 20px;
 }
 
 /* Списки */
 .list-group-item {
-    border-radius: 12px !important;
-    margin-bottom: 12px;
-    border: none;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
+    border-radius: 8px !important;
+    margin-bottom: 10px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 8px var(--shadow);
+    transition: all 0.2s ease;
     cursor: pointer;
+    background: var(--list-bg);
+    color: var(--text-color);
 }
 
 .list-group-item:hover {
-    transform: translateX(5px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transform: translateX(3px);
+    box-shadow: 0 4px 12px var(--shadow-hover);
+    background: var(--info-bg);
 }
 
 /* Информационные карточки */
 .info-card {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border-radius: 12px;
-    padding: 20px;
+    background: var(--info-bg);
+    color: var(--text-color);
+    border-radius: 10px;
+    padding: 18px;
     margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 .contacts-card {
-    background: #f8f9fa;
-    border-radius: 10px;
+    background: var(--contacts-bg);
+    border-radius: 8px;
     padding: 15px;
-    border-left: 4px solid #667eea;
+    border-left: 3px solid var(--btn-primary);
+    transition: background 0.3s ease;
 }
 
 /* Анимации */
@@ -109,8 +185,9 @@ body {
 
 /* Карта */
 .leaflet-container {
-    border-radius: 15px;
-    border: 3px solid #667eea;
+    border-radius: 12px;
+    border: 2px solid var(--border-color);
+    transition: border-color 0.3s ease;
 }
 
 /* Кастомные маркеры */
@@ -120,22 +197,26 @@ body {
 }
 
 .custom-marker div {
-    background: white;
+    background: var(--marker-bg);
     border-radius: 50%;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-    border: 2px solid #667eea;
+    box-shadow: 0 2px 6px var(--shadow);
+    border: 2px solid var(--marker-border);
     display: flex;
     align-items: center;
     justify-content: center;
     width: 30px;
     height: 30px;
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* Бейджи */
 .badge {
-    font-size: 0.9em;
-    padding: 8px 12px;
-    border-radius: 20px;
+    font-size: 0.85em;
+    padding: 6px 10px;
+    border-radius: 15px;
+    background: var(--btn-primary);
+    color: var(--bg-color);
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* Адаптивность */
@@ -144,33 +225,40 @@ body {
         margin-top: 5px;
         margin-bottom: 5px;
         padding: 15px;
+        border-radius: 10px;
     }
-    
+
     .btn {
-        padding: 12px;
+        padding: 10px 14px;
         font-size: 14px;
+        border-radius: 6px;
     }
-    
+
     .card-body {
-        padding: 20px;
+        padding: 18px;
+    }
+
+    .info-card {
+        padding: 15px;
     }
 }
 
 /* Утилиты */
 .text-muted {
-    color: #6c757d !important;
+    color: var(--muted-text) !important;
 }
 
 .back-btn {
-    background: #6c757d;
-    color: white;
-    border: none;
-    border-radius: 10px;
+    background: var(--info-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
     padding: 10px 20px;
     margin-bottom: 20px;
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 .back-btn:hover {
-    background: #5a6268;
+    background: var(--card-bg);
     transform: translateY(-2px);
 }

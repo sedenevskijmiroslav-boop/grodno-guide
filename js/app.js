@@ -850,3 +850,31 @@ function startRouteNavigation(routeId) {
         openInMaps(firstStop.coords.lat, firstStop.coords.lng);
     }
 }
+
+function toggleTheme() {
+    const body = document.body;
+    const themeToggle = document.getElementById('theme-toggle');
+
+    if (body.classList.contains('light-theme')) {
+        body.classList.remove('light-theme');
+        themeToggle.innerHTML = '🌙';
+        localStorage.setItem('theme', 'dark');
+    } else {
+        body.classList.add('light-theme');
+        themeToggle.innerHTML = '☀️';
+        localStorage.setItem('theme', 'light');
+    }
+}
+
+// Загрузка темы при запуске
+document.addEventListener('DOMContentLoaded', function() {
+    const savedTheme = localStorage.getItem('theme');
+    const themeToggle = document.getElementById('theme-toggle');
+
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-theme');
+        themeToggle.innerHTML = '☀️';
+    } else {
+        themeToggle.innerHTML = '🌙';
+    }
+});
