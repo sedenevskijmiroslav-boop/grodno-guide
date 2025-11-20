@@ -3,6 +3,8 @@ const tg = window.Telegram.WebApp;
 
 // Глобальные переменные
 let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+let visited = JSON.parse(localStorage.getItem('visited')) || [];
+let reviews = JSON.parse(localStorage.getItem('reviews')) || {};
 let map = null;
 let currentCategory = 'all';
 let currentMapCategory = 'all';
@@ -227,11 +229,23 @@ function showAttractionDetail(id) {
                         ${isFavorite ? '❌ ' + t('removeFromFavorites') : '⭐ ' + t('addToFavorites')}
                     </button>
 
+                    <button class="btn btn-outline-success" onclick="markAsVisited(${item.id})">
+                        ✅ ${t('markedAsVisited')}
+                    </button>
+
                     ${item.website ? `
                         <button class="btn btn-info" onclick="tg.openLink('${item.website}')">
                             🌐 ${t('openSite')}
                         </button>
                     ` : ''}
+                </div>
+
+                <div class="mt-4">
+                    <h6>${t('review')}:</h6>
+                    <textarea id="review-${item.id}" class="form-control mb-2" rows="3" placeholder="${t('review')}...">${reviews[item.id] || ''}</textarea>
+                    <button class="btn btn-primary btn-sm" onclick="saveReview(${item.id})">
+                        💬 ${t('reviewSaved')}
+                    </button>
                 </div>
             </div>
         </div>
@@ -725,6 +739,97 @@ function clearAllFavorites() {
     localStorage.setItem('favorites', JSON.stringify(favorites));
     tg.showAlert('🗑️ ' + t('clearAllConfirm') + '!');
     showFavorites();
+}
+
+// ==================== ЛИЧНЫЙ КАБИНЕТ ====================
+
+function showProfile() {
+    currentView = 'profile';
+    const content = document.getElementById('content');
+
+    if (visited.length === 0) {
+        content.innerHTML = `
+            <div class="text-center py-5">
+                <div style="font-size: 64px; margin-bottom: 20px;">👤</div>
+                <h3>${t('profile')}</h3>
+                <p class="text-muted">${t('noVisitedPlaces')}</p>
+                <button class="btn btn-primary mt-3" onclick="showAttractions()">
+                    ${t('exploreAttractions')}
+                </button>
+            </div>
+        `;
+        return;
+    }
+
+    const visitedItems = attractions.filter(item => visited.includes(item.id));
+
+    content.innerHTML = `
+        <div class="fade-in">
+            <h2>👤 ${t('profile')}</h2>
+            <p class="text-muted mb-3">${visited.length} ${t('visitedPlaces')}</p>
+
+            <div class="list-group">
+                ${visitedItems.map(item => `
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="flex-grow-1" onclick="showAttractionDetail(${item.id})" style="cursor: pointer;">
+                                <h5 class="mb-1">${getAttractionText(item, 'name')} ✅</h5>
+                                <p class="mb-1 text-muted small">${getAttractionText(item, 'description')}</p>
+                                <small class="text-muted">${getAttractionText(item, 'address')}</small>
+                                <br>
+                                <span class="badge bg-success">${getCategoryIcon(item.category)} ${getCategoryName(item.category)}</span>
+                            </div>
+                            <div class="text-end ms-2">
+                                ${reviews[item.id] ? `
+                                    <div class="mt-2">
+                                        <small class="text-muted">${t('review')}:</small>
+                                        <p class="mb-0 small">${reviews[item.id]}</p>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+
+            <div class="mt-3 text-center">
+                <button class="btn btn-outline-danger" onclick="clearAllVisited()">
+                    🗑️ ${t('clearAllVisited')}
+                </button>
+            </div>
+        </div>
+    `;
+}
+
+function markAsVisited(attractionId) {
+    if (!visited.includes(attractionId)) {
+        visited.push(attractionId);
+        localStorage.setItem('visited', JSON.stringify(visited));
+        tg.showAlert('✅ ' + t('markedAsVisited'));
+    }
+}
+
+function saveReview(attractionId) {
+    const reviewText = document.getElementById(`review-${attractionId}`).value.trim();
+    if (reviewText) {
+        reviews[attractionId] = reviewText;
+        localStorage.setItem('reviews', JSON.stringify(reviews));
+        tg.showAlert('💬 ' + t('reviewSaved'));
+    }
+}
+
+function clearAllVisited() {
+    if (visited.length === 0) {
+        tg.showAlert('📭 ' + t('noVisitedPlaces'));
+        return;
+    }
+
+    visited = [];
+    reviews = {};
+    localStorage.setItem('visited', JSON.stringify(visited));
+    localStorage.setItem('reviews', JSON.stringify(reviews));
+    tg.showAlert('🗑️ ' + t('allVisitedCleared'));
+    showProfile();
 }
 
 // ==================== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ====================
