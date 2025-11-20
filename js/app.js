@@ -776,12 +776,22 @@ function initRouteMap(route) {
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
-        const latlngs = [];
+        const waypoints = [];
         route.stops.forEach((stopId, index) => {
             const place = attractions.find(a => a.id === stopId);
-            latlngs.push([place.coords.lat, place.coords.lng]);
+            waypoints.push(L.latLng(place.coords.lat, place.coords.lng));
 
-            const marker = L.marker([place.coords.lat, place.coords.lng])
+            const isFavorite = favorites.includes(place.id);
+            const iconHtml = getMarkerIcon(place.category, isFavorite);
+
+            const customIcon = L.divIcon({
+                html: iconHtml,
+                className: 'custom-marker',
+                iconSize: [30, 30],
+                iconAnchor: [15, 30]
+            });
+
+            const marker = L.marker([place.coords.lat, place.coords.lng], { icon: customIcon })
                 .addTo(map)
                 .bindPopup(`
                     <div style="min-width: 200px;">
@@ -798,11 +808,29 @@ function initRouteMap(route) {
                 `);
         });
 
-        // Рисуем линию маршрута
-        L.polyline(latlngs, {color: 'blue', weight: 3, opacity: 0.7}).addTo(map);
+        // Строим маршрут с routing
+        if (waypoints.length > 1) {
+            L.Routing.control({
+                waypoints: waypoints,
+                routeWhileDragging: false,
+                createMarker: () => null, // Не создавать дополнительные маркеры
+                lineOptions: {
+                    styles: [{ color: 'blue', weight: 4, opacity: 0.7 }]
+                },
+                router: L.Routing.osrmv1({
+                    serviceUrl: 'https://router.project-osrm.org/route/v1',
+                    profile: 'foot' // Пешеходный режим
+                }),
+                addWaypoints: false,
+                draggableWaypoints: false
+            }).addTo(map);
+        }
 
         // Подгоняем карту под маршрут
-        map.fitBounds(latlngs);
+        if (waypoints.length > 0) {
+            const bounds = L.latLngBounds(waypoints);
+            map.fitBounds(bounds, { padding: [20, 20] });
+        }
 
     } catch (error) {
         console.error('Ошибка загрузки карты маршрута:', error);
