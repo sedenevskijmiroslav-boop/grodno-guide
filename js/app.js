@@ -29,6 +29,30 @@ function getAttractionText(attraction, field) {
     return attraction[field];
 }
 
+// Функция для проверки соответствия поиска по обоим языкам
+function matchSearch(item, search) {
+    if (!search) return true;
+    const searchLower = search.toLowerCase();
+
+    // Проверяем русские поля
+    const ruData = translations.ru.attractionsData[item.id];
+    if (ruData) {
+        if (ruData.name.toLowerCase().includes(searchLower)) return true;
+        if (ruData.description.toLowerCase().includes(searchLower)) return true;
+        if (ruData.address && ruData.address.toLowerCase().includes(searchLower)) return true;
+    }
+
+    // Проверяем английские поля
+    const enData = translations.en.attractionsData[item.id];
+    if (enData) {
+        if (enData.name.toLowerCase().includes(searchLower)) return true;
+        if (enData.description.toLowerCase().includes(searchLower)) return true;
+        if (enData.address && enData.address.toLowerCase().includes(searchLower)) return true;
+    }
+
+    return false;
+}
+
 
 // Инициализация при загрузке
 document.addEventListener('DOMContentLoaded', function() {
@@ -142,11 +166,7 @@ function renderAttractionsList(category = 'all') {
 
     // Фильтр по поиску
     if (currentSearch) {
-        filteredAttractions = filteredAttractions.filter(item =>
-            getAttractionText(item, 'name').toLowerCase().includes(currentSearch) ||
-            getAttractionText(item, 'description').toLowerCase().includes(currentSearch) ||
-            getAttractionText(item, 'address').toLowerCase().includes(currentSearch)
-        );
+        filteredAttractions = filteredAttractions.filter(item => matchSearch(item, currentSearch));
     }
 
     if (filteredAttractions.length === 0) {
@@ -427,11 +447,7 @@ function renderMapAttractionsList(category = 'all') {
 
     // Фильтр по поиску
     if (currentSearch) {
-        filteredAttractions = filteredAttractions.filter(item =>
-            getAttractionText(item, 'name').toLowerCase().includes(currentSearch) ||
-            getAttractionText(item, 'description').toLowerCase().includes(currentSearch) ||
-            getAttractionText(item, 'address').toLowerCase().includes(currentSearch)
-        );
+        filteredAttractions = filteredAttractions.filter(item => matchSearch(item, currentSearch));
     }
 
     if (filteredAttractions.length === 0) {
@@ -492,9 +508,7 @@ function initMap(category = 'all') {
         }
 
         if (currentSearch) {
-            filteredPlaces = filteredPlaces.filter(place =>
-                place.name.toLowerCase().includes(currentSearch)
-            );
+            filteredPlaces = filteredPlaces.filter(place => matchSearch(place, currentSearch));
         }
         
         // Добавляем маркеры
