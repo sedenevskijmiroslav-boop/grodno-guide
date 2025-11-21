@@ -533,6 +533,7 @@ function initMap(category = 'all') {
                 .addTo(map)
                 .bindPopup(`
                     <div style="min-width: 200px;">
+                        ${place.image ? `<img src="${place.image}" alt="${getAttractionText(place, 'name')}" style="width: 100%; height: 120px; object-fit: cover; border-radius: 4px; margin-bottom: 8px;">` : ''}
                         <h6 class="mb-1">${getAttractionText(place, 'name')}</h6>
                         <p class="mb-1"><strong>${getCategoryIcon(place.category)} ${getCategoryName(place.category)}</strong></p>
                         <p class="mb-1 small">${getAttractionText(place, 'description')}</p>
@@ -968,6 +969,7 @@ function initRouteMap(route) {
                 .addTo(map)
                 .bindPopup(`
                     <div style="min-width: 200px;">
+                        ${place.image ? `<img src="${place.image}" alt="${getAttractionText(place, 'name')}" style="width: 100%; height: 120px; object-fit: cover; border-radius: 4px; margin-bottom: 8px;">` : ''}
                         <h6>${index + 1}. ${getAttractionText(place, 'name')}</h6>
                         <p class="mb-1 small">${getAttractionText(place, 'description')}</p>
                         <p class="mb-2 small"><strong>📍 ${t('address')}:</strong> ${getAttractionText(place, 'address')}</p>
