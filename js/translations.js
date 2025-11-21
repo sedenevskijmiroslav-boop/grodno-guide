@@ -85,6 +85,8 @@ const translations = {
         parkRelaxationName: "Парковый отдых",
         familyRouteName: "Семейный маршрут",
         museumTourName: "Музейный тур",
+        randomAttraction: "🎲 Случайная достопримечательность",
+        showRandom: "Показать случайную",
 
         // Достопримечательности
         attractionsData: {
@@ -334,6 +336,8 @@ const translations = {
         parkRelaxationName: "Park Relaxation",
         familyRouteName: "Family Route",
         museumTourName: "Museum Tour",
+        randomAttraction: "🎲 Random Attraction",
+        showRandom: "Show random",
 
         // Attractions
         attractionsData: {

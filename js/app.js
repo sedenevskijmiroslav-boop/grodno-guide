@@ -858,6 +858,16 @@ function clearAllVisited() {
     showProfile();
 }
 
+// ==================== СЛУЧАЙНАЯ ДОСТОПРИМЕЧАТЕЛЬНОСТЬ ====================
+
+function showRandomAttraction() {
+    if (attractions.length === 0) return;
+
+    const randomIndex = Math.floor(Math.random() * attractions.length);
+    const randomAttraction = attractions[randomIndex];
+    showAttractionDetail(randomAttraction.id);
+}
+
 // ==================== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ====================
 
 function getCategoryIcon(category) {
@@ -1100,6 +1110,7 @@ function updateLanguage() {
     document.getElementById('btn-attractions').textContent = t.attractions;
     document.getElementById('btn-map').textContent = t.map;
     document.getElementById('btn-routes').textContent = t.routes;
+    document.getElementById('btn-random').textContent = t.randomAttraction;
     document.getElementById('btn-favorites').textContent = t.favorites;
     document.getElementById('btn-profile').textContent = t.profile;
 
