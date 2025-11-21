@@ -389,12 +389,7 @@ h1 {
     gap: 0.5rem;
 }
 
-h1 .emoji-castle {
-    font-size: 2.5rem;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-}
-
-h1 span:not(.emoji-castle) {
+h1 span {
     background: linear-gradient(135deg, var(--accent-color), #ffd700);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

@@ -3,7 +3,7 @@ const attractions = [
     {
         id: 1,
         name: "Старый замок",
-        nameEn: "Old Castle",   
+        nameEn: "Old Castle",
         category: "architecture",
         description: "Историческая крепость на берегу Немана",
         descriptionEn: "Historical fortress on the Neman River bank",
@@ -17,7 +17,8 @@ const attractions = [
         price: "7 BYN - взрослый, 4 BYN - школьники/студенты",
         priceEn: "7 BYN - adult, 4 BYN - students/schoolchildren",
         phone: "+375 (152) 72-18-51",
-        website: "https://grodno-museum.by/?ysclid=mi5sklf20140452655#"
+        website: "https://grodno-museum.by/?ysclid=mi5sklf20140452655#",
+        image: "images/stariy_zamok.jpg"
     },
     {
         id: 2,
@@ -36,7 +37,8 @@ const attractions = [
         price: "бесплатно",
         priceEn: "free",
         phone: "+375 (152) 74-28-23",
-        website: "https://katedra-grodno.by/"
+        website: "https://katedra-grodno.by/",
+        image: "images/farnyi_kostel.jpg"
     },
     {
         id: 3,
@@ -49,7 +51,8 @@ const attractions = [
         workingHours: "10:00 - 18:00 (вт-вс)",
         price: "6 BYN - взрослый, 3 BYN - школьники/студенты",
         phone: "+375 (152) 72-18-51",
-        website: "https://grodno-museum.by/?ysclid=mi5sklf20140452655#"
+        website: "https://grodno-museum.by/?ysclid=mi5sklf20140452655#",
+        image: "images/noviy_zamok.jpg"
     },
     {
         id: 4,
@@ -62,7 +65,8 @@ const attractions = [
         workingHours: "09:00 - 18:00 ежедневно",
         price: "бесплатно",
         phone: "+375 (152) 77-12-25",
-        website: "http://kalozha.by/"
+        website: "http://kalozha.by/",
+        image: "images/kalozha.jpg"
     },
     {
         id: 5,
@@ -74,7 +78,8 @@ const attractions = [
         coords: { lat: 53.677520, lng: 23.829443 },
         workingHours: "круглосуточно",
         price: "бесплатно",
-        website: "https://my-places.by/places/grodno-sovetskaya-ploshad"
+        website: "https://my-places.by/places/grodno-sovetskaya-ploshad",
+        image: "images/sovetskaya_square.jpg"
     },
     {
         id: 7,
@@ -87,7 +92,8 @@ const attractions = [
         workingHours: "вт-пт 10:00–17:00, перерыв 11:00–15:00; сб 18:00–20:00; вс 09:00–16:00, перерыв 11:00–15:00",
         price: "бесплатно",
         phone: "+375 29 157-00-76",
-        website: "http://www.luther.by/"
+        website: "http://www.luther.by/",
+        image: "images/luther_church.jpg"
     },
     {
         id: 6,
@@ -100,7 +106,8 @@ const attractions = [
         workingHours: "10:00 - 20:00 (летом), 10:00 - 17:00 (зимой)",
         price: "10 BYN - взрослый, 5 BYN - детский",
         phone: "+375 (152) 75-38-54",
-        website: "https://www.grodnozoo.by/"
+        website: "https://www.grodnozoo.by/",
+        image: "images/zoopark.jpg"
     },
     {
         id: 8,
@@ -113,7 +120,8 @@ const attractions = [
         workingHours: "10:00 - 17:00 (вт-вс)",
         price: "3 BYN - взрослый, 1.5 BYN - школьники",
         phone: "+375 (152) 72-18-51",
-        website: "https://zetgrodno.com/dom-elizy-ozheshko"
+        website: "https://zetgrodno.com/dom-elizy-ozheshko",
+        image: "images/elizy_ozheshko.jpg"
     },
     {
         id: 9,
@@ -126,7 +134,8 @@ const attractions = [
         workingHours: "10:00 - 18:00 (вт-вс)",
         price: "5 BYN - взрослый, 2.5 BYN - школьники",
         phone: "+375 (152) 72-18-51",
-        website: "https://muzej.by/"
+        website: "https://muzej.by/",
+        image: "images/hystory_religion_muzeum.jpg"
     },
     {
         id: 10,
@@ -138,7 +147,8 @@ const attractions = [
         coords: { lat: 53.684874, lng: 23.837138 },
         workingHours: "круглосуточно",
         price: "бесплатно",
-        website: "https://www.instagram.com/parkgrodno/?hl=ru"
+        website: "https://www.instagram.com/parkgrodno/?hl=ru",
+        image: "images/zhilibera_park.jpg"
     },
     {
         id: 11,
@@ -151,7 +161,8 @@ const attractions = [
         workingHours: "ежедневно, 09:30–20:15",
         price: "от 4 BYN, до 17 BYN",
         phone: "+375 15 262-34-82",
-        website: "https://drama-grodno.by/?ysclid=mi77hm24a894154653"
+        website: "https://drama-grodno.by/?ysclid=mi77hm24a894154653",
+        image: "images/dram_teatr.jpg"
     },
     {
         id: 12,
@@ -164,7 +175,8 @@ const attractions = [
         workingHours: "по договорённости",
         price: "бесплатно",
         phone: "+375 (152) 77-45-67",
-        website: "http://grodnosynagogue.by/?ysclid=mi76i2my5811798724"
+        website: "http://grodnosynagogue.by/?ysclid=mi76i2my5811798724",
+        image: "images/sinagoga_horalnaya.jpg"
     },
     {
         id: 13,
@@ -176,7 +188,8 @@ const attractions = [
         coords: { lat: 53.674552, lng: 23.838165 },
         workingHours: "пн-вс: В любое время",
         price: "бесплатно",
-        website: "https://planetabelarus.by/sights/vodonapornye-bashni-kasya-i-basya-v-grodno/?ysclid=mi77sjrkfv894079310"
+        website: "https://planetabelarus.by/sights/vodonapornye-bashni-kasya-i-basya-v-grodno/?ysclid=mi77sjrkfv894079310",
+        image: "images/basya_kasya.jpg"
     },
     {
         id: 14,
@@ -188,7 +201,8 @@ const attractions = [
         coords: { lat: 53.685518, lng: 23.838312 },
         workingHours: "на реконструкции",
         price: "на реконструкции",
-        website: "https://ru.ruwiki.ru/wiki/%D0%94%D0%B2%D0%BE%D1%80%D0%B5%D1%86_%D0%A7%D0%B5%D1%82%D0%B2%D0%B5%D1%80%D1%82%D0%B8%D0%BD%D1%81%D0%BA%D0%B8%D1%85_(%D0%93%D1%80%D0%BE%D0%B4%D0%BD%D0%BE)"
+        website: "https://ru.ruwiki.ru/wiki/%D0%94%D0%B2%D0%BE%D1%80%D0%B5%D1%86_%D0%A7%D0%B5%D1%82%D0%B2%D0%B5%D1%80%D1%82%D0%B8%D0%BD%D1%81%D0%BA%D0%B8%D1%85_(%D0%93%D1%80%D0%BE%D0%B4%D0%BD%D0%BE)",
+        image: "images/4etvertinskie.jpg"
     },
     {
         id: 15,
@@ -201,7 +215,8 @@ const attractions = [
         workingHours: "пн-пт 08:00–17:00, перерыв 13:00–14:00",
         phone: "+375 15 262-16-10",
         price: "бесплатно",
-        website: "https://mchs.gov.by/?ysclid=mi789xayu656633663"
+        website: "https://mchs.gov.by/?ysclid=mi789xayu656633663",
+        image: "images/kalancha.jpg"
     },
     {
         id: 16,
@@ -213,7 +228,8 @@ const attractions = [
         workingHours: "круглосуточно",
         price: "бесплатно",
         phone: "+375 15 262-30-70",
-        website: "https://ru.ruwiki.ru/wiki/%D0%9F%D1%8B%D1%88%D0%BA%D0%B8_(%D0%BB%D0%B5%D1%81%D0%BE%D0%BF%D0%B0%D1%80%D0%BA)"
+        website: "https://ru.ruwiki.ru/wiki/%D0%9F%D1%8B%D1%88%D0%BA%D0%B8_(%D0%BB%D0%B5%D1%81%D0%BE%D0%BF%D0%B0%D1%80%D0%BA)",
+        image: "images/pyshki.jpg"
     },
     {
         id: 17,
@@ -225,7 +241,8 @@ const attractions = [
         coords: { lat: 53.735436, lng: 23.708799 },
         workingHours: "круглосуточно",
         price: "бесплатно",
-        website: "https://fortressgrodno.by/index.php?id=44&ysclid=mi76z40an8508146146t"
+        website: "https://fortressgrodno.by/index.php?id=44&ysclid=mi76z40an8508146146t",
+        image: "images/fort.jpg"
     },
     {
         id: 18,
@@ -236,7 +253,8 @@ const attractions = [
         address: "сквер Швейцарская долина",
         coords: { lat: 53.6886697, lng: 23.832489 },
         workingHours: "круглосуточно",
-        price: "бесплатно"
+        price: "бесплатно",
+        image: "images/solnechnie_chasy.jpg"
     },
      {
         id: 19,
@@ -249,7 +267,8 @@ const attractions = [
         workingHours: "ежедневно, 07:30–20:00",
         price: "бесплатно",
         phone: "+375 15 272-04-32",
-        website: "http://pokrovgrodno.org/"
+        website: "http://pokrovgrodno.org/",
+        image: "images/pokrovskij_sobor.jpg"
     },
     {
         id: 20,
@@ -261,7 +280,8 @@ const attractions = [
         coords: { lat: 53.677025, lng: 23.829292 },
         workingHours: "круглосуточно",
         price: "бесплатно",
-        website: "https://my-places.by/places/grodno-sovetskaya-ploshad"
+        website: "https://my-places.by/places/grodno-sovetskaya-ploshad",
+        image: "images/fontan.jpg"
     }
 ];
 

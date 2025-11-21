@@ -184,16 +184,21 @@ function renderAttractionsList(category = 'all') {
 
     return filteredAttractions.map(item => `
         <div class="list-group-item list-group-item-action" onclick="showAttractionDetail(${item.id})">
-            <div class="d-flex justify-content-between align-items-start">
+            <div class="d-flex align-items-start">
+                ${item.image ? `<img src="${item.image}" class="me-3" alt="${getAttractionText(item, 'name')}" style="width: 80px; height: 60px; object-fit: cover; border-radius: 4px;">` : ''}
                 <div class="flex-grow-1">
-                    <h5 class="mb-1">${getAttractionText(item, 'name')}</h5>
-                    <p class="mb-1 text-muted small">${getAttractionText(item, 'description')}</p>
-                    <small class="text-muted">📍 ${getAttractionText(item, 'address')}</small>
-                </div>
-                <div class="text-end ms-2">
-                    <span class="badge bg-primary mb-1">${getCategoryIcon(item.category)}</span>
-                    <br>
-                    <small class="text-muted d-none d-md-block">${getCategoryName(item.category)}</small>
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="flex-grow-1">
+                            <h5 class="mb-1">${getAttractionText(item, 'name')}</h5>
+                            <p class="mb-1 text-muted small">${getAttractionText(item, 'description')}</p>
+                            <small class="text-muted">📍 ${getAttractionText(item, 'address')}</small>
+                        </div>
+                        <div class="text-end ms-2">
+                            <span class="badge bg-primary mb-1">${getCategoryIcon(item.category)}</span>
+                            <br>
+                            <small class="text-muted d-none d-md-block">${getCategoryName(item.category)}</small>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -219,6 +224,7 @@ function showAttractionDetail(id) {
 
         <div class="card fade-in">
             <div class="card-body">
+                ${item.image ? `<img src="${item.image}" class="card-img-top mb-3" alt="${getAttractionText(item, 'name')}" style="max-height: 300px; object-fit: cover; border-radius: 8px;">` : ''}
                 <div class="d-flex justify-content-between align-items-start mb-3">
                     <h2 class="card-title h4">${getAttractionText(item, 'name')}</h2>
                     <span class="badge bg-primary">${getCategoryIcon(item.category)} ${getCategoryName(item.category)}</span>
