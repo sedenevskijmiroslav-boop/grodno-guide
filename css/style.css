@@ -202,6 +202,15 @@ body {
     transition: background 0.3s ease;
 }
 
+.review-card {
+    background: var(--info-bg);
+    border-radius: 8px;
+    padding: 12px;
+    border-left: 3px solid var(--accent-color);
+    font-style: italic;
+    transition: background 0.3s ease;
+}
+
 /* Анимации */
 .fade-in {
     animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
@@ -329,6 +338,11 @@ body {
         border-radius: 10px;
     }
 
+    .review-card {
+        padding: 10px;
+        border-radius: 6px;
+    }
+
     h1 {
         font-size: 1.8rem;
     }
@@ -364,6 +378,10 @@ body {
 
     .contacts-card {
         padding: 12px;
+    }
+
+    .review-card {
+        padding: 8px;
     }
 
     .d-grid {

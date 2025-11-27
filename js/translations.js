@@ -87,10 +87,16 @@ const translations = {
         museumTourName: "Музейный тур",
         randomAttraction: "🎲 Случайная достопримечательность",
         showRandom: "Показать случайную",
+        reviews: "💬 Отзывы",
         confirmClearFavorites: "Вы точно хотите очистить избранное?",
         confirmClearVisited: "Вы точно хотите очистить личный кабинет?",
         favoritesCleared: "Избранное очищено",
         visitedCleared: "Посещенные очищены",
+        clearSearch: "Очистить поиск",
+        allReviews: "Все отзывы",
+        noReviewsYet: "Пока нет отзывов",
+        addFirstReview: "Добавьте свой первый отзыв о достопримечательностях!",
+        reviewsCount: "отзывов",
 
         // Достопримечательности
         attractionsData: {
@@ -342,10 +348,16 @@ const translations = {
         museumTourName: "Museum Tour",
         randomAttraction: "🎲 Random Attraction",
         showRandom: "Show random",
+        reviews: "💬 Reviews",
         confirmClearFavorites: "Are you sure you want to clear favorites?",
         confirmClearVisited: "Are you sure you want to clear profile?",
         favoritesCleared: "Favorites cleared",
         visitedCleared: "Visited cleared",
+        clearSearch: "Clear search",
+        allReviews: "All reviews",
+        noReviewsYet: "No reviews yet",
+        addFirstReview: "Add your first review about attractions!",
+        reviewsCount: "reviews",
 
         // Attractions
         attractionsData: {

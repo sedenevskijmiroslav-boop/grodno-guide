@@ -75,7 +75,12 @@ function showAttractions() {
 
             <!-- Поиск -->
             <div class="mb-3">
-                <input type="text" id="attractions-search" class="form-control" placeholder="${t('searchPlaceholder')}" oninput="searchAttractions()">
+                <div class="input-group">
+                    <input type="text" id="attractions-search" class="form-control" placeholder="${t('searchPlaceholder')}" oninput="searchAttractions()">
+                    <button class="btn btn-outline-secondary" id="clear-search-btn" onclick="clearSearch()" style="display: none;" title="${t('clearSearch')}">
+                        ❌
+                    </button>
+                </div>
             </div>
 
             <!-- Фильтры по категориям -->
@@ -151,10 +156,34 @@ function filterAttractions(category) {
 
 function searchAttractions() {
     const searchInput = document.getElementById('attractions-search');
+    const clearBtn = document.getElementById('clear-search-btn');
     if (searchInput) {
         currentSearch = searchInput.value.toLowerCase();
+
+        // Показываем/скрываем кнопку очистки
+        if (clearBtn) {
+            clearBtn.style.display = currentSearch ? 'block' : 'none';
+        }
+
         const attractionsList = document.getElementById('attractions-list');
 
+        if (attractionsList) {
+            attractionsList.innerHTML = renderAttractionsList(currentCategory);
+        }
+    }
+}
+
+function clearSearch() {
+    const searchInput = document.getElementById('attractions-search');
+    const clearBtn = document.getElementById('clear-search-btn');
+
+    if (searchInput) {
+        searchInput.value = '';
+        currentSearch = '';
+        if (clearBtn) {
+            clearBtn.style.display = 'none';
+        }
+        const attractionsList = document.getElementById('attractions-list');
         if (attractionsList) {
             attractionsList.innerHTML = renderAttractionsList(currentCategory);
         }
@@ -771,6 +800,78 @@ function clearAllFavorites() {
     }
 }
 
+// ==================== ОТЗЫВЫ ====================
+
+function showReviews() {
+    currentView = 'reviews';
+    const content = document.getElementById('content');
+
+    // Получаем все отзывы
+    const reviewEntries = Object.entries(reviews);
+
+    if (reviewEntries.length === 0) {
+        content.innerHTML = `
+            <div class="page-transition">
+                <div class="text-center py-5">
+                    <div style="font-size: 64px; margin-bottom: 20px;">💬</div>
+                    <h3>${t('noReviewsYet')}</h3>
+                    <p class="text-muted">${t('addFirstReview')}</p>
+                    <button class="btn btn-primary mt-3" onclick="showAttractions()">
+                        📍 ${t('exploreAttractions')}
+                    </button>
+                </div>
+            </div>
+        `;
+        return;
+    }
+
+    // Сортируем отзывы по дате (если есть) или по id
+    const sortedReviews = reviewEntries
+        .map(([attractionId, reviewText]) => {
+            const attraction = attractions.find(a => a.id == attractionId);
+            return {
+                id: attractionId,
+                attraction: attraction,
+                review: reviewText,
+                name: getAttractionText(attraction, 'name')
+            };
+        })
+        .sort((a, b) => a.name.localeCompare(b.name));
+
+    content.innerHTML = `
+        <div class="page-transition">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <h2>${t('allReviews')}</h2>
+                    <p class="text-muted mb-0">${reviewEntries.length} ${t('reviewsCount')}</p>
+                </div>
+                <button class="btn btn-outline-secondary" onclick="changeLanguage()">
+                    ${currentLanguage === 'ru' ? '🇺🇸 EN' : '🇷🇺 RU'}
+                </button>
+            </div>
+
+            <div class="list-group">
+                ${sortedReviews.map((item, index) => `
+                    <div class="list-group-item stagger-item">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="flex-grow-1">
+                                <h5 class="mb-2">${item.name}</h5>
+                                <p class="mb-2 text-muted small">${getAttractionText(item.attraction, 'address')}</p>
+                                <div class="review-card">
+                                    <p class="mb-0">${item.review}</p>
+                                </div>
+                            </div>
+                            <button class="btn btn-sm btn-outline-info ms-2" onclick="showAttractionDetail(${item.id})">
+                                ℹ️
+                            </button>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+}
+
 // ==================== ЛИЧНЫЙ КАБИНЕТ ====================
 
 function showProfile() {
@@ -1091,6 +1192,9 @@ function refreshCurrentView() {
         case 'favorites':
             showFavorites();
             break;
+        case 'reviews':
+            showReviews();
+            break;
         case 'profile':
             showProfile();
             break;
@@ -1118,6 +1222,7 @@ function updateLanguage() {
     document.getElementById('btn-map').textContent = t.map;
     document.getElementById('btn-routes').textContent = t.routes;
     document.getElementById('btn-random').textContent = t.randomAttraction;
+    document.getElementById('btn-reviews').textContent = t.reviews;
     document.getElementById('btn-favorites').textContent = t.favorites;
     document.getElementById('btn-profile').textContent = t.profile;
 
