@@ -301,7 +301,16 @@ function showAttractionDetail(id) {
 
                 <div class="mt-4">
                     <h6>${t('review')}:</h6>
-                    <textarea id="review-${item.id}" class="form-control mb-2" rows="3" placeholder="${t('review')}...">${reviews[item.id] || ''}</textarea>
+                    ${reviews[item.id] ? `
+                        <div class="review-card mb-3">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <small class="text-muted"><strong>${t('by')} ${typeof reviews[item.id] === 'string' ? 'Anonymous' : reviews[item.id].author}</strong></small>
+                                ${typeof reviews[item.id] === 'object' && reviews[item.id].timestamp ? `<small class="text-muted">${new Date(reviews[item.id].timestamp).toLocaleDateString()}</small>` : ''}
+                            </div>
+                            <p class="mb-0">${typeof reviews[item.id] === 'string' ? reviews[item.id] : reviews[item.id].text}</p>
+                        </div>
+                    ` : ''}
+                    <textarea id="review-${item.id}" class="form-control mb-2" rows="3" placeholder="${t('review')}...">${typeof reviews[item.id] === 'string' ? reviews[item.id] : reviews[item.id]?.text || ''}</textarea>
                     <button class="btn btn-primary btn-sm" onclick="saveReview(${item.id})">
                         💬 ${t('saveReview')}
                     </button>
@@ -825,18 +834,25 @@ function showReviews() {
         return;
     }
 
-    // Сортируем отзывы по дате (если есть) или по id
+    // Сортируем отзывы по дате (новые сверху)
     const sortedReviews = reviewEntries
-        .map(([attractionId, reviewText]) => {
+        .map(([attractionId, reviewData]) => {
             const attraction = attractions.find(a => a.id == attractionId);
+            // Поддержка старого формата (строка) и нового (объект)
+            const reviewObj = typeof reviewData === 'string' ? { text: reviewData, author: 'Anonymous', timestamp: null } : reviewData;
             return {
                 id: attractionId,
                 attraction: attraction,
-                review: reviewText,
+                review: reviewObj,
                 name: getAttractionText(attraction, 'name')
             };
         })
-        .sort((a, b) => a.name.localeCompare(b.name));
+        .sort((a, b) => {
+            if (a.review.timestamp && b.review.timestamp) {
+                return new Date(b.review.timestamp) - new Date(a.review.timestamp);
+            }
+            return a.name.localeCompare(b.name);
+        });
 
     content.innerHTML = `
         <div class="page-transition">
@@ -858,7 +874,11 @@ function showReviews() {
                                 <h5 class="mb-2">${item.name}</h5>
                                 <p class="mb-2 text-muted small">${getAttractionText(item.attraction, 'address')}</p>
                                 <div class="review-card">
-                                    <p class="mb-0">${item.review}</p>
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <small class="text-muted"><strong>${t('by')} ${item.review.author}</strong></small>
+                                        ${item.review.timestamp ? `<small class="text-muted">${new Date(item.review.timestamp).toLocaleDateString()}</small>` : ''}
+                                    </div>
+                                    <p class="mb-0">${item.review.text}</p>
                                 </div>
                             </div>
                             <button class="btn btn-sm btn-outline-info ms-2" onclick="showAttractionDetail(${item.id})">
@@ -914,7 +934,13 @@ function showProfile() {
                                 ${reviews[item.id] ? `
                                     <div class="mt-2">
                                         <small class="text-muted">${t('review')}:</small>
-                                        <p class="mb-0 small">${reviews[item.id]}</p>
+                                        <div class="review-card">
+                                            <div class="d-flex justify-content-between align-items-start mb-1">
+                                                <small class="text-muted"><strong>${t('by')} ${typeof reviews[item.id] === 'string' ? 'Anonymous' : reviews[item.id].author}</strong></small>
+                                                ${typeof reviews[item.id] === 'object' && reviews[item.id].timestamp ? `<small class="text-muted">${new Date(reviews[item.id].timestamp).toLocaleDateString()}</small>` : ''}
+                                            </div>
+                                            <p class="mb-0 small">${typeof reviews[item.id] === 'string' ? reviews[item.id] : reviews[item.id].text}</p>
+                                        </div>
                                     </div>
                                 ` : ''}
                             </div>
@@ -944,9 +970,26 @@ function markAsVisited(attractionId) {
 function saveReview(attractionId) {
     const reviewText = document.getElementById(`review-${attractionId}`).value.trim();
     if (reviewText) {
-        reviews[attractionId] = reviewText;
+        // Получаем информацию о пользователе
+        const user = tg.initDataUnsafe?.user;
+        const authorName = user ? `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.username || `User ${user.id}` : 'Anonymous';
+
+        // Создаем объект отзыва
+        const reviewData = {
+            text: reviewText,
+            author: authorName,
+            timestamp: new Date().toISOString(),
+            userId: user?.id || null
+        };
+
+        reviews[attractionId] = reviewData;
         localStorage.setItem('reviews', JSON.stringify(reviews));
         tg.showAlert('💬 ' + t('reviewSaved'));
+
+        // Обновляем отображение отзыва в текущем виде
+        if (currentView === 'attraction-detail' && currentAttractionId == attractionId) {
+            showAttractionDetail(attractionId);
+        }
     }
 }
 

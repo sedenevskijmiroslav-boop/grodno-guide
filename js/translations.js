@@ -97,6 +97,7 @@ const translations = {
         noReviewsYet: "Пока нет отзывов",
         addFirstReview: "Добавьте свой первый отзыв о достопримечательностях!",
         reviewsCount: "отзывов",
+        by: "от",
 
         // Достопримечательности
         attractionsData: {
@@ -358,6 +359,7 @@ const translations = {
         noReviewsYet: "No reviews yet",
         addFirstReview: "Add your first review about attractions!",
         reviewsCount: "reviews",
+        by: "by",
 
         // Attractions
         attractionsData: {
