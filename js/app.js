@@ -303,10 +303,6 @@ function showAttractionDetail(id) {
                     <h6>${t('review')}:</h6>
                     ${reviews[item.id] ? `
                         <div class="review-card mb-3">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <small class="text-muted"><strong>${t('by')} ${typeof reviews[item.id] === 'string' ? 'Anonymous' : reviews[item.id].author}</strong></small>
-                                ${typeof reviews[item.id] === 'object' && reviews[item.id].timestamp ? `<small class="text-muted">${new Date(reviews[item.id].timestamp).toLocaleDateString()}</small>` : ''}
-                            </div>
                             <p class="mb-0">${typeof reviews[item.id] === 'string' ? reviews[item.id] : reviews[item.id].text}</p>
                         </div>
                     ` : ''}
@@ -874,10 +870,6 @@ function showReviews() {
                                 <h5 class="mb-2">${item.name}</h5>
                                 <p class="mb-2 text-muted small">${getAttractionText(item.attraction, 'address')}</p>
                                 <div class="review-card">
-                                    <div class="d-flex justify-content-between align-items-start mb-2">
-                                        <small class="text-muted"><strong>${t('by')} ${item.review.author}</strong></small>
-                                        ${item.review.timestamp ? `<small class="text-muted">${new Date(item.review.timestamp).toLocaleDateString()}</small>` : ''}
-                                    </div>
                                     <p class="mb-0">${item.review.text}</p>
                                 </div>
                             </div>
@@ -935,10 +927,6 @@ function showProfile() {
                                     <div class="mt-2">
                                         <small class="text-muted">${t('review')}:</small>
                                         <div class="review-card">
-                                            <div class="d-flex justify-content-between align-items-start mb-1">
-                                                <small class="text-muted"><strong>${t('by')} ${typeof reviews[item.id] === 'string' ? 'Anonymous' : reviews[item.id].author}</strong></small>
-                                                ${typeof reviews[item.id] === 'object' && reviews[item.id].timestamp ? `<small class="text-muted">${new Date(reviews[item.id].timestamp).toLocaleDateString()}</small>` : ''}
-                                            </div>
                                             <p class="mb-0 small">${typeof reviews[item.id] === 'string' ? reviews[item.id] : reviews[item.id].text}</p>
                                         </div>
                                     </div>
