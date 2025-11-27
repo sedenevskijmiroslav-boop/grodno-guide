@@ -87,6 +87,8 @@ const translations = {
         museumTourName: "Музейный тур",
         randomAttraction: "🎲 Случайная достопримечательность",
         showRandom: "Показать случайную",
+        confirmClearFavorites: "Вы точно хотите очистить избранное?",
+        confirmClearVisited: "Вы точно хотите очистить личный кабинет?",
 
         // Достопримечательности
         attractionsData: {
@@ -338,6 +340,8 @@ const translations = {
         museumTourName: "Museum Tour",
         randomAttraction: "🎲 Random Attraction",
         showRandom: "Show random",
+        confirmClearFavorites: "Are you sure you want to clear favorites?",
+        confirmClearVisited: "Are you sure you want to clear profile?",
 
         // Attractions
         attractionsData: {

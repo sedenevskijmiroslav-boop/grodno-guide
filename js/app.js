@@ -760,10 +760,12 @@ function clearAllFavorites() {
         return;
     }
 
-    favorites = [];
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-    tg.showAlert('🗑️ ' + t('clearAllConfirm') + '!');
-    showFavorites();
+    if (confirm(t('confirmClearFavorites'))) {
+        favorites = [];
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        tg.showAlert('🗑️ ' + t('clearAllConfirm') + '!');
+        showFavorites();
+    }
 }
 
 // ==================== ЛИЧНЫЙ КАБИНЕТ ====================
@@ -850,12 +852,14 @@ function clearAllVisited() {
         return;
     }
 
-    visited = [];
-    reviews = {};
-    localStorage.setItem('visited', JSON.stringify(visited));
-    localStorage.setItem('reviews', JSON.stringify(reviews));
-    tg.showAlert('🗑️ ' + t('allVisitedCleared'));
-    showProfile();
+    if (confirm(t('confirmClearVisited'))) {
+        visited = [];
+        reviews = {};
+        localStorage.setItem('visited', JSON.stringify(visited));
+        localStorage.setItem('reviews', JSON.stringify(reviews));
+        tg.showAlert('🗑️ ' + t('allVisitedCleared'));
+        showProfile();
+    }
 }
 
 // ==================== СЛУЧАЙНАЯ ДОСТОПРИМЕЧАТЕЛЬНОСТЬ ====================
