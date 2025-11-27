@@ -68,6 +68,7 @@ function showAttractions() {
     const content = document.getElementById('content');
 
     content.innerHTML = `
+        <div class="page-transition">
         <div class="fade-in">
             <h2>${t('attractions')}</h2>
             <p class="text-muted mb-3">${t('choosePlace')}</p>
@@ -126,6 +127,7 @@ function showAttractions() {
                 ${renderAttractionsList(currentCategory)}
             </div>
         </div>
+        </div>
     `;
 }
 
@@ -182,8 +184,8 @@ function renderAttractionsList(category = 'all') {
         `;
     }
 
-    return filteredAttractions.map(item => `
-        <div class="list-group-item list-group-item-action" onclick="showAttractionDetail(${item.id})">
+    return filteredAttractions.map((item, index) => `
+        <div class="list-group-item list-group-item-action stagger-item" onclick="showAttractionDetail(${item.id})">
             <div class="d-flex align-items-start">
                 ${item.image ? `<img src="${item.image}" class="me-3" alt="${getAttractionText(item, 'name')}" style="width: 80px; height: 60px; object-fit: cover; border-radius: 4px;">` : ''}
                 <div class="flex-grow-1">
@@ -252,7 +254,7 @@ function showAttractionDetail(id) {
                         🗺️ ${t('buildRoute')}
                     </button>
 
-                    <button class="btn ${isFavorite ? 'btn-warning' : 'btn-outline-warning'}"
+                    <button class="btn ${isFavorite ? 'btn-warning' : 'btn-outline-warning'} favorite-btn"
                             onclick="${isFavorite ? `removeFromFavorites(${item.id})` : `addToFavorites(${item.id})`}">
                         ${isFavorite ? '❌ ' + t('removeFromFavorites') : '⭐ ' + t('addToFavorites')}
                     </button>
@@ -287,7 +289,7 @@ function showMap() {
     const content = document.getElementById('content');
 
     content.innerHTML = `
-        <div class="fade-in">
+        <div class="page-transition">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div>
                     <h2>${t('cityMap')}</h2>
@@ -364,6 +366,7 @@ function showMap() {
                     ${renderMapAttractionsList(currentMapCategory)}
                 </div>
             </div>
+        </div>
         </div>
     `;
 
@@ -469,8 +472,8 @@ function renderMapAttractionsList(category = 'all') {
         `;
     }
 
-    return filteredAttractions.map(item => `
-        <div class="list-group-item">
+    return filteredAttractions.map((item, index) => `
+        <div class="list-group-item stagger-item">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="flex-grow-1">
                     <strong class="d-block">${getAttractionText(item, 'name')}</strong>
@@ -763,7 +766,7 @@ function clearAllFavorites() {
     if (confirm(t('confirmClearFavorites'))) {
         favorites = [];
         localStorage.setItem('favorites', JSON.stringify(favorites));
-        tg.showAlert('🗑️ ' + t('clearAllConfirm') + '!');
+        tg.showAlert(t('favoritesCleared'));
         showFavorites();
     }
 }
@@ -857,7 +860,7 @@ function clearAllVisited() {
         reviews = {};
         localStorage.setItem('visited', JSON.stringify(visited));
         localStorage.setItem('reviews', JSON.stringify(reviews));
-        tg.showAlert('🗑️ ' + t('allVisitedCleared'));
+        tg.showAlert(t('visitedCleared'));
         showProfile();
     }
 }

@@ -89,6 +89,8 @@ const translations = {
         showRandom: "Показать случайную",
         confirmClearFavorites: "Вы точно хотите очистить избранное?",
         confirmClearVisited: "Вы точно хотите очистить личный кабинет?",
+        favoritesCleared: "Избранное очищено",
+        visitedCleared: "Посещенные очищены",
 
         // Достопримечательности
         attractionsData: {
@@ -342,6 +344,8 @@ const translations = {
         showRandom: "Show random",
         confirmClearFavorites: "Are you sure you want to clear favorites?",
         confirmClearVisited: "Are you sure you want to clear profile?",
+        favoritesCleared: "Favorites cleared",
+        visitedCleared: "Visited cleared",
 
         // Attractions
         attractionsData: {
